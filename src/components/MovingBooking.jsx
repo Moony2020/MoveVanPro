@@ -148,7 +148,7 @@ export default function MovingBooking({ onNavigateTo }) {
                   <p className="text-xs text-[#424754]">Choose your service option and vehicle size.</p>
                 </div>
 
-                <div className="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+                <div className="grid grid-cols-3 gap-2 sm:gap-4">
                   {[
                     { 
                       id: 'small', 
@@ -184,30 +184,30 @@ export default function MovingBooking({ onNavigateTo }) {
                           : 'border-[#c2c6d6]/60 hover:border-[#0058be]/40 bg-white shadow-sm'
                       }`}
                     >
-                      <div className="h-36 sm:h-44 w-full relative overflow-hidden bg-slate-100">
+                      <div className="h-24 sm:h-36 w-full relative overflow-hidden bg-[#f8f9ff] flex items-center justify-center p-1">
                         <img 
                           src={v.img} 
                           alt={v.name} 
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-contain"
                         />
-                        <div className="absolute top-2.5 right-2.5 z-10">
-                          <div className={`w-5 h-5 rounded-full flex items-center justify-center border shadow-sm ${
+                        <div className="absolute top-1.5 right-1.5 z-10">
+                          <div className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center border shadow-sm ${
                             vehicle === v.id ? 'bg-[#0058be] text-white border-[#0058be]' : 'bg-white text-transparent border-[#c2c6d6]'
                           }`}>
-                            <Check className="w-3 h-3 stroke-[3]" />
+                            <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[3]" />
                           </div>
                         </div>
                       </div>
 
-                      <div className="p-2.5 sm:p-3.5 flex flex-col flex-grow justify-between">
+                      <div className="p-2 sm:p-3.5 flex flex-col flex-grow justify-between">
                         <div>
-                          <div className="flex justify-between items-baseline mb-1">
-                            <h4 className="font-extrabold text-[11px] sm:text-xs md:text-sm text-[#0b1c30] truncate">{v.name}</h4>
-                            <span className="text-[11px] sm:text-xs font-black text-[#0058be]">${v.rate}/hr</span>
+                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
+                            <h4 className="font-extrabold text-[10px] sm:text-xs md:text-sm text-[#0b1c30] truncate">{v.name}</h4>
+                            <span className="text-[10px] sm:text-xs font-black text-[#0058be]">${v.rate}/hr</span>
                           </div>
-                          <p className="text-[10px] sm:text-[11px] text-[#424754] mb-2 leading-tight min-h-[22px]">{v.desc}</p>
+                          <p className="text-[9px] sm:text-[11px] text-[#424754] mb-1.5 leading-tight min-h-[20px]">{v.desc}</p>
                         </div>
-                        <span className="text-[9px] sm:text-[10px] bg-white border border-[#c2c6d6] px-2 py-0.5 rounded-md font-bold text-[#565e74] w-fit">
+                        <span className="text-[8px] sm:text-[10px] bg-white border border-[#c2c6d6] px-1.5 py-0.5 rounded-md font-bold text-[#565e74] w-fit">
                           Capacity: {v.cap}
                         </span>
                       </div>
