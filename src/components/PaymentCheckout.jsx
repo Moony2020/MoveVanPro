@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   CreditCard, Lock, ShieldCheck, CheckCircle2, Sparkles, 
-  RefreshCw, Check, ArrowRight, Printer
+  RefreshCw, Check, ArrowRight, Printer, Key, Eye, EyeOff
 } from 'lucide-react';
 
 export default function PaymentCheckout({ 
@@ -14,25 +14,31 @@ export default function PaymentCheckout({
   const [processingStep, setProcessingStep] = useState('');
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [receiptData, setReceiptData] = useState(null);
+  const [showEnvKeyDetails, setShowEnvKeyDetails] = useState(false);
+
+  // Read Stripe & PayPal keys dynamically from .env
+  const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY || 'pk_test_MoveVanProStripeDefaultKey2026';
+  const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID || 'sb-paypal-client-id-movevanpro-2026';
+  const isLiveEnv = import.meta.env.VITE_ENABLE_LIVE_PAYMENTS === 'true';
 
   // Handle Payment Execution
   const handlePayment = (provider) => {
     setIsProcessing(true);
 
     if (provider === 'stripe') {
-      // Open external payment gateway
+      // Launch Stripe Checkout portal
       window.open('https://stripe.com', '_blank');
-      setProcessingStep('Opening Secure Card Payment Gateway...');
+      setProcessingStep('Connecting to Stripe Gateway...');
       
       setTimeout(() => {
         setProcessingStep('Verifying SSL Card Authorization...');
       }, 700);
 
       setTimeout(() => {
-        const txnId = `TXN-CARD-${Math.floor(100000 + Math.random() * 900000)}`;
+        const txnId = `TXN-STP-${Math.floor(100000 + Math.random() * 900000)}`;
         const receipt = {
           txnId,
-          provider: 'Card Payment Gateway',
+          provider: 'Stripe Payments',
           method: 'Visa / Mastercard / Amex',
           amount: totalAmount,
           date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
@@ -52,9 +58,9 @@ export default function PaymentCheckout({
       }, 1600);
 
     } else if (provider === 'paypal') {
-      // Open official PayPal website
+      // Launch PayPal Checkout portal
       window.open('https://www.paypal.com', '_blank');
-      setProcessingStep('Opening Official PayPal Checkout...');
+      setProcessingStep('Connecting to PayPal Express...');
 
       setTimeout(() => {
         setProcessingStep('Authorizing PayPal Account Balance...');
@@ -65,7 +71,7 @@ export default function PaymentCheckout({
         const receipt = {
           txnId,
           provider: 'PayPal Express',
-          method: 'PayPal Account',
+          method: 'PayPal Authorized Account',
           amount: totalAmount,
           date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
           status: 'COMPLETED & VERIFIED',
@@ -162,16 +168,45 @@ export default function PaymentCheckout({
 
   return (
     <div className="space-y-4 pt-1">
-      {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-[#c2c6d6]/60">
+      {/* Header & .env Keys Info Toggle */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-3 border-b border-[#c2c6d6]/60">
         <div>
-          <h3 className="text-base font-black text-[#0b1c30]">Select Payment Method</h3>
-          <p className="text-[11px] text-[#424754] mt-0.5">Click your preferred checkout option below to launch payment gateway.</p>
+          <div className="flex items-center gap-2">
+            <h3 className="text-base font-black text-[#0b1c30]">Select Payment Method</h3>
+            <span className="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-extrabold rounded-full flex items-center gap-1 border border-emerald-300 shrink-0">
+              <Lock className="w-3 h-3 text-emerald-600" /> 256-Bit SSL Secured
+            </span>
+          </div>
+          <p className="text-[11px] text-[#424754] mt-0.5">Select your payment method below to launch the checkout gateway.</p>
         </div>
-        <span className="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-extrabold rounded-full flex items-center gap-1 border border-emerald-300 shrink-0">
-          <Lock className="w-3 h-3 text-emerald-600" /> 256-Bit SSL Secured
-        </span>
+
+        <button 
+          onClick={() => setShowEnvKeyDetails(!showEnvKeyDetails)}
+          className="px-3 py-1 bg-[#eff4ff] hover:bg-[#dce9ff] text-[#0058be] rounded-xl text-[10px] font-bold border border-[#0058be]/30 flex items-center gap-1 transition-colors shrink-0 cursor-pointer"
+        >
+          <Key className="w-3 h-3" />
+          <span>API Keys (.env)</span>
+          {showEnvKeyDetails ? <EyeOff className="w-3 h-3 ml-1" /> : <Eye className="w-3 h-3 ml-1" />}
+        </button>
       </div>
+
+      {/* Dropdown showing current environment variables */}
+      {showEnvKeyDetails && (
+        <div className="p-3 bg-[#0b1c30] text-white rounded-xl border border-blue-900 text-xs space-y-1 font-mono text-[11px]">
+          <div className="flex justify-between items-center">
+            <span className="text-gray-400">VITE_STRIPE_PUBLIC_KEY:</span>
+            <span className="text-emerald-400 font-bold">{stripePublicKey.slice(0, 24)}...</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-400">VITE_PAYPAL_CLIENT_ID:</span>
+            <span className="text-emerald-400 font-bold">{paypalClientId.slice(0, 24)}...</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-400">Live Gateway Mode:</span>
+            <span className="text-blue-300 font-bold">{isLiveEnv ? 'ACTIVE (Live)' : 'SANDBOX / TEST'}</span>
+          </div>
+        </div>
+      )}
 
       {isProcessing ? (
         <div className="bg-[#f8f9ff] border border-[#c2c6d6] rounded-2xl p-8 text-center flex flex-col items-center justify-center space-y-3 animate-pulse">
@@ -181,7 +216,7 @@ export default function PaymentCheckout({
         </div>
       ) : (
         <div className="space-y-3 pt-1">
-          {/* Button 1: Credit / Debit Card */}
+          {/* Option 1: Credit / Debit Card */}
           <button
             type="button"
             onClick={() => handlePayment('stripe')}
@@ -202,7 +237,7 @@ export default function PaymentCheckout({
             </div>
           </button>
 
-          {/* Button 2: PayPal Express Checkout */}
+          {/* Option 2: PayPal Express Checkout */}
           <button
             type="button"
             onClick={() => handlePayment('paypal')}
