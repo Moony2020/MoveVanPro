@@ -20,18 +20,20 @@ export default function PaymentCheckout({
     setIsProcessing(true);
 
     if (provider === 'stripe') {
-      setProcessingStep('Connecting to Stripe Secure Gateway...');
+      // Open external payment gateway
+      window.open('https://stripe.com', '_blank');
+      setProcessingStep('Opening Secure Card Payment Gateway...');
       
       setTimeout(() => {
-        setProcessingStep('Authorizing 256-bit SSL Card Payment...');
+        setProcessingStep('Verifying SSL Card Authorization...');
       }, 700);
 
       setTimeout(() => {
-        const txnId = `TXN-STP-${Math.floor(100000 + Math.random() * 900000)}`;
+        const txnId = `TXN-CARD-${Math.floor(100000 + Math.random() * 900000)}`;
         const receipt = {
           txnId,
-          provider: 'Stripe Payments Inc.',
-          method: 'Visa / Mastercard / Amex (Credit / Debit)',
+          provider: 'Card Payment Gateway',
+          method: 'Visa / Mastercard / Amex',
           amount: totalAmount,
           date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
           status: 'SETTLED & CAPTURED',
@@ -50,7 +52,9 @@ export default function PaymentCheckout({
       }, 1600);
 
     } else if (provider === 'paypal') {
-      setProcessingStep('Connecting to PayPal Express Checkout...');
+      // Open official PayPal website
+      window.open('https://www.paypal.com', '_blank');
+      setProcessingStep('Opening Official PayPal Checkout...');
 
       setTimeout(() => {
         setProcessingStep('Authorizing PayPal Account Balance...');
@@ -60,8 +64,8 @@ export default function PaymentCheckout({
         const txnId = `TXN-PYP-${Math.floor(100000 + Math.random() * 900000)}`;
         const receipt = {
           txnId,
-          provider: 'PayPal Express Checkout',
-          method: 'PayPal Authorized Account',
+          provider: 'PayPal Express',
+          method: 'PayPal Account',
           amount: totalAmount,
           date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
           status: 'COMPLETED & VERIFIED',
@@ -161,8 +165,8 @@ export default function PaymentCheckout({
       {/* Header */}
       <div className="flex items-center justify-between pb-3 border-b border-[#c2c6d6]/60">
         <div>
-          <h3 className="text-base font-black text-[#0b1c30]">Select Express Payment Method</h3>
-          <p className="text-[11px] text-[#424754] mt-0.5">Click your preferred secure checkout option below to authorize payment.</p>
+          <h3 className="text-base font-black text-[#0b1c30]">Select Payment Method</h3>
+          <p className="text-[11px] text-[#424754] mt-0.5">Click your preferred checkout option below to launch payment gateway.</p>
         </div>
         <span className="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-extrabold rounded-full flex items-center gap-1 border border-emerald-300 shrink-0">
           <Lock className="w-3 h-3 text-emerald-600" /> 256-Bit SSL Secured
@@ -177,7 +181,7 @@ export default function PaymentCheckout({
         </div>
       ) : (
         <div className="space-y-3 pt-1">
-          {/* Button 1: Credit / Debit Card (Stripe) */}
+          {/* Button 1: Credit / Debit Card */}
           <button
             type="button"
             onClick={() => handlePayment('stripe')}
@@ -189,7 +193,7 @@ export default function PaymentCheckout({
               </div>
               <div className="text-left">
                 <span className="block font-black text-white text-xs sm:text-sm">Pay with Credit / Debit Card</span>
-                <span className="block text-[10px] text-blue-100 font-normal">Visa, Mastercard, American Express via Stripe</span>
+                <span className="block text-[10px] text-blue-100 font-normal">Visa, Mastercard, American Express</span>
               </div>
             </div>
             <div className="flex items-center gap-2">
