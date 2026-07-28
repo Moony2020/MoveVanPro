@@ -286,8 +286,8 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
 
         {/* London Coverage Map Section */}
         <section className="py-16 bg-[#eff4ff] border-y border-[#c2c6d6]/50">
-          <div className="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-10">
-            <div className="flex-1 space-y-4">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10 items-center">
+            <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0058be]/10 text-[#0058be] text-xs font-bold">
                 <MapPin className="w-4 h-4" />
                 London Boroughs & M25 Motorway
@@ -316,7 +316,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               </div>
             </div>
 
-            <div className="flex-1 w-full relative h-[420px] sm:h-[460px] lg:h-[320px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl group bg-[#eef2f7]">
+            <div className="w-full relative h-[320px] sm:h-[360px] md:h-[340px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl group bg-[#eef2f7]">
               <iframe 
                 title="Central London Fleet Coverage Map"
                 className="w-full h-full border-0"
