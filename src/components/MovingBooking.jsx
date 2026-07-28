@@ -184,7 +184,7 @@ export default function MovingBooking({ onNavigateTo }) {
                           : 'border-[#c2c6d6]/60 hover:border-[#0058be]/40 bg-white shadow-sm'
                       }`}
                     >
-                      <div className="h-36 sm:h-44 w-full relative overflow-hidden">
+                      <div className="h-44 sm:h-48 w-full relative overflow-hidden">
                         <img 
                           src={v.img} 
                           alt={v.name} 
