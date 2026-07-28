@@ -448,18 +448,18 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
             </div>
 
             {/* Bottom Table: Recent Bookings (Matching Stitch Screen) */}
-            <div className="bg-white p-6 rounded-2xl border border-[#c2c6d6] shadow-sm">
-              <div className="flex justify-between items-center mb-4">
+            <div className="bg-white p-4 sm:p-6 rounded-2xl border border-[#c2c6d6] shadow-sm">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
                 <h3 className="font-extrabold text-base text-[#0b1c30]">Recent Bookings Overview</h3>
                 <button onClick={() => setActiveTab('dispatch')} className="text-xs font-bold text-[#0058be] hover:underline">
                   View All Live Dispatches →
                 </button>
               </div>
 
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
+              <div className="overflow-x-auto w-full custom-scrollbar">
+                <table className="w-full min-w-[650px] text-left text-xs">
                   <thead>
-                    <tr className="border-b border-[#c2c6d6] text-[#565e74] uppercase font-extrabold text-[10px]">
+                    <tr className="border-b border-[#c2c6d6] text-[#565e74] uppercase font-extrabold text-[10px] whitespace-nowrap">
                       <th className="py-3 px-2">Booking ID</th>
                       <th className="py-3 px-2">Service Type</th>
                       <th className="py-3 px-2">Customer</th>
@@ -470,7 +470,7 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
                   </thead>
                   <tbody className="divide-y divide-[#c2c6d6]/40 font-semibold">
                     {jobs.map((j) => (
-                      <tr key={j.id} className="hover:bg-[#f8f9ff]">
+                      <tr key={j.id} className="hover:bg-[#f8f9ff] whitespace-nowrap">
                         <td className="py-3 px-2 font-mono font-bold text-[#0058be]">{j.id}</td>
                         <td className="py-3 px-2">
                           <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
@@ -498,9 +498,9 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
 
         {/* VIEW 2: LIVE DISPATCH CONTROL MAP BOARD */}
         {activeTab === 'dispatch' && (
-          <div className="flex flex-1 overflow-hidden">
+          <div className="flex flex-col md:flex-row flex-1 overflow-y-auto md:overflow-hidden">
             {/* Live Simulated OpenStreetMap Interface */}
-            <div className="flex-1 relative bg-[#0b1c30] overflow-hidden select-none">
+            <div className="h-[320px] md:h-full w-full md:flex-1 relative bg-[#0b1c30] overflow-hidden select-none shrink-0">
               {/* Map Canvas Background (Central London, UK OpenStreetMap) */}
               <iframe 
                 title="Dispatcher Command Center London Live Map"
@@ -553,7 +553,7 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
             </div>
 
             {/* Right Panel: Live Job Feed */}
-            <aside className="w-[340px] border-l border-[#c2c6d6] bg-white flex flex-col shrink-0 shadow-lg z-10">
+            <aside className="w-full md:w-[340px] border-t md:border-t-0 md:border-l border-[#c2c6d6] bg-white flex flex-col shrink-0 shadow-lg z-10">
               <div className="p-4 border-b border-[#c2c6d6] flex justify-between items-center bg-[#f8f9ff]">
                 <div>
                   <h3 className="font-bold text-sm text-[#0b1c30]">Live Job Feed</h3>

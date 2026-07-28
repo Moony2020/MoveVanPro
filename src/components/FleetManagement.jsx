@@ -63,9 +63,9 @@ export default function FleetManagement({ onNavigateTo }) {
 
         {/* VEHICLES TABLE */}
         {activeTab === 'vehicles' && (
-          <div className="bg-white border border-[#c2c6d6] rounded-2xl overflow-hidden shadow-sm">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-[#eff4ff] text-[#424754] border-b border-[#c2c6d6] font-bold uppercase tracking-wider">
+          <div className="bg-white border border-[#c2c6d6] rounded-2xl overflow-x-auto w-full shadow-sm">
+            <table className="w-full min-w-[680px] text-left text-xs">
+              <thead className="bg-[#eff4ff] text-[#424754] border-b border-[#c2c6d6] font-bold uppercase tracking-wider whitespace-nowrap">
                 <tr>
                   <th className="p-4">Vehicle ID & Type</th>
                   <th className="p-4">Assigned Driver</th>
@@ -78,7 +78,7 @@ export default function FleetManagement({ onNavigateTo }) {
               </thead>
               <tbody className="divide-y divide-[#eff4ff]">
                 {vehicles.map((v) => (
-                  <tr key={v.id} className="hover:bg-[#f8f9ff] transition-colors">
+                  <tr key={v.id} className="hover:bg-[#f8f9ff] transition-colors whitespace-nowrap">
                     <td className="p-4 font-bold text-[#0b1c30]">
                       {v.id}
                       <span className="block text-[11px] font-normal text-[#424754]">{v.type}</span>
@@ -107,9 +107,9 @@ export default function FleetManagement({ onNavigateTo }) {
 
         {/* DRIVERS TABLE */}
         {activeTab === 'drivers' && (
-          <div className="bg-white border border-[#c2c6d6] rounded-2xl overflow-hidden shadow-sm">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-[#eff4ff] text-[#424754] border-b border-[#c2c6d6] font-bold uppercase tracking-wider">
+          <div className="bg-white border border-[#c2c6d6] rounded-2xl overflow-x-auto w-full shadow-sm">
+            <table className="w-full min-w-[600px] text-left text-xs">
+              <thead className="bg-[#eff4ff] text-[#424754] border-b border-[#c2c6d6] font-bold uppercase tracking-wider whitespace-nowrap">
                 <tr>
                   <th className="p-4">Driver Name</th>
                   <th className="p-4">Customer Rating</th>
@@ -120,7 +120,7 @@ export default function FleetManagement({ onNavigateTo }) {
               </thead>
               <tbody className="divide-y divide-[#eff4ff]">
                 {drivers.map((d) => (
-                  <tr key={d.name} className="hover:bg-[#f8f9ff]">
+                  <tr key={d.name} className="hover:bg-[#f8f9ff] whitespace-nowrap">
                     <td className="p-4 font-bold text-[#0b1c30]">{d.name}</td>
                     <td className="p-4 text-[#825100] font-bold">{d.rating}</td>
                     <td className="p-4 text-[#424754]">{d.shift}</td>
