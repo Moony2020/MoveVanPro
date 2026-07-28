@@ -137,9 +137,9 @@ export default function MovingBooking({ onNavigateTo }) {
           ))}
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-4 lg:gap-4">
+        <div className="grid lg:grid-cols-12 gap-3 lg:gap-3">
           {/* Left Column: Interactive Form Steps */}
-          <div className="lg:col-span-8 bg-white border border-[#c2c6d6] rounded-2xl p-3 sm:p-6 md:p-8 shadow-sm">
+          <div className="lg:col-span-8 bg-white border border-[#c2c6d6] rounded-2xl p-3 sm:p-5 md:p-6 shadow-sm">
             {/* STEP 1: VEHICLE & MOVERS */}
             {step === 1 && (
               <div className="space-y-6">
@@ -148,7 +148,7 @@ export default function MovingBooking({ onNavigateTo }) {
                   <p className="text-xs text-[#424754]">Choose your service option and vehicle size.</p>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
                   {[
                     { 
                       id: 'small', 
