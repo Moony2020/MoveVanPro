@@ -184,17 +184,17 @@ export default function MovingBooking({ onNavigateTo }) {
                           : 'border-[#c2c6d6]/60 hover:border-[#0058be]/40 bg-white shadow-sm'
                       }`}
                     >
-                      <div className="h-24 sm:h-36 w-full relative overflow-hidden bg-[#f8f9ff] flex items-center justify-center p-1">
+                      <div className="h-36 sm:h-44 w-full relative overflow-hidden">
                         <img 
                           src={v.img} 
                           alt={v.name} 
-                          className="w-full h-full object-contain"
+                          className="w-full h-full object-cover"
                         />
-                        <div className="absolute top-1.5 right-1.5 z-10">
-                          <div className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center border shadow-sm ${
+                        <div className="absolute top-2.5 right-2.5 z-10">
+                          <div className={`w-5 h-5 rounded-full flex items-center justify-center border shadow-sm ${
                             vehicle === v.id ? 'bg-[#0058be] text-white border-[#0058be]' : 'bg-white text-transparent border-[#c2c6d6]'
                           }`}>
-                            <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[3]" />
+                            <Check className="w-3 h-3 stroke-[3]" />
                           </div>
                         </div>
                       </div>
