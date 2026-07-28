@@ -114,21 +114,21 @@ export default function MovingBooking({ onNavigateTo }) {
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] font-sans pb-16">
 
       {/* Main Container */}
-      <main className="max-w-6xl mx-auto px-6 pt-8">
+      <main className="max-w-6xl mx-auto px-2.5 sm:px-6 pt-4 sm:pt-8">
         {/* Stepper Bar */}
-        <div className="flex justify-between items-center mb-8 max-w-2xl mx-auto">
+        <div className="flex justify-between items-center mb-6 sm:mb-8 max-w-2xl mx-auto px-1">
           {[
             { num: 1, label: 'Vehicle & Movers' },
             { num: 2, label: 'Locations & Items' },
             { num: 3, label: 'Schedule' },
             { num: 4, label: 'Confirm & Pay' }
           ].map((s) => (
-            <div key={s.num} className="flex items-center gap-2">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${
+            <div key={s.num} className="flex items-center gap-1.5 sm:gap-2">
+              <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-xs ${
                 step === s.num ? 'bg-[#0058be] text-white shadow-md' :
                 step > s.num ? 'bg-[#2170e4]/20 text-[#0058be]' : 'bg-[#c2c6d6]/40 text-[#727785]'
               }`}>
-                {step > s.num ? <Check className="w-4 h-4" /> : s.num}
+                {step > s.num ? <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : s.num}
               </div>
               <span className={`text-xs font-semibold hidden sm:inline ${step === s.num ? 'text-[#0058be]' : 'text-[#424754]'}`}>
                 {s.label}
@@ -137,9 +137,9 @@ export default function MovingBooking({ onNavigateTo }) {
           ))}
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-8">
+        <div className="grid lg:grid-cols-12 gap-6 lg:gap-8">
           {/* Left Column: Interactive Form Steps */}
-          <div className="lg:col-span-8 bg-white border border-[#c2c6d6] rounded-2xl p-6 md:p-8 shadow-sm">
+          <div className="lg:col-span-8 bg-white border border-[#c2c6d6] rounded-2xl p-3 sm:p-6 md:p-8 shadow-sm">
             {/* STEP 1: VEHICLE & MOVERS */}
             {step === 1 && (
               <div className="space-y-6">
@@ -308,10 +308,10 @@ export default function MovingBooking({ onNavigateTo }) {
                           >
                             -
                           </button>
-                          <span className="text-xs font-bold w-4 text-center">{inventory[item.key]}</span>
+                          <span className="text-xs font-black text-[#0058be]">{inventory[item.key] || 0}</span>
                           <button 
-                            onClick={() => updateInventory(item.key, 1)}
-                            className="w-6 h-6 rounded bg-[#0058be] text-white text-xs font-bold flex items-center justify-center"
+                            onClick={() => handleItemQuantity(item.key, 1)}
+                            className="w-6 h-6 rounded bg-[#0058be] text-white text-xs font-bold flex items-center justify-center hover:bg-[#2170e4]"
                           >
                             +
                           </button>
@@ -343,38 +343,39 @@ export default function MovingBooking({ onNavigateTo }) {
             {step === 3 && (
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-xl font-bold text-[#0b1c30]">Schedule Pickup Date & Time</h2>
-                  <p className="text-xs text-[#424754]">Choose your preferred moving slot.</p>
+                  <h2 className="text-xl font-extrabold text-[#0b1c30] mb-1">Select Move Date & Time Slot</h2>
+                  <p className="text-xs text-[#424754]">Same-day dispatch available in Central London within 45 minutes.</p>
                 </div>
 
-                <div className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-xs font-bold text-[#0b1c30] block mb-1">Move Date</label>
+                    <label className="text-xs font-bold text-[#0b1c30] block mb-1.5 flex items-center gap-1.5">
+                      <Calendar className="w-4 h-4 text-[#0058be]" />
+                      Moving Date
+                    </label>
                     <input 
                       type="date" 
                       value={moveDate}
                       onChange={(e) => setMoveDate(e.target.value)}
-                      className="w-full p-3 text-xs border border-[#c2c6d6] rounded-xl focus:ring-2 focus:ring-[#0058be]"
+                      className="w-full p-3 text-xs bg-[#f8f9ff] border border-[#c2c6d6] rounded-xl focus:ring-2 focus:ring-[#0058be]"
                     />
                   </div>
 
                   <div>
-                    <label className="text-xs font-bold text-[#0b1c30] block mb-1">Time Slot</label>
-                    <div className="grid grid-cols-3 gap-3">
-                      {['08:00 AM', '10:30 AM', '01:00 PM', '03:30 PM', '06:00 PM'].map((t) => (
-                        <button
-                          key={t}
-                          onClick={() => setMoveTime(t)}
-                          className={`p-3 rounded-xl border text-center text-xs font-bold transition-all ${
-                            moveTime === t 
-                              ? 'border-[#0058be] bg-[#dce9ff] text-[#0058be]' 
-                              : 'border-[#c2c6d6] text-[#424754] hover:bg-[#f8f9ff]'
-                          }`}
-                        >
-                          {t}
-                        </button>
-                      ))}
-                    </div>
+                    <label className="text-xs font-bold text-[#0b1c30] block mb-1.5 flex items-center gap-1.5">
+                      <Clock className="w-4 h-4 text-[#0058be]" />
+                      Time Slot
+                    </label>
+                    <select 
+                      value={moveTime}
+                      onChange={(e) => setMoveTime(e.target.value)}
+                      className="w-full p-3 text-xs bg-[#f8f9ff] border border-[#c2c6d6] rounded-xl focus:ring-2 focus:ring-[#0058be]"
+                    >
+                      <option value="08:00 AM">08:00 AM - 10:00 AM (Early Morning)</option>
+                      <option value="11:00 AM">11:00 AM - 01:00 PM (Midday)</option>
+                      <option value="02:00 PM">02:00 PM - 04:00 PM (Afternoon)</option>
+                      <option value="05:00 PM">05:00 PM - 07:00 PM (Evening)</option>
+                    </select>
                   </div>
                 </div>
 
@@ -398,21 +399,36 @@ export default function MovingBooking({ onNavigateTo }) {
 
             {/* STEP 4: REVIEW & CONFIRM */}
             {step === 4 && (
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 <div>
-                  <h2 className="text-xl font-extrabold text-[#0b1c30] mb-1">Review Booking & Secure Payment</h2>
+                  <h2 className="text-lg sm:text-xl font-extrabold text-[#0b1c30] mb-1">Review Booking & Secure Payment</h2>
                   <p className="text-xs text-[#424754]">Select your preferred payment method below. Encrypted via Stripe & PayPal APIs.</p>
                 </div>
 
-                <div className="bg-[#f8f9ff] rounded-2xl p-4 border border-[#c2c6d6] text-xs space-y-2 text-[#0b1c30]">
-                  <div className="flex justify-between"><span>Pickup Address:</span> <strong className="truncate max-w-[240px] text-[#0058be]">{pickup}</strong></div>
-                  <div className="flex justify-between"><span>Destination:</span> <strong className="truncate max-w-[240px] text-[#0058be]">{dropoff}</strong></div>
-                  <div className="flex justify-between"><span>Allocated Vehicle:</span> <strong className="capitalize">{vehicle} Moving Van</strong></div>
-                  <div className="flex justify-between"><span>Mover Crew:</span> <strong>Driver + {movers} helper(s)</strong></div>
-                  <div className="flex justify-between"><span>Scheduled Slot:</span> <strong>{moveDate} at {moveTime}</strong></div>
-                  <div className="flex justify-between border-t border-[#c2c6d6]/60 pt-2 text-sm font-extrabold">
+                <div className="bg-[#f8f9ff] rounded-2xl p-3 sm:p-4 border border-[#c2c6d6] text-xs space-y-2 text-[#0b1c30]">
+                  <div className="flex justify-between items-start gap-2">
+                    <span className="shrink-0 text-[#424754]">Pickup Address:</span> 
+                    <strong className="truncate max-w-[160px] sm:max-w-[280px] text-[#0058be] text-right">{pickup}</strong>
+                  </div>
+                  <div className="flex justify-between items-start gap-2">
+                    <span className="shrink-0 text-[#424754]">Destination:</span> 
+                    <strong className="truncate max-w-[160px] sm:max-w-[280px] text-[#0058be] text-right">{dropoff}</strong>
+                  </div>
+                  <div className="flex justify-between items-center gap-2">
+                    <span className="shrink-0 text-[#424754]">Allocated Vehicle:</span> 
+                    <strong className="capitalize text-right">{vehicle} Moving Van</strong>
+                  </div>
+                  <div className="flex justify-between items-center gap-2">
+                    <span className="shrink-0 text-[#424754]">Mover Crew:</span> 
+                    <strong className="text-right">Driver + {movers} helper(s)</strong>
+                  </div>
+                  <div className="flex justify-between items-center gap-2">
+                    <span className="shrink-0 text-[#424754]">Scheduled Slot:</span> 
+                    <strong className="text-right">{moveDate} at {moveTime}</strong>
+                  </div>
+                  <div className="flex justify-between items-center border-t border-[#c2c6d6]/60 pt-2 text-xs sm:text-sm font-extrabold">
                     <span>Total Locked Price:</span>
-                    <span className="text-[#0058be]">${totalPrice}.00</span>
+                    <span className="text-[#0058be] text-base">${totalPrice}.00</span>
                   </div>
                 </div>
 
