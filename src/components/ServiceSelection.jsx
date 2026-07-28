@@ -316,7 +316,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               </div>
             </div>
 
-            <div className="flex-1 w-full relative h-[320px] sm:h-[360px] lg:h-[380px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl bg-[#0b1c30] select-none">
+            <div className="flex-1 w-full relative h-[250px] sm:h-[270px] lg:h-[280px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl bg-[#0b1c30] select-none">
               {/* Vector Map Canvas Grid & River Thames Curve */}
               <svg className="absolute inset-0 w-full h-full opacity-40" viewBox="0 0 600 400" preserveAspectRatio="none">
                 {/* River Thames Path */}
