@@ -156,8 +156,7 @@ export default function MovingBooking({ onNavigateTo }) {
                       desc: 'For small moves & studio', 
                       rate: 65, 
                       cap: '350 cu ft',
-                      img: '/van-small.png',
-                      gridClass: 'col-span-1'
+                      img: '/van-small.png'
                     },
                     { 
                       id: 'medium', 
@@ -165,8 +164,7 @@ export default function MovingBooking({ onNavigateTo }) {
                       desc: 'Great for 1-2 bed apartment', 
                       rate: 95, 
                       cap: '550 cu ft',
-                      img: '/van-medium.png',
-                      gridClass: 'col-span-1'
+                      img: '/van-medium.png'
                     },
                     { 
                       id: 'luton', 
@@ -174,26 +172,25 @@ export default function MovingBooking({ onNavigateTo }) {
                       desc: 'Best for larger 3+ bed house', 
                       rate: 135, 
                       cap: '800 cu ft',
-                      img: '/van-large.png',
-                      gridClass: 'col-span-2 sm:col-span-1'
+                      img: '/van-large.png'
                     }
                   ].map((v) => (
                     <div 
                       key={v.id}
                       onClick={() => setVehicle(v.id)}
-                      className={`rounded-2xl border-2 overflow-hidden cursor-pointer transition-all flex flex-col justify-between ${v.gridClass} ${
+                      className={`col-span-1 rounded-2xl border-2 overflow-hidden cursor-pointer transition-all flex flex-col justify-between ${
                         vehicle === v.id 
                           ? 'border-[#0058be] bg-[#eff4ff] ring-2 ring-[#0058be]/20 shadow-md scale-[1.02]' 
                           : 'border-[#c2c6d6]/60 hover:border-[#0058be]/40 bg-white shadow-sm'
                       }`}
                     >
-                      <div className="h-20 sm:h-28 w-full bg-[#f8f9ff] relative overflow-hidden">
+                      <div className="h-28 sm:h-32 w-full bg-[#f8f9ff] relative overflow-hidden flex items-center justify-center p-2">
                         <img 
                           src={v.img} 
                           alt={v.name} 
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-contain"
                         />
-                        <div className="absolute top-2 right-2">
+                        <div className="absolute top-2 right-2 z-10">
                           <div className={`w-5 h-5 rounded-full flex items-center justify-center border ${
                             vehicle === v.id ? 'bg-[#0058be] text-white border-[#0058be]' : 'bg-white text-transparent border-[#c2c6d6]'
                           }`}>
