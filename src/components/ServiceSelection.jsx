@@ -316,11 +316,11 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               </div>
             </div>
 
-            <div className="flex-1 w-full relative h-[300px] sm:h-[340px] lg:h-[320px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl group bg-[#eef2f7]">
+            <div className="flex-1 w-full relative h-[420px] sm:h-[460px] lg:h-[320px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl group bg-[#eef2f7]">
               <iframe 
                 title="Central London Fleet Coverage Map"
                 className="w-full h-full border-0"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=-0.35%2C51.30%2C0.10%2C51.70&amp;layer=mapnik"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=-0.30%2C51.35%2C0.05%2C51.65&amp;layer=mapnik"
               />
               <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-extrabold text-[#0058be] shadow-md flex items-center gap-2 border border-[#adc6ff] pointer-events-none z-10">
                 <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0058be]" />
