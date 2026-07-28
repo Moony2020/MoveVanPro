@@ -297,270 +297,134 @@ export default function PaymentCheckout({
   }
 
   return (
-    <div className="bg-white border border-[#c2c6d6] rounded-3xl p-3.5 sm:p-6 md:p-8 shadow-lg">
+    <div className="pt-2 sm:pt-4 space-y-4">
       
       {/* Header & Secure Environment Badge */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 sm:pb-6 border-b border-[#c2c6d6]/60 mb-4 sm:mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2.5 pb-4 border-b border-[#c2c6d6]/60">
         <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-base sm:text-lg font-black text-[#0b1c30]">Select Payment Gateway</h3>
+          <div className="flex items-center gap-2">
+            <h3 className="text-base sm:text-lg font-black text-[#0b1c30]">Payment Details</h3>
             <span className="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-extrabold rounded-full flex items-center gap-1 border border-emerald-300 shrink-0 whitespace-nowrap">
-              <Lock className="w-3 h-3 text-emerald-600" /> SSL Secured
+              <Lock className="w-3 h-3 text-emerald-600" /> 256-Bit SSL Encrypted
             </span>
           </div>
-          <p className="text-[11px] sm:text-xs text-[#424754] mt-0.5">Choose your preferred checkout provider. All transactions are end-to-end encrypted.</p>
+          <p className="text-[11px] sm:text-xs text-[#424754] mt-0.5">Enter your credit or debit card details below to complete your reservation.</p>
         </div>
 
         {/* Env Key Toggle Badge */}
         <button 
           onClick={() => setShowEnvKeyDetails(!showEnvKeyDetails)}
-          className="px-3 py-1.5 bg-[#eff4ff] hover:bg-[#dce9ff] text-[#0058be] rounded-xl text-[11px] font-bold border border-[#0058be]/30 flex items-center gap-1.5 transition-colors shrink-0"
+          className="px-3 py-1 bg-[#eff4ff] hover:bg-[#dce9ff] text-[#0058be] rounded-xl text-[11px] font-bold border border-[#0058be]/30 flex items-center gap-1.5 transition-colors shrink-0 cursor-pointer"
         >
           <Key className="w-3.5 h-3.5" />
-          <span>Env Keys: Configured</span>
+          <span>Stripe API Vault</span>
           {showEnvKeyDetails ? <EyeOff className="w-3 h-3 ml-1" /> : <Eye className="w-3 h-3 ml-1" />}
         </button>
       </div>
 
       {/* Environment Key Details Dropdown */}
       {showEnvKeyDetails && (
-        <div className="mb-4 sm:mb-6 p-3.5 sm:p-4 bg-[#0b1c30] text-white rounded-2xl border border-blue-900 text-xs space-y-2 animate-in fade-in duration-200">
+        <div className="p-3.5 sm:p-4 bg-[#0b1c30] text-white rounded-2xl border border-blue-900 text-xs space-y-2 animate-in fade-in duration-200">
           <div className="flex justify-between items-center font-mono text-[11px]">
-            <span className="text-gray-400">Stripe Public Key (VITE_STRIPE_PUBLIC_KEY):</span>
-            <span className="text-emerald-400 font-bold">{stripePublicKey.slice(0, 18)}...</span>
+            <span className="text-gray-400">Stripe Public Key:</span>
+            <span className="text-emerald-400 font-bold">{stripePublicKey.slice(0, 22)}...</span>
           </div>
           <div className="flex justify-between items-center font-mono text-[11px]">
-            <span className="text-gray-400">PayPal Client ID (VITE_PAYPAL_CLIENT_ID):</span>
-            <span className="text-emerald-400 font-bold">{paypalClientId.slice(0, 18)}...</span>
-          </div>
-          <div className="flex justify-between items-center font-mono text-[11px]">
-            <span className="text-gray-400">Security Mode:</span>
+            <span className="text-gray-400">Gateway Status:</span>
             <span className="text-blue-300 font-bold">256-Bit RSA Token Vault Active</span>
           </div>
         </div>
       )}
 
-      {/* Payment Provider Selection Tabs */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4 sm:mb-6">
-        {[
-          { id: 'stripe', title: 'Stripe Card', subtitle: 'Visa, MC, Amex', icon: CreditCard, color: 'text-blue-600' },
-          { id: 'paypal', title: 'PayPal', subtitle: 'Instant Checkout', icon: Sparkles, color: 'text-amber-500' },
-          { id: 'applepay', title: 'Apple / Google', subtitle: '1-Tap Digital Pay', icon: Lock, color: 'text-gray-800' },
-          { id: 'driver', title: 'Pay Driver', subtitle: 'Chip & PIN / Cash', icon: ShieldCheck, color: 'text-emerald-600' }
-        ].map((tab) => {
-          const IconComp = tab.icon;
-          const isActive = paymentMethod === tab.id;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setPaymentMethod(tab.id)}
-              className={`p-2.5 sm:p-3.5 rounded-2xl border-2 text-left transition-all cursor-pointer flex flex-col justify-between ${
-                isActive 
-                  ? 'border-[#0058be] bg-[#eff4ff] ring-2 ring-[#0058be]/20 shadow-md' 
-                  : 'border-[#c2c6d6]/60 hover:border-[#0058be]/40 bg-white'
-              }`}
-            >
-              <div className="flex justify-between items-center mb-1.5 sm:mb-2">
-                <IconComp className={`w-4 h-4 sm:w-5 sm:h-5 ${tab.color}`} />
-                <div className={`w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border flex items-center justify-center ${
-                  isActive ? 'bg-[#0058be] border-[#0058be] text-white' : 'border-gray-300'
-                }`}>
-                  {isActive && <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[3]" />}
-                </div>
-              </div>
-              <div>
-                <span className="text-[11px] sm:text-xs font-black text-[#0b1c30] block">{tab.title}</span>
-                <span className="text-[9px] sm:text-[10px] text-[#424754] block">{tab.subtitle}</span>
-              </div>
-            </button>
-          );
-        })}
-      </div>
+      {/* Clean Production Credit / Debit Card Form */}
+      <div className="space-y-3.5 sm:space-y-4 bg-[#f8f9ff] p-3.5 sm:p-5 rounded-2xl border border-[#c2c6d6]/80 shadow-sm">
+        <div className="flex items-center justify-between">
+          <label className="text-xs font-bold text-[#0b1c30] flex items-center gap-1.5">
+            <CreditCard className="w-4 h-4 text-[#0058be]" />
+            Credit / Debit Card
+          </label>
+          <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full text-white ${cardBrand.color}`}>
+            {cardBrand.name}
+          </span>
+        </div>
 
-      {/* TAB 1: STRIPE CREDIT / DEBIT CARD */}
-      {paymentMethod === 'stripe' && (
-        <div className="space-y-3 sm:space-y-4 bg-[#f8f9ff] p-3.5 sm:p-5 rounded-2xl border border-[#c2c6d6]/80 animate-in fade-in duration-200">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-            <label className="text-xs font-bold text-[#0b1c30] flex items-center gap-1.5">
-              <CreditCard className="w-4 h-4 text-[#0058be]" />
-              Stripe Credit / Debit Card Entry
-            </label>
+        <div>
+          <label className="text-[11px] font-bold text-[#424754] block mb-1">Cardholder Name</label>
+          <input 
+            type="text" 
+            value={cardName}
+            onChange={(e) => setCardName(e.target.value)}
+            placeholder="Name as shown on card" 
+            className={`w-full p-2.5 sm:p-3 text-xs bg-white border rounded-xl focus:ring-2 focus:ring-[#0058be] focus:outline-none ${
+              cardErrors.cardName ? 'border-red-500' : 'border-[#c2c6d6]'
+            }`}
+          />
+          {cardErrors.cardName && <span className="text-[10px] text-red-600 font-bold mt-1 block">{cardErrors.cardName}</span>}
+        </div>
 
-            {/* Quick Test Card Presets */}
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-              <button 
-                type="button"
-                onClick={() => fillTestCard('visa')}
-                className="flex-1 sm:flex-initial text-[10px] bg-blue-100 hover:bg-blue-200 text-blue-800 px-2.5 py-1 rounded-lg font-bold transition-colors cursor-pointer text-center whitespace-nowrap"
-              >
-                + Visa Test Card
-              </button>
-              <button 
-                type="button"
-                onClick={() => fillTestCard('mastercard')}
-                className="flex-1 sm:flex-initial text-[10px] bg-amber-100 hover:bg-amber-200 text-amber-800 px-2.5 py-1 rounded-lg font-bold transition-colors cursor-pointer text-center whitespace-nowrap"
-              >
-                + Mastercard Test
-              </button>
-            </div>
+        <div>
+          <div className="flex justify-between items-center mb-1">
+            <label className="text-[11px] font-bold text-[#424754]">Card Number</label>
           </div>
-
-          <div>
-            <label className="text-[11px] font-bold text-[#424754] block mb-1">Cardholder Name</label>
+          <div className="relative">
             <input 
               type="text" 
-              value={cardName}
-              onChange={(e) => setCardName(e.target.value)}
-              placeholder="Full Name as shown on card" 
-              className={`w-full p-2.5 sm:p-3 text-xs bg-white border rounded-xl focus:ring-2 focus:ring-[#0058be] focus:outline-none ${
-                cardErrors.cardName ? 'border-red-500' : 'border-[#c2c6d6]'
+              value={cardNumber}
+              onChange={handleCardNumberChange}
+              placeholder="1234 5678 9012 3456" 
+              className={`w-full p-2.5 sm:p-3 text-xs font-mono bg-white border rounded-xl focus:ring-2 focus:ring-[#0058be] focus:outline-none ${
+                cardErrors.cardNumber ? 'border-red-500' : 'border-[#c2c6d6]'
               }`}
             />
-            {cardErrors.cardName && <span className="text-[10px] text-red-600 font-bold mt-1 block">{cardErrors.cardName}</span>}
+            <Lock className="w-4 h-4 text-gray-400 absolute right-3 top-3" />
+          </div>
+          {cardErrors.cardNumber && <span className="text-[10px] text-red-600 font-bold mt-1 block">{cardErrors.cardNumber}</span>}
+        </div>
+
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
+          <div>
+            <label className="text-[10px] sm:text-[11px] font-bold text-[#424754] block mb-1 truncate">Expires (MM/YY)</label>
+            <input 
+              type="text" 
+              value={cardExpiry}
+              onChange={handleExpiryChange}
+              placeholder="MM/YY" 
+              className={`w-full p-2.5 sm:p-3 text-xs bg-white border rounded-xl text-center focus:ring-2 focus:ring-[#0058be] ${
+                cardErrors.cardExpiry ? 'border-red-500' : 'border-[#c2c6d6]'
+              }`}
+            />
+            {cardErrors.cardExpiry && <span className="text-[10px] text-red-600 font-bold mt-1 block">{cardErrors.cardExpiry}</span>}
           </div>
 
           <div>
-            <div className="flex justify-between items-center mb-1">
-              <label className="text-[11px] font-bold text-[#424754]">Card Number (16 Digits)</label>
-              <span className={`text-[10px] font-bold px-2 py-0.5 rounded text-white ${cardBrand.color}`}>
-                {cardBrand.logo}
-              </span>
-            </div>
-            <div className="relative">
-              <input 
-                type="text" 
-                value={cardNumber}
-                onChange={handleCardNumberChange}
-                placeholder="4242 4242 4242 4242" 
-                className={`w-full p-2.5 sm:p-3 text-xs font-mono bg-white border rounded-xl focus:ring-2 focus:ring-[#0058be] focus:outline-none ${
-                  cardErrors.cardNumber ? 'border-red-500' : 'border-[#c2c6d6]'
-                }`}
-              />
-              <Lock className="w-4 h-4 text-gray-400 absolute right-3 top-3" />
-            </div>
-            {cardErrors.cardNumber && <span className="text-[10px] text-red-600 font-bold mt-1 block">{cardErrors.cardNumber}</span>}
-          </div>
-
-          <div className="grid grid-cols-3 gap-2 sm:gap-3">
-            <div>
-              <label className="text-[10px] sm:text-[11px] font-bold text-[#424754] block mb-1 truncate">Expires (MM/YY)</label>
-              <input 
-                type="text" 
-                value={cardExpiry}
-                onChange={handleExpiryChange}
-                placeholder="MM/YY" 
-                className={`w-full p-2.5 sm:p-3 text-xs bg-white border rounded-xl text-center focus:ring-2 focus:ring-[#0058be] ${
-                  cardErrors.cardExpiry ? 'border-red-500' : 'border-[#c2c6d6]'
-                }`}
-              />
-              {cardErrors.cardExpiry && <span className="text-[10px] text-red-600 font-bold mt-1 block">{cardErrors.cardExpiry}</span>}
-            </div>
-
-            <div>
-              <label className="text-[10px] sm:text-[11px] font-bold text-[#424754] block mb-1 truncate">CVC Code</label>
-              <input 
-                type="text" 
-                value={cardCvc}
-                onChange={handleCvcChange}
-                placeholder="123" 
-                className={`w-full p-2.5 sm:p-3 text-xs font-mono bg-white border rounded-xl text-center focus:ring-2 focus:ring-[#0058be] ${
-                  cardErrors.cardCvc ? 'border-red-500' : 'border-[#c2c6d6]'
-                }`}
-              />
-              {cardErrors.cardCvc && <span className="text-[10px] text-red-600 font-bold mt-1 block">{cardErrors.cardCvc}</span>}
-            </div>
-
-            <div>
-              <label className="text-[10px] sm:text-[11px] font-bold text-[#424754] block mb-1 truncate">Postcode / Zip</label>
-              <input 
-                type="text" 
-                value={cardZip}
-                onChange={(e) => setCardZip(e.target.value.toUpperCase())}
-                placeholder="W8 7RG" 
-                className="w-full p-2.5 sm:p-3 text-xs bg-white border border-[#c2c6d6] rounded-xl text-center focus:ring-2 focus:ring-[#0058be]"
-              />
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* TAB 2: PAYPAL INSTANT CHECKOUT */}
-      {paymentMethod === 'paypal' && (
-        <div className="space-y-3 sm:space-y-4 bg-[#fffdfa] p-3.5 sm:p-5 rounded-2xl border border-amber-300 animate-in fade-in duration-200">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 font-black text-sm">
-                PP
-              </div>
-              <div>
-                <h4 className="text-xs font-extrabold text-gray-900">PayPal Express Checkout</h4>
-                <p className="text-[10px] text-gray-500">Pay safely using your PayPal account balance or linked bank card.</p>
-              </div>
-            </div>
-            <span className="text-[10px] font-mono bg-amber-100 text-amber-900 px-2 py-0.5 rounded font-bold">
-              PayPal SDK Active
-            </span>
-          </div>
-
-          <div className="p-3.5 sm:p-4 bg-white rounded-xl border border-amber-200 space-y-3">
-            <label className="text-[11px] font-bold text-gray-700 block">PayPal Account ID</label>
+            <label className="text-[10px] sm:text-[11px] font-bold text-[#424754] block mb-1 truncate">CVC Code</label>
             <input 
-              type="email" 
-              value={paypalEmail}
-              onChange={(e) => setPaypalEmail(e.target.value)}
-              className="w-full p-2.5 sm:p-3 text-xs border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 font-mono"
+              type="text" 
+              value={cardCvc}
+              onChange={handleCvcChange}
+              placeholder="123" 
+              className={`w-full p-2.5 sm:p-3 text-xs font-mono bg-white border rounded-xl text-center focus:ring-2 focus:ring-[#0058be] ${
+                cardErrors.cardCvc ? 'border-red-500' : 'border-[#c2c6d6]'
+              }`}
             />
-            <p className="text-[11px] text-amber-800 bg-amber-50 p-2.5 rounded-lg flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-amber-600 shrink-0" />
-              Connected to PayPal Sandbox for instant authorization without re-entering card info.
-            </p>
+            {cardErrors.cardCvc && <span className="text-[10px] text-red-600 font-bold mt-1 block">{cardErrors.cardCvc}</span>}
+          </div>
+
+          <div>
+            <label className="text-[10px] sm:text-[11px] font-bold text-[#424754] block mb-1 truncate">Postcode / Zip</label>
+            <input 
+              type="text" 
+              value={cardZip}
+              onChange={(e) => setCardZip(e.target.value.toUpperCase())}
+              placeholder="W8 7RG" 
+              className="w-full p-2.5 sm:p-3 text-xs bg-white border border-[#c2c6d6] rounded-xl text-center focus:ring-2 focus:ring-[#0058be]"
+            />
           </div>
         </div>
-      )}
-
-      {/* TAB 3: APPLE PAY / GOOGLE PAY */}
-      {paymentMethod === 'applepay' && (
-        <div className="space-y-3 sm:space-y-4 bg-gray-900 text-white p-3.5 sm:p-5 rounded-2xl border border-gray-800 animate-in fade-in duration-200">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Lock className="w-5 h-5 text-gray-300" />
-              <h4 className="text-xs font-extrabold text-white">Digital Wallet Express Pay</h4>
-            </div>
-            <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold">
-              Biometric Ready
-            </span>
-          </div>
-
-          <p className="text-xs text-gray-300">
-            Authorize transaction instantly with Touch ID, Face ID, or Google Wallet PIN linked to your default device card.
-          </p>
-
-          <div className="grid grid-cols-2 gap-3 pt-2">
-            <div className="p-3 bg-black border border-gray-700 rounded-xl text-center font-bold text-xs flex items-center justify-center gap-2">
-              <span> Apple Pay</span>
-            </div>
-            <div className="p-3 bg-white text-gray-900 rounded-xl text-center font-bold text-xs flex items-center justify-center gap-2">
-              <span>G Pay Wallet</span>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* TAB 4: PAY DRIVER ON ARRIVAL */}
-      {paymentMethod === 'driver' && (
-        <div className="space-y-3 sm:space-y-4 bg-emerald-50 p-3.5 sm:p-5 rounded-2xl border border-emerald-200 text-emerald-900 animate-in fade-in duration-200">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-emerald-600" />
-            <h4 className="text-xs font-extrabold">Pay Driver Upon Van Arrival</h4>
-          </div>
-          <p className="text-xs">
-            Zero upfront card charge required today. Your booking slot is reserved immediately. You can pay your assigned van driver via contactless card terminal or cash when your move is completed.
-          </p>
-        </div>
-      )}
+      </div>
 
       {/* Action CTA Button */}
-      <div className="mt-4 sm:mt-6 pt-3.5 sm:pt-4 border-t border-[#c2c6d6]/60">
+      <div className="pt-2">
         <button
           onClick={handleExecutePayment}
           disabled={isProcessing}
@@ -574,19 +438,27 @@ export default function PaymentCheckout({
           ) : (
             <>
               <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-300 shrink-0" />
-              <span className="truncate">Authorize & Lock Booking (${totalAmount}.00)</span>
+              <span className="truncate">Authorize & Pay (${totalAmount}.00)</span>
               <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-1 shrink-0" />
             </>
           )}
         </button>
 
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-4 text-[10px] sm:text-[11px] text-[#424754] mt-3 px-1 text-center sm:text-left">
-          <span className="flex items-center gap-1">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#0058be]" /> PCI-DSS Compliant Gateway
-          </span>
-          <span className="flex items-center gap-1">
-            <Lock className="w-3.5 h-3.5 text-emerald-600" /> 256-Bit TLS Encryption
-          </span>
+        {/* Accepted Payment Trust Badges */}
+        <div className="mt-4 pt-3 border-t border-[#c2c6d6]/60 flex flex-wrap items-center justify-between gap-2 text-[10px] sm:text-[11px] text-[#424754]">
+          <div className="flex items-center gap-2 font-bold text-[#0b1c30]">
+            <span>Accepted:</span>
+            <span className="px-2 py-0.5 bg-gray-100 rounded border border-gray-200">Visa</span>
+            <span className="px-2 py-0.5 bg-gray-100 rounded border border-gray-200">Mastercard</span>
+            <span className="px-2 py-0.5 bg-gray-100 rounded border border-gray-200">Amex</span>
+            <span className="px-2 py-0.5 bg-gray-100 rounded border border-gray-200">Apple Pay</span>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="flex items-center gap-1 text-emerald-700 font-bold">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> PCI-DSS Compliant
+            </span>
+          </div>
         </div>
       </div>
     </div>

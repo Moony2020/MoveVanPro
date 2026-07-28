@@ -405,30 +405,30 @@ export default function MovingBooking({ onNavigateTo }) {
                   <p className="text-xs text-[#424754]">Select your preferred payment method below. Encrypted via Stripe & PayPal APIs.</p>
                 </div>
 
-                <div className="bg-[#f8f9ff] rounded-2xl p-3 sm:p-4 border border-[#c2c6d6] text-xs space-y-2 text-[#0b1c30]">
-                  <div className="flex justify-between items-start gap-2">
-                    <span className="shrink-0 text-[#424754]">Pickup Address:</span> 
-                    <strong className="truncate max-w-[160px] sm:max-w-[280px] text-[#0058be] text-right">{pickup}</strong>
+                <div className="bg-[#f8f9ff] rounded-2xl p-3.5 sm:p-5 border border-[#c2c6d6] text-xs space-y-2.5 text-[#0b1c30]">
+                  <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-1 sm:gap-4 border-b border-[#c2c6d6]/40 pb-2">
+                    <span className="shrink-0 text-[#424754] font-medium">Pickup Address:</span> 
+                    <strong className="text-[#0058be] sm:text-right font-bold leading-snug break-words">{pickup}</strong>
                   </div>
-                  <div className="flex justify-between items-start gap-2">
-                    <span className="shrink-0 text-[#424754]">Destination:</span> 
-                    <strong className="truncate max-w-[160px] sm:max-w-[280px] text-[#0058be] text-right">{dropoff}</strong>
+                  <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-1 sm:gap-4 border-b border-[#c2c6d6]/40 pb-2">
+                    <span className="shrink-0 text-[#424754] font-medium">Destination:</span> 
+                    <strong className="text-[#0058be] sm:text-right font-bold leading-snug break-words">{dropoff}</strong>
                   </div>
-                  <div className="flex justify-between items-center gap-2">
-                    <span className="shrink-0 text-[#424754]">Allocated Vehicle:</span> 
+                  <div className="flex justify-between items-center gap-2 border-b border-[#c2c6d6]/40 pb-2">
+                    <span className="shrink-0 text-[#424754] font-medium">Allocated Vehicle:</span> 
                     <strong className="capitalize text-right">{vehicle} Moving Van</strong>
                   </div>
-                  <div className="flex justify-between items-center gap-2">
-                    <span className="shrink-0 text-[#424754]">Mover Crew:</span> 
+                  <div className="flex justify-between items-center gap-2 border-b border-[#c2c6d6]/40 pb-2">
+                    <span className="shrink-0 text-[#424754] font-medium">Mover Crew:</span> 
                     <strong className="text-right">Driver + {movers} helper(s)</strong>
                   </div>
-                  <div className="flex justify-between items-center gap-2">
-                    <span className="shrink-0 text-[#424754]">Scheduled Slot:</span> 
+                  <div className="flex justify-between items-center gap-2 pb-1">
+                    <span className="shrink-0 text-[#424754] font-medium">Scheduled Slot:</span> 
                     <strong className="text-right">{moveDate} at {moveTime}</strong>
                   </div>
-                  <div className="flex justify-between items-center border-t border-[#c2c6d6]/60 pt-2 text-xs sm:text-sm font-extrabold">
+                  <div className="flex justify-between items-center border-t-2 border-[#c2c6d6] pt-3 text-sm font-extrabold">
                     <span>Total Locked Price:</span>
-                    <span className="text-[#0058be] text-base">${totalPrice}.00</span>
+                    <span className="text-[#0058be] text-lg font-black">${totalPrice}.00</span>
                   </div>
                 </div>
 

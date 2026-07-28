@@ -29,7 +29,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
   ];
 
   return (
-    <header className="bg-[#0b1c30] text-white border-b border-[#213145] sticky top-0 z-50 shadow-md w-full">
+    <header className="bg-[#0b1c30] text-white border-b border-[#213145] sticky top-0 z-50 shadow-md w-full max-w-full overflow-x-hidden">
       <div className="w-full max-w-[1440px] mx-auto px-3 sm:px-4 md:px-6 h-16 flex justify-between items-center gap-2 lg:gap-3">
         {/* Premium Corporate Brand Logo */}
         <div 

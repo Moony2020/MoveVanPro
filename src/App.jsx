@@ -25,7 +25,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex flex-col font-sans antialiased">
+    <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex flex-col font-sans antialiased w-full max-w-full overflow-x-hidden">
       {/* Master Unified Responsive Navigation Header */}
       <Header 
         currentView={currentView} 
