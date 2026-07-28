@@ -319,7 +319,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
             <div className="w-full relative h-[320px] sm:h-[360px] lg:h-[350px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl group bg-[#eef2f7]">
               <iframe 
                 title="Central London Fleet Coverage Map"
-                className="w-full h-full border-0"
+                className="w-full h-full border-0 contrast-[1.08] saturate-[1.25] brightness-[1.02]"
                 src="https://www.openstreetmap.org/export/embed.html?bbox=-0.35%2C51.35%2C0.05%2C51.65&amp;layer=mapnik"
               />
               <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-extrabold text-[#0058be] shadow-md flex items-center gap-2 border border-[#adc6ff] pointer-events-none z-10">
