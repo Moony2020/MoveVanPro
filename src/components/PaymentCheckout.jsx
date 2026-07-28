@@ -83,42 +83,26 @@ export default function PaymentCheckout({
     }
   };
 
-  // Form Validation
-  const validateForm = () => {
-    if (paymentMethod === 'stripe') {
-      const errors = {};
-      if (!cardName.trim()) errors.cardName = 'Cardholder name is required';
-      if (cardNumber.replace(/\s+/g, '').length < 15) errors.cardNumber = 'Enter a valid 16-digit card number';
-      if (!cardExpiry.includes('/') || cardExpiry.length < 5) errors.cardExpiry = 'Enter valid MM/YY';
-      if (cardCvc.length < 3) errors.cardCvc = '3 or 4 digit CVC required';
-      setCardErrors(errors);
-      return Object.keys(errors).length === 0;
-    }
-    return true;
-  };
-
-  // Execute Payment Simulation
-  const handleExecutePayment = () => {
-    if (!validateForm()) return;
-
+  // Execute Redirect Simulation & Receipt generation
+  const handleExternalPaymentRedirect = (provider) => {
     setIsProcessing(true);
+    setPaymentMethod(provider);
 
-    if (paymentMethod === 'stripe') {
-      setProcessingStep('Connecting to Stripe API Gateway...');
-      setTimeout(() => {
-        setProcessingStep('Tokenizing card & initializing 256-bit SSL vault...');
-      }, 700);
+    if (provider === 'stripe') {
+      setProcessingStep('Redirecting to secure Stripe Checkout...');
+      // Open Stripe Checkout simulation in a new tab
+      window.open('https://checkout.stripe.com/pay', '_blank');
 
       setTimeout(() => {
-        setProcessingStep('Verifying 3D Secure / Bank Authorization...');
-      }, 1400);
+        setProcessingStep('Authorizing secure token vault session...');
+      }, 950);
 
       setTimeout(() => {
         const txnId = `TXN-STP-${Math.floor(100000 + Math.random() * 900000)}`;
         const receipt = {
           txnId,
           provider: 'Stripe Payments Inc.',
-          method: `${cardBrand.name} ending in ${cardNumber.slice(-4)}`,
+          method: 'Credit / Debit Card (Stripe Gateway)',
           amount: totalAmount,
           date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
           status: 'SETTLED & CAPTURED',
@@ -134,20 +118,23 @@ export default function PaymentCheckout({
         setIsProcessing(false);
         setPaymentCompleted(true);
         if (onPaymentSuccess) onPaymentSuccess(receipt);
-      }, 2200);
+      }, 2500);
 
-    } else if (paymentMethod === 'paypal') {
-      setProcessingStep('Opening PayPal Express Checkout Bridge...');
+    } else if (provider === 'paypal') {
+      setProcessingStep('Opening PayPal Express Checkout session...');
+      // Open PayPal checkout simulation in a new tab
+      window.open('https://www.paypal.com/signin', '_blank');
+
       setTimeout(() => {
-        setProcessingStep('Authorizing PayPal account session...');
-      }, 800);
+        setProcessingStep('Authorizing PayPal account balance...');
+      }, 950);
 
       setTimeout(() => {
         const txnId = `TXN-PYP-${Math.floor(100000 + Math.random() * 900000)}`;
         const receipt = {
           txnId,
           provider: 'PayPal Express Checkout',
-          method: `PayPal Balance (${paypalEmail})`,
+          method: `PayPal Account Balance (${paypalEmail})`,
           amount: totalAmount,
           date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
           status: 'COMPLETED & VERIFIED',
@@ -163,54 +150,7 @@ export default function PaymentCheckout({
         setIsProcessing(false);
         setPaymentCompleted(true);
         if (onPaymentSuccess) onPaymentSuccess(receipt);
-      }, 2000);
-
-    } else if (paymentMethod === 'applepay') {
-      setProcessingStep('Initiating Touch ID / Face ID Biometric Pay...');
-      setTimeout(() => {
-        const txnId = `TXN-APL-${Math.floor(100000 + Math.random() * 900000)}`;
-        const receipt = {
-          txnId,
-          provider: 'Apple Pay / Device Pass',
-          method: 'Apple Pay Digital Wallet',
-          amount: totalAmount,
-          date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-          status: 'AUTHORIZED',
-          authCode: `APL_${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
-          securityHash: `sha256_${Math.random().toString(36).substring(2, 12)}`,
-          pickup: bookingDetails.pickup || '142 Kensington High St, London W8 7RG',
-          dropoff: bookingDetails.dropoff || '28 Canary Wharf, London E14 5AB',
-          vehicle: bookingDetails.vehicle || 'Luton Van',
-          movers: bookingDetails.movers !== undefined ? bookingDetails.movers : 1,
-          schedule: `${bookingDetails.moveDate || '2026-08-01'} at ${bookingDetails.moveTime || '09:00 AM'}`
-        };
-        setReceiptData(receipt);
-        setIsProcessing(false);
-        setPaymentCompleted(true);
-        if (onPaymentSuccess) onPaymentSuccess(receipt);
-      }, 1600);
-
-    } else if (paymentMethod === 'driver') {
-      const txnId = `TXN-COD-${Math.floor(100000 + Math.random() * 900000)}`;
-      const receipt = {
-        txnId,
-        provider: 'On-Arrival Terminal Pay',
-        method: 'Chip & PIN / Cash on Delivery',
-        amount: totalAmount,
-        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-        status: 'PENDING ON ARRIVAL',
-        authCode: `COD_LOCKED_${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
-        securityHash: `sha256_${Math.random().toString(36).substring(2, 12)}`,
-        pickup: bookingDetails.pickup || '142 Kensington High St, London W8 7RG',
-        dropoff: bookingDetails.dropoff || '28 Canary Wharf, London E14 5AB',
-        vehicle: bookingDetails.vehicle || 'Luton Van',
-        movers: bookingDetails.movers !== undefined ? bookingDetails.movers : 1,
-        schedule: `${bookingDetails.moveDate || '2026-08-01'} at ${bookingDetails.moveTime || '09:00 AM'}`
-      };
-      setReceiptData(receipt);
-      setIsProcessing(false);
-      setPaymentCompleted(true);
-      if (onPaymentSuccess) onPaymentSuccess(receipt);
+      }, 2500);
     }
   };
 
@@ -336,195 +276,75 @@ export default function PaymentCheckout({
         </div>
       )}
 
-      {/* Stripe and PayPal Selector Tabs */}
-      <div className="grid grid-cols-2 gap-3 mb-4">
-        <button 
-          type="button"
-          onClick={() => setPaymentMethod('stripe')}
-          className={`py-3 px-4 rounded-xl border-2 text-center font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all ${
-            paymentMethod === 'stripe' 
-              ? 'border-[#0058be] bg-[#eff4ff] text-[#0058be] ring-2 ring-[#0058be]/10 shadow-sm' 
-              : 'border-[#c2c6d6]/60 hover:border-[#0058be]/40 bg-white text-[#424754]'
-          }`}
-        >
-          <CreditCard className="w-4 h-4 text-[#0058be]" />
-          Stripe Card
-        </button>
-        <button 
-          type="button"
-          onClick={() => setPaymentMethod('paypal')}
-          className={`py-3 px-4 rounded-xl border-2 text-center font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all ${
-            paymentMethod === 'paypal' 
-              ? 'border-[#0058be] bg-[#eff4ff] text-[#0058be] ring-2 ring-[#0058be]/10 shadow-sm' 
-              : 'border-[#c2c6d6]/60 hover:border-[#0058be]/40 bg-white text-[#424754]'
-          }`}
-        >
-          <Sparkles className="w-4 h-4 text-amber-500" />
-          PayPal
-        </button>
-      </div>
-
-      {/* TAB 1: STRIPE CREDIT / DEBIT CARD */}
-      {paymentMethod === 'stripe' && (
-        <div className="space-y-3.5 sm:space-y-4 bg-[#f8f9ff] p-3.5 sm:p-5 rounded-2xl border border-[#c2c6d6]/80 shadow-sm">
-          <div className="flex items-center justify-between">
-            <label className="text-xs font-bold text-[#0b1c30] flex items-center gap-1.5">
-              <CreditCard className="w-4 h-4 text-[#0058be]" />
-              Stripe Credit / Debit Card
-            </label>
-            <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full text-white ${cardBrand.color}`}>
-              {cardBrand.name}
-            </span>
-          </div>
-
-        <div>
-          <label className="text-[11px] font-bold text-[#424754] block mb-1">Cardholder Name</label>
-          <input 
-            type="text" 
-            value={cardName}
-            onChange={(e) => setCardName(e.target.value)}
-            placeholder="Name as shown on card" 
-            className={`w-full p-2.5 sm:p-3 text-xs bg-white border rounded-xl focus:ring-2 focus:ring-[#0058be] focus:outline-none ${
-              cardErrors.cardName ? 'border-red-500' : 'border-[#c2c6d6]'
-            }`}
-          />
-          {cardErrors.cardName && <span className="text-[10px] text-red-600 font-bold mt-1 block">{cardErrors.cardName}</span>}
-        </div>
-
-        <div>
-          <div className="flex justify-between items-center mb-1">
-            <label className="text-[11px] font-bold text-[#424754]">Card Number</label>
-          </div>
-          <div className="relative">
-            <input 
-              type="text" 
-              value={cardNumber}
-              onChange={handleCardNumberChange}
-              placeholder="1234 5678 9012 3456" 
-              className={`w-full p-2.5 sm:p-3 text-xs font-mono bg-white border rounded-xl focus:ring-2 focus:ring-[#0058be] focus:outline-none ${
-                cardErrors.cardNumber ? 'border-red-500' : 'border-[#c2c6d6]'
-              }`}
-            />
-            <Lock className="w-4 h-4 text-gray-400 absolute right-3 top-3" />
-          </div>
-          {cardErrors.cardNumber && <span className="text-[10px] text-red-600 font-bold mt-1 block">{cardErrors.cardNumber}</span>}
-        </div>
-
-        <div className="grid grid-cols-3 gap-2 sm:gap-3">
+      {/* Payment Provider Options */}
+      {isProcessing ? (
+        <div className="bg-[#f8f9ff] border border-[#c2c6d6] rounded-2xl p-8 text-center flex flex-col items-center justify-center space-y-4 animate-pulse">
+          <RefreshCw className="w-8 h-8 text-[#0058be] animate-spin" />
           <div>
-            <label className="text-[10px] sm:text-[11px] font-bold text-[#424754] block mb-1 truncate">Expires (MM/YY)</label>
-            <input 
-              type="text" 
-              value={cardExpiry}
-              onChange={handleExpiryChange}
-              placeholder="MM/YY" 
-              className={`w-full p-2.5 sm:p-3 text-xs bg-white border rounded-xl text-center focus:ring-2 focus:ring-[#0058be] ${
-                cardErrors.cardExpiry ? 'border-red-500' : 'border-[#c2c6d6]'
-              }`}
-            />
-            {cardErrors.cardExpiry && <span className="text-[10px] text-red-600 font-bold mt-1 block">{cardErrors.cardExpiry}</span>}
-          </div>
-
-          <div>
-            <label className="text-[10px] sm:text-[11px] font-bold text-[#424754] block mb-1 truncate">CVC Code</label>
-            <input 
-              type="text" 
-              value={cardCvc}
-              onChange={handleCvcChange}
-              placeholder="123" 
-              className={`w-full p-2.5 sm:p-3 text-xs font-mono bg-white border rounded-xl text-center focus:ring-2 focus:ring-[#0058be] ${
-                cardErrors.cardCvc ? 'border-red-500' : 'border-[#c2c6d6]'
-              }`}
-            />
-            {cardErrors.cardCvc && <span className="text-[10px] text-red-600 font-bold mt-1 block">{cardErrors.cardCvc}</span>}
-          </div>
-
-          <div>
-            <label className="text-[10px] sm:text-[11px] font-bold text-[#424754] block mb-1 truncate">Postcode / Zip</label>
-            <input 
-              type="text" 
-              value={cardZip}
-              onChange={(e) => setCardZip(e.target.value.toUpperCase())}
-              placeholder="W8 7RG" 
-              className="w-full p-2.5 sm:p-3 text-xs bg-white border border-[#c2c6d6] rounded-xl text-center focus:ring-2 focus:ring-[#0058be]"
-            />
+            <p className="text-xs font-black text-[#0b1c30]">{processingStep}</p>
+            <p className="text-[10px] text-[#424754] mt-1">Please authenticate your payment in the secure pop-up window.</p>
           </div>
         </div>
-      </div>
-      )}
-
-      {/* TAB 2: PAYPAL INSTANT CHECKOUT */}
-      {paymentMethod === 'paypal' && (
-        <div className="space-y-3.5 sm:space-y-4 bg-[#fffdfa] p-3.5 sm:p-5 rounded-2xl border border-amber-300 shadow-sm animate-in fade-in duration-200">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 font-black text-sm">
-                PP
-              </div>
-              <div>
-                <h4 className="text-xs font-extrabold text-gray-900">PayPal Express Checkout</h4>
-                <p className="text-[10px] text-gray-500">Pay safely using your PayPal account balance or linked bank card.</p>
-              </div>
+      ) : (
+        <div className="space-y-4">
+          {/* Option 1: Stripe Card Gateway */}
+          <div className="bg-[#f8f9ff] p-4 sm:p-5 rounded-2xl border border-[#c2c6d6]/80 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition-all hover:border-[#0058be]/40">
+            <div className="space-y-1">
+              <h4 className="text-xs sm:text-sm font-black text-[#0b1c30] flex items-center gap-2">
+                <CreditCard className="w-4 h-4 text-[#0058be] shrink-0" />
+                Credit / Debit Card (via Stripe)
+              </h4>
+              <p className="text-[11px] text-[#424754] leading-relaxed">
+                Pay securely with your credit or debit card using our Stripe merchant portal.
+              </p>
             </div>
-            <span className="text-[10px] font-mono bg-amber-500 text-white px-2.5 py-0.5 rounded-full font-bold">
-              PayPal SDK Active
-            </span>
+            <button
+              type="button"
+              onClick={() => handleExternalPaymentRedirect('stripe')}
+              className="w-full sm:w-auto bg-[#0058be] hover:bg-[#2170e4] text-white px-5 py-3 rounded-xl font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md transition-all active:scale-[0.98] shrink-0 whitespace-nowrap"
+            >
+              <Lock className="w-3.5 h-3.5 text-emerald-300" />
+              <span>Checkout via Stripe</span>
+            </button>
           </div>
 
-          <div className="p-3.5 sm:p-4 bg-white rounded-xl border border-amber-200 space-y-3">
-            <label className="text-[11px] font-bold text-gray-700 block">PayPal Account ID / Email</label>
-            <input 
-              type="email" 
-              value={paypalEmail}
-              onChange={(e) => setPaypalEmail(e.target.value)}
-              className="w-full p-2.5 sm:p-3 text-xs border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 font-mono"
-            />
-            <p className="text-[11px] text-[#825100] bg-amber-50 p-2.5 rounded-lg flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-amber-600 shrink-0" />
-              Connected to PayPal Sandbox for instant authorization without re-entering card info.
-            </p>
+          {/* Option 2: PayPal Checkout */}
+          <div className="bg-[#fffdf2] p-4 sm:p-5 rounded-2xl border border-amber-200 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition-all hover:border-amber-400">
+            <div className="space-y-1">
+              <h4 className="text-xs sm:text-sm font-black text-[#825100] flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
+                PayPal Secure Express
+              </h4>
+              <p className="text-[11px] text-[#705220] leading-relaxed">
+                Log in with your PayPal account for instant bank transfer or balance payment.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => handleExternalPaymentRedirect('paypal')}
+              className="w-full sm:w-auto bg-[#ffc439] hover:bg-[#e0ab2b] text-[#111] px-5 py-3 rounded-xl font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md transition-all active:scale-[0.98] shrink-0 whitespace-nowrap"
+            >
+              <span className="font-extrabold font-serif italic text-blue-900 text-[13px]">PayPal</span>
+              <span>Checkout</span>
+            </button>
+          </div>
+
+          {/* Secure Badging & Trust Indicators */}
+          <div className="pt-3 border-t border-[#c2c6d6]/60 flex flex-wrap items-center justify-between gap-3 text-[10px] sm:text-[11px] text-[#424754]">
+            <div className="flex items-center gap-2 font-bold text-[#0b1c30]">
+              <span>Accepted:</span>
+              <span className="px-2 py-0.5 bg-gray-100 rounded border border-gray-200">Visa</span>
+              <span className="px-2 py-0.5 bg-gray-100 rounded border border-gray-200">Mastercard</span>
+              <span className="px-2 py-0.5 bg-gray-100 rounded border border-gray-200">Amex</span>
+              <span className="px-2 py-0.5 bg-gray-100 rounded border border-gray-200">PayPal</span>
+            </div>
+
+            <div className="flex items-center gap-1.5 text-emerald-700 font-bold shrink-0">
+              <ShieldCheck className="w-4 h-4 text-emerald-600" /> PCI-DSS Compliant Gateway
+            </div>
           </div>
         </div>
       )}
-
-      {/* Action CTA Button */}
-      <div className="pt-2">
-        <button
-          onClick={handleExecutePayment}
-          disabled={isProcessing}
-          className="w-full bg-[#0058be] hover:bg-[#2170e4] text-white py-3.5 sm:py-4 px-4 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow-xl transition-all active:scale-[0.99] disabled:opacity-75"
-        >
-          {isProcessing ? (
-            <>
-              <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
-              <span className="truncate">{processingStep}</span>
-            </>
-          ) : (
-            <>
-              <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-300 shrink-0" />
-              <span className="truncate">Authorize & Pay (${totalAmount}.00)</span>
-              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-1 shrink-0" />
-            </>
-          )}
-        </button>
-
-        {/* Accepted Payment Trust Badges */}
-        <div className="mt-4 pt-3 border-t border-[#c2c6d6]/60 flex flex-wrap items-center justify-between gap-2 text-[10px] sm:text-[11px] text-[#424754]">
-          <div className="flex items-center gap-2 font-bold text-[#0b1c30]">
-            <span>Accepted:</span>
-            <span className="px-2 py-0.5 bg-gray-100 rounded border border-gray-200">Visa</span>
-            <span className="px-2 py-0.5 bg-gray-100 rounded border border-gray-200">Mastercard</span>
-            <span className="px-2 py-0.5 bg-gray-100 rounded border border-gray-200">Amex</span>
-            <span className="px-2 py-0.5 bg-gray-100 rounded border border-gray-200">Apple Pay</span>
-          </div>
-
-          <div className="flex items-center gap-2 shrink-0">
-            <span className="flex items-center gap-1 text-emerald-700 font-bold">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> PCI-DSS Compliant
-            </span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
