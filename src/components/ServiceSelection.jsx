@@ -286,7 +286,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
 
         {/* London Coverage Map Section */}
         <section className="py-16 bg-[#eff4ff] border-y border-[#c2c6d6]/50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10 items-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0058be]/10 text-[#0058be] text-xs font-bold">
                 <MapPin className="w-4 h-4" />
@@ -296,31 +296,31 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               <p className="text-sm text-[#424754] leading-relaxed">
                 Our fleet is strategically stationed across Kensington, City of London, Canary Wharf, Camden, Westminster, and the M25 orbital corridor to guarantee immediate dispatch.
               </p>
-              <div className="grid grid-cols-2 gap-3 text-xs font-bold text-[#0b1c30]">
-                <div className="flex items-center gap-2 bg-white p-3 rounded-xl border border-[#c2c6d6]/60">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  Central & West London
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 text-xs font-bold text-[#0b1c30]">
+                <div className="flex items-center gap-2 bg-white p-3 rounded-xl border border-[#c2c6d6]/60 shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                  <span className="truncate">Central & West London</span>
                 </div>
-                <div className="flex items-center gap-2 bg-white p-3 rounded-xl border border-[#c2c6d6]/60">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  Canary Wharf & Docklands
+                <div className="flex items-center gap-2 bg-white p-3 rounded-xl border border-[#c2c6d6]/60 shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                  <span className="truncate">Canary Wharf & Docklands</span>
                 </div>
-                <div className="flex items-center gap-2 bg-white p-3 rounded-xl border border-[#c2c6d6]/60">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  North & South London
+                <div className="flex items-center gap-2 bg-white p-3 rounded-xl border border-[#c2c6d6]/60 shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                  <span className="truncate">North & South London</span>
                 </div>
-                <div className="flex items-center gap-2 bg-white p-3 rounded-xl border border-[#c2c6d6]/60">
-                  <span className="w-2 h-2 rounded-full bg-amber-500" />
-                  M25 Heathrow Corridor
+                <div className="flex items-center gap-2 bg-white p-3 rounded-xl border border-[#c2c6d6]/60 shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
+                  <span className="truncate">M25 Heathrow Corridor</span>
                 </div>
               </div>
             </div>
 
-            <div className="w-full relative h-[320px] sm:h-[360px] md:h-[340px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl group bg-[#eef2f7]">
+            <div className="w-full relative h-[320px] sm:h-[360px] lg:h-[350px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl group bg-[#eef2f7]">
               <iframe 
                 title="Central London Fleet Coverage Map"
                 className="w-full h-full border-0"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=-0.30%2C51.35%2C0.05%2C51.65&amp;layer=mapnik"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=-0.35%2C51.35%2C0.05%2C51.65&amp;layer=mapnik"
               />
               <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-extrabold text-[#0058be] shadow-md flex items-center gap-2 border border-[#adc6ff] pointer-events-none z-10">
                 <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0058be]" />
