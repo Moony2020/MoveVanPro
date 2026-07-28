@@ -7,12 +7,22 @@ import TowingRequest from './components/TowingRequest';
 import FleetManagement from './components/FleetManagement';
 import PRDSummaryView from './components/PRDSummaryView';
 import ExportModal from './components/ExportModal';
+import LoginModal from './components/LoginModal';
 import { ShieldAlert } from 'lucide-react';
 
 export default function App() {
   const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'dispatch' | 'moving' | 'towing' | 'fleet' | 'prd'
   const [showExportModal, setShowExportModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
   const [emergencyAlert, setEmergencyAlert] = useState(false);
+
+  const handleLoginSuccess = (user) => {
+    setCurrentUser(user);
+    if (user.role === 'dispatcher') {
+      setCurrentView('dispatch');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex flex-col font-sans antialiased">
@@ -20,6 +30,9 @@ export default function App() {
       <Header 
         currentView={currentView} 
         setCurrentView={setCurrentView} 
+        currentUser={currentUser}
+        onOpenLogin={() => setShowLoginModal(true)}
+        onLogout={() => setCurrentUser(null)}
       />
 
       {/* Emergency Global Banner Notification if triggered */}
@@ -83,6 +96,13 @@ export default function App() {
       {showExportModal && (
         <ExportModal onClose={() => setShowExportModal(false)} />
       )}
+
+      {/* Login & Authentication Modal */}
+      <LoginModal 
+        isOpen={showLoginModal} 
+        onClose={() => setShowLoginModal(false)} 
+        onLoginSuccess={handleLoginSuccess} 
+      />
     </div>
   );
 }
