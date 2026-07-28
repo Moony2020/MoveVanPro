@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Truck, AlertTriangle, ShieldCheck, Phone, Users, BarChart3, 
   Menu, X, ChevronRight, Home, LayoutDashboard, User, LogOut 
@@ -6,6 +6,18 @@ import {
 
 export default function Header({ currentView, setCurrentView, currentUser, onOpenLogin, onLogout }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Lock background body scroll when mobile drawer is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
 
   const navItems = [
     { id: 'landing', label: '1. Customer Service Landing', shortLabel: 'Home', icon: Home },
@@ -153,11 +165,11 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
       {mobileMenuOpen && (
         <div 
           onClick={() => setMobileMenuOpen(false)}
-          className="fixed inset-0 top-16 z-50 bg-[#0b1c30]/80 backdrop-blur-sm lg:hidden flex justify-end p-4"
+          className="fixed inset-0 z-50 bg-[#0b1c30]/90 backdrop-blur-md lg:hidden flex justify-end p-3 sm:p-4 animate-in fade-in duration-200"
         >
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-xs bg-[#131b2e] border border-[#213145] rounded-3xl p-5 shadow-2xl flex flex-col justify-between max-h-[calc(100vh-5rem)] overflow-y-auto animate-in slide-in-from-top-4 duration-200"
+            className="w-full max-w-[320px] sm:max-w-xs bg-[#131b2e] border border-[#213145] rounded-3xl p-5 shadow-2xl flex flex-col justify-between max-h-[calc(100vh-2rem)] my-auto overflow-y-auto animate-in slide-in-from-right-4 duration-200"
           >
             <div>
               <div className="flex justify-between items-center mb-4 pb-3 border-b border-[#213145]">
