@@ -3,11 +3,13 @@ import {
   Truck, Users, MapPin, Calendar, Clock, Package, Check, 
   ChevronRight, ArrowLeft, ShieldCheck, CreditCard, Lock, Sparkles 
 } from 'lucide-react';
+import PaymentCheckout from './PaymentCheckout';
 
 export default function MovingBooking({ onNavigateTo }) {
   const [step, setStep] = useState(1);
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState('card'); // 'card' | 'paypal' | 'driver'
+  const [confirmedReceipt, setConfirmedReceipt] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState('card');
   const [isProcessing, setIsProcessing] = useState(false);
 
   // Form State
@@ -66,32 +68,39 @@ export default function MovingBooking({ onNavigateTo }) {
   if (bookingConfirmed) {
     return (
       <div className="min-h-screen bg-[#f8f9ff] flex items-center justify-center p-6 font-sans">
-        <div className="bg-white border border-[#c2c6d6] rounded-2xl p-8 max-w-lg w-full text-center shadow-xl">
-          <div className="w-16 h-16 bg-[#2170e4]/15 text-[#0058be] rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="bg-white border border-[#c2c6d6] rounded-3xl p-8 max-w-lg w-full text-center shadow-2xl animate-in zoom-in-95 duration-200">
+          <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
             <Check className="w-8 h-8 stroke-[3]" />
           </div>
-          <h2 className="text-2xl font-bold text-[#0b1c30] mb-2">Booking Confirmed!</h2>
-          <p className="text-sm text-[#424754] mb-6">
-            Your moving dispatch job <strong className="text-[#0058be]">#MVP-{Math.floor(1000 + Math.random() * 9000)}</strong> has been scheduled and assigned to our enterprise fleet.
+          <h2 className="text-2xl font-black text-[#0b1c30] mb-2">Booking & Payment Confirmed!</h2>
+          <p className="text-xs text-[#424754] mb-6">
+            Your dispatch job <strong className="text-[#0058be]">#MVP-{Math.floor(1000 + Math.random() * 9000)}</strong> has been scheduled and authorized via encrypted gateway.
           </p>
 
-          <div className="bg-[#f8f9ff] rounded-xl p-4 text-left border border-[#c2c6d6]/60 space-y-2 text-xs text-[#0b1c30] mb-6">
+          <div className="bg-[#0b1c30] text-white rounded-2xl p-5 text-left space-y-2.5 text-xs mb-6 shadow-inner border border-gray-800">
+            <div className="flex justify-between border-b border-gray-800 pb-2">
+              <span className="text-gray-400">Transaction ID:</span> 
+              <strong className="text-emerald-400 font-mono">{confirmedReceipt?.txnId || 'TXN-STP-849201'}</strong>
+            </div>
+            <div className="flex justify-between"><span>Payment Provider:</span> <strong>{confirmedReceipt?.provider || 'Stripe Secured'}</strong></div>
             <div className="flex justify-between"><span>Scheduled Date:</span> <strong>{moveDate} at {moveTime}</strong></div>
             <div className="flex justify-between"><span>Vehicle Allocated:</span> <strong className="capitalize">{vehicle} Van</strong></div>
             <div className="flex justify-between"><span>Crew:</span> <strong>Driver + {movers} Mover(s)</strong></div>
-            <div className="flex justify-between"><span>Total Amount Paid:</span> <strong className="text-[#0058be] text-sm">${totalPrice}</strong></div>
+            <div className="flex justify-between border-t border-gray-800 pt-2 text-sm font-black">
+              <span>Total Paid:</span> <span className="text-emerald-400">${totalPrice}.00</span>
+            </div>
           </div>
 
           <div className="flex gap-3">
             <button 
               onClick={() => onNavigateTo('dispatch')}
-              className="flex-1 bg-[#0058be] text-white py-3 rounded-xl font-bold text-xs hover:bg-[#2170e4] transition-colors cursor-pointer"
+              className="flex-1 bg-[#0058be] text-white py-3.5 rounded-xl font-bold text-xs hover:bg-[#2170e4] transition-colors cursor-pointer shadow-md"
             >
               Open Dispatcher Live Tracker
             </button>
             <button 
-              onClick={() => { setBookingConfirmed(false); setStep(1); }}
-              className="px-4 py-3 border border-[#c2c6d6] rounded-xl font-bold text-xs text-[#0b1c30] hover:bg-[#eff4ff]"
+              onClick={() => { setBookingConfirmed(false); setConfirmedReceipt(null); setStep(1); }}
+              className="px-4 py-3.5 border border-[#c2c6d6] rounded-xl font-bold text-xs text-[#0b1c30] hover:bg-[#eff4ff]"
             >
               Book Another
             </button>
@@ -392,140 +401,38 @@ export default function MovingBooking({ onNavigateTo }) {
               <div className="space-y-6">
                 <div>
                   <h2 className="text-xl font-extrabold text-[#0b1c30] mb-1">Review Booking & Secure Payment</h2>
-                  <p className="text-xs text-[#424754]">Select your preferred payment method. Secured by Stripe 256-bit SSL Encryption.</p>
+                  <p className="text-xs text-[#424754]">Select your preferred payment method below. Encrypted via Stripe & PayPal APIs.</p>
                 </div>
 
                 <div className="bg-[#f8f9ff] rounded-2xl p-4 border border-[#c2c6d6] text-xs space-y-2 text-[#0b1c30]">
-                  <div className="flex justify-between"><span>Pickup:</span> <strong className="truncate max-w-[240px] text-[#0058be]">{pickup}</strong></div>
+                  <div className="flex justify-between"><span>Pickup Address:</span> <strong className="truncate max-w-[240px] text-[#0058be]">{pickup}</strong></div>
                   <div className="flex justify-between"><span>Destination:</span> <strong className="truncate max-w-[240px] text-[#0058be]">{dropoff}</strong></div>
-                  <div className="flex justify-between"><span>Selected Vehicle:</span> <strong className="capitalize">{vehicle} Moving Van</strong></div>
+                  <div className="flex justify-between"><span>Allocated Vehicle:</span> <strong className="capitalize">{vehicle} Moving Van</strong></div>
                   <div className="flex justify-between"><span>Mover Crew:</span> <strong>Driver + {movers} helper(s)</strong></div>
-                  <div className="flex justify-between"><span>Schedule:</span> <strong>{moveDate} at {moveTime}</strong></div>
+                  <div className="flex justify-between"><span>Scheduled Slot:</span> <strong>{moveDate} at {moveTime}</strong></div>
                   <div className="flex justify-between border-t border-[#c2c6d6]/60 pt-2 text-sm font-extrabold">
                     <span>Total Locked Price:</span>
                     <span className="text-[#0058be]">${totalPrice}.00</span>
                   </div>
                 </div>
 
-                {/* Payment Method Selector */}
-                <div className="space-y-3 pt-2">
-                  <label className="text-xs font-bold text-[#0b1c30] flex items-center gap-1.5">
-                    <CreditCard className="w-4 h-4 text-[#0058be]" />
-                    Select Payment Method
-                  </label>
-
-                  <div className="grid grid-cols-3 gap-3">
-                    <button 
-                      onClick={() => setPaymentMethod('card')}
-                      className={`p-3 rounded-xl border text-center text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${
-                        paymentMethod === 'card' 
-                          ? 'border-[#0058be] bg-[#dce9ff] text-[#0058be] ring-2 ring-[#0058be]/20' 
-                          : 'border-[#c2c6d6] text-[#424754] hover:bg-[#f8f9ff]'
-                      }`}
-                    >
-                      <CreditCard className="w-4 h-4" />
-                      <span>Card (Stripe)</span>
-                    </button>
-
-                    <button 
-                      onClick={() => setPaymentMethod('paypal')}
-                      className={`p-3 rounded-xl border text-center text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${
-                        paymentMethod === 'paypal' 
-                          ? 'border-[#0058be] bg-[#dce9ff] text-[#0058be] ring-2 ring-[#0058be]/20' 
-                          : 'border-[#c2c6d6] text-[#424754] hover:bg-[#f8f9ff]'
-                      }`}
-                    >
-                      <Sparkles className="w-4 h-4 text-amber-500" />
-                      <span>PayPal / Apple</span>
-                    </button>
-
-                    <button 
-                      onClick={() => setPaymentMethod('driver')}
-                      className={`p-3 rounded-xl border text-center text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${
-                        paymentMethod === 'driver' 
-                          ? 'border-[#0058be] bg-[#dce9ff] text-[#0058be] ring-2 ring-[#0058be]/20' 
-                          : 'border-[#c2c6d6] text-[#424754] hover:bg-[#f8f9ff]'
-                      }`}
-                    >
-                      <Truck className="w-4 h-4" />
-                      <span>Pay Driver</span>
-                    </button>
-                  </div>
-
-                  {/* Stripe Card Input Form */}
-                  {paymentMethod === 'card' && (
-                    <div className="space-y-3 p-4 bg-white rounded-2xl border border-[#c2c6d6] shadow-sm animate-in fade-in duration-200">
-                      <div>
-                        <label className="text-[11px] font-bold text-[#424754] block mb-1">Cardholder Name</label>
-                        <input 
-                          type="text" 
-                          placeholder="John Smith" 
-                          defaultValue="John Smith"
-                          className="w-full p-2.5 text-xs border border-[#c2c6d6] rounded-xl focus:ring-2 focus:ring-[#0058be]"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[11px] font-bold text-[#424754] block mb-1">Card Number (Stripe Secured)</label>
-                        <input 
-                          type="text" 
-                          placeholder="4532 •••• •••• 8892" 
-                          defaultValue="4532 8921 4402 8892"
-                          className="w-full p-2.5 text-xs font-mono border border-[#c2c6d6] rounded-xl focus:ring-2 focus:ring-[#0058be]"
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <label className="text-[11px] font-bold text-[#424754] block mb-1">Expiry (MM/YY)</label>
-                          <input 
-                            type="text" 
-                            placeholder="MM/YY" 
-                            defaultValue="08/28"
-                            className="w-full p-2.5 text-xs border border-[#c2c6d6] rounded-xl"
-                          />
-                        </div>
-                        <div>
-                          <label className="text-[11px] font-bold text-[#424754] block mb-1">CVC Code</label>
-                          <input 
-                            type="text" 
-                            placeholder="CVC" 
-                            defaultValue="492"
-                            className="w-full p-2.5 text-xs font-mono border border-[#c2c6d6] rounded-xl"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {paymentMethod === 'paypal' && (
-                    <div className="p-4 bg-[#fff7ed] rounded-2xl border border-amber-300 text-xs text-[#825100] text-center font-bold">
-                      Instant 1-Click Checkout with PayPal or Apple Pay active. Click below to authorize.
-                    </div>
-                  )}
-
-                  {paymentMethod === 'driver' && (
-                    <div className="p-4 bg-[#eff4ff] rounded-2xl border border-[#0058be]/30 text-xs text-[#0058be] text-center font-bold">
-                      Pay on Arrival: No upfront card charge. Pay your van driver via Chip & PIN card reader or cash upon move completion.
-                    </div>
-                  )}
-                </div>
-
-                <button 
-                  onClick={handleProcessPayment}
-                  disabled={isProcessing}
-                  className="w-full bg-[#0058be] hover:bg-[#2170e4] text-white py-3.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-lg mt-4 transition-all"
-                >
-                  {isProcessing ? (
-                    <>
-                      <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      <span>Encrypting Transaction via Stripe...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Lock className="w-4 h-4" />
-                      <span>Confirm & Lock Booking (${totalPrice}.00)</span>
-                    </>
-                  )}
-                </button>
+                {/* Interactive Multi-Provider Payment Gateway */}
+                <PaymentCheckout 
+                  totalAmount={totalPrice}
+                  bookingDetails={{
+                    pickup,
+                    dropoff,
+                    vehicle,
+                    movers,
+                    moveDate,
+                    moveTime
+                  }}
+                  onPaymentSuccess={(receipt) => {
+                    setConfirmedReceipt(receipt);
+                    setBookingConfirmed(true);
+                  }}
+                  onCancel={() => setStep(3)}
+                />
               </div>
             )}
           </div>

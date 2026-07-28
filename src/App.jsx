@@ -10,7 +10,7 @@ import ExportModal from './components/ExportModal';
 import { ShieldAlert } from 'lucide-react';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState('dispatch'); // 'dispatch' | 'landing' | 'moving' | 'towing' | 'fleet' | 'prd'
+  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'dispatch' | 'moving' | 'towing' | 'fleet' | 'prd'
   const [showExportModal, setShowExportModal] = useState(false);
   const [emergencyAlert, setEmergencyAlert] = useState(false);
 

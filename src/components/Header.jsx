@@ -8,12 +8,12 @@ export default function Header({ currentView, setCurrentView }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { id: 'dispatch', label: '1. Dispatcher Command Center', shortLabel: 'Dispatcher', icon: LayoutDashboard, color: 'text-emerald-400' },
-    { id: 'landing', label: '2. Customer Service Landing', shortLabel: 'Home', icon: Home },
-    { id: 'moving', label: '3. Moving Quote Wizard', shortLabel: 'Book Move', icon: Truck },
-    { id: 'towing', label: '4. Emergency Towing Dispatch', shortLabel: 'Emergency Towing', icon: AlertTriangle, color: 'text-amber-400' },
+    { id: 'landing', label: '1. Customer Service Landing', shortLabel: 'Home', icon: Home },
+    { id: 'moving', label: '2. Moving Quote Wizard', shortLabel: 'Book Move', icon: Truck },
+    { id: 'towing', label: '3. Emergency Towing Dispatch', shortLabel: 'Emergency Towing', icon: AlertTriangle, color: 'text-amber-400' },
+    { id: 'dispatch', label: '4. Dispatcher Command Center', shortLabel: 'Dispatcher', icon: LayoutDashboard, color: 'text-emerald-400' },
     { id: 'fleet', label: '5. Fleet & Drivers Telemetry', shortLabel: 'Fleet', icon: Users },
-    { id: 'prd', label: '6. PRD Specs & Tokens', shortLabel: 'PRD Specs', icon: BarChart3 }
+    { id: 'prd', label: '6. System Specs & PRD', shortLabel: 'System Specs', icon: BarChart3 }
   ];
 
   return (
