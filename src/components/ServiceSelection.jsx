@@ -316,13 +316,13 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               </div>
             </div>
 
-            <div className="flex-1 w-full relative h-[420px] sm:h-[460px] lg:h-[400px] min-h-[380px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl group">
+            <div className="flex-1 w-full relative h-[500px] sm:h-[520px] lg:h-[540px] min-h-[500px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl group">
               <iframe 
                 title="Central London Fleet Coverage Map"
                 className="w-full h-full border-0 grayscale-[0.1] contrast-[1.05]"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=-0.25%2C51.46%2C-0.01%2C51.56&amp;layer=mapnik"
+                src="https://maps.google.com/maps?q=London,%20UK&t=&z=11&ie=UTF8&iwloc=&output=embed"
               />
-              <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-extrabold text-[#0058be] shadow-md flex items-center gap-2 border border-[#adc6ff] pointer-events-none">
+              <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-extrabold text-[#0058be] shadow-md flex items-center gap-2 border border-[#adc6ff] pointer-events-none z-10">
                 <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0058be]" />
                 London, UK • Central Operational Zone
               </div>
