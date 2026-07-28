@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Truck, AlertTriangle, ShieldCheck, CheckCircle2, ArrowRight, Phone, 
-  Award, Clock, MapPin, Zap, Star, Users, ChevronRight, Lock, Map, Menu, X
+  Award, Clock, MapPin, Zap, Star, Users, ChevronRight, Lock, Map, Menu, X, Car 
 } from 'lucide-react';
 
 export default function ServiceSelection({ onSelectService, onNavigateTo }) {

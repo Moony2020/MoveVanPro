@@ -217,7 +217,7 @@ export default function TowingRequest({ onNavigateTo }) {
           <iframe 
             title="London Emergency Towing Dispatch Map"
             className="absolute inset-0 w-full h-full border-0 grayscale-[0.05] contrast-[1.05]"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=-0.23%2C51.49%2C-0.10%2C51.54&amp;layer=mapnik"
+            src="https://maps.google.com/maps?q=Shepherds%20Bush,%20London,%20UK&t=&z=13&ie=UTF8&iwloc=&output=embed"
           />
 
           {/* Location Bar Overlay */}
