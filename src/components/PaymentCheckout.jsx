@@ -336,17 +336,46 @@ export default function PaymentCheckout({
         </div>
       )}
 
-      {/* Clean Production Credit / Debit Card Form */}
-      <div className="space-y-3.5 sm:space-y-4 bg-[#f8f9ff] p-3.5 sm:p-5 rounded-2xl border border-[#c2c6d6]/80 shadow-sm">
-        <div className="flex items-center justify-between">
-          <label className="text-xs font-bold text-[#0b1c30] flex items-center gap-1.5">
-            <CreditCard className="w-4 h-4 text-[#0058be]" />
-            Credit / Debit Card
-          </label>
-          <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full text-white ${cardBrand.color}`}>
-            {cardBrand.name}
-          </span>
-        </div>
+      {/* Stripe and PayPal Selector Tabs */}
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        <button 
+          type="button"
+          onClick={() => setPaymentMethod('stripe')}
+          className={`py-3 px-4 rounded-xl border-2 text-center font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all ${
+            paymentMethod === 'stripe' 
+              ? 'border-[#0058be] bg-[#eff4ff] text-[#0058be] ring-2 ring-[#0058be]/10 shadow-sm' 
+              : 'border-[#c2c6d6]/60 hover:border-[#0058be]/40 bg-white text-[#424754]'
+          }`}
+        >
+          <CreditCard className="w-4 h-4 text-[#0058be]" />
+          Stripe Card
+        </button>
+        <button 
+          type="button"
+          onClick={() => setPaymentMethod('paypal')}
+          className={`py-3 px-4 rounded-xl border-2 text-center font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all ${
+            paymentMethod === 'paypal' 
+              ? 'border-[#0058be] bg-[#eff4ff] text-[#0058be] ring-2 ring-[#0058be]/10 shadow-sm' 
+              : 'border-[#c2c6d6]/60 hover:border-[#0058be]/40 bg-white text-[#424754]'
+          }`}
+        >
+          <Sparkles className="w-4 h-4 text-amber-500" />
+          PayPal
+        </button>
+      </div>
+
+      {/* TAB 1: STRIPE CREDIT / DEBIT CARD */}
+      {paymentMethod === 'stripe' && (
+        <div className="space-y-3.5 sm:space-y-4 bg-[#f8f9ff] p-3.5 sm:p-5 rounded-2xl border border-[#c2c6d6]/80 shadow-sm">
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-bold text-[#0b1c30] flex items-center gap-1.5">
+              <CreditCard className="w-4 h-4 text-[#0058be]" />
+              Stripe Credit / Debit Card
+            </label>
+            <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full text-white ${cardBrand.color}`}>
+              {cardBrand.name}
+            </span>
+          </div>
 
         <div>
           <label className="text-[11px] font-bold text-[#424754] block mb-1">Cardholder Name</label>
@@ -422,6 +451,41 @@ export default function PaymentCheckout({
           </div>
         </div>
       </div>
+      )}
+
+      {/* TAB 2: PAYPAL INSTANT CHECKOUT */}
+      {paymentMethod === 'paypal' && (
+        <div className="space-y-3.5 sm:space-y-4 bg-[#fffdfa] p-3.5 sm:p-5 rounded-2xl border border-amber-300 shadow-sm animate-in fade-in duration-200">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 font-black text-sm">
+                PP
+              </div>
+              <div>
+                <h4 className="text-xs font-extrabold text-gray-900">PayPal Express Checkout</h4>
+                <p className="text-[10px] text-gray-500">Pay safely using your PayPal account balance or linked bank card.</p>
+              </div>
+            </div>
+            <span className="text-[10px] font-mono bg-amber-500 text-white px-2.5 py-0.5 rounded-full font-bold">
+              PayPal SDK Active
+            </span>
+          </div>
+
+          <div className="p-3.5 sm:p-4 bg-white rounded-xl border border-amber-200 space-y-3">
+            <label className="text-[11px] font-bold text-gray-700 block">PayPal Account ID / Email</label>
+            <input 
+              type="email" 
+              value={paypalEmail}
+              onChange={(e) => setPaypalEmail(e.target.value)}
+              className="w-full p-2.5 sm:p-3 text-xs border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 font-mono"
+            />
+            <p className="text-[11px] text-[#825100] bg-amber-50 p-2.5 rounded-lg flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-amber-600 shrink-0" />
+              Connected to PayPal Sandbox for instant authorization without re-entering card info.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Action CTA Button */}
       <div className="pt-2">
