@@ -148,7 +148,7 @@ export default function MovingBooking({ onNavigateTo }) {
                   <p className="text-xs text-[#424754]">Choose your service option and vehicle size.</p>
                 </div>
 
-                <div className="grid grid-cols-1 min-[500px]:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+                <div className="grid grid-cols-1 min-[401px]:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
                   {[
                     { 
                       id: 'small', 
