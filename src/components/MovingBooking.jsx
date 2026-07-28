@@ -148,7 +148,7 @@ export default function MovingBooking({ onNavigateTo }) {
                   <p className="text-xs text-[#424754]">Choose your service option and vehicle size.</p>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
+                <div className="grid grid-cols-1 min-[500px]:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
                   {[
                     { 
                       id: 'small', 
@@ -199,15 +199,15 @@ export default function MovingBooking({ onNavigateTo }) {
                         </div>
                       </div>
 
-                      <div className="p-2 sm:p-3.5 flex flex-col flex-grow justify-between">
+                      <div className="p-3 sm:p-3.5 flex flex-col flex-grow justify-between">
                         <div>
-                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
-                            <h4 className="font-extrabold text-[10px] sm:text-xs md:text-sm text-[#0b1c30] truncate">{v.name}</h4>
-                            <span className="text-[10px] sm:text-xs font-black text-[#0058be]">${v.rate}/hr</span>
+                          <div className="flex flex-row justify-between items-baseline mb-1">
+                            <h4 className="font-extrabold text-xs sm:text-sm text-[#0b1c30] truncate">{v.name}</h4>
+                            <span className="text-xs sm:text-sm font-black text-[#0058be] shrink-0 ml-2">${v.rate}/hr</span>
                           </div>
-                          <p className="text-[9px] sm:text-[11px] text-[#424754] mb-1.5 leading-tight min-h-[20px]">{v.desc}</p>
+                          <p className="text-[10px] sm:text-[11px] text-[#424754] mb-2 leading-tight min-h-[20px]">{v.desc}</p>
                         </div>
-                        <span className="text-[8px] sm:text-[10px] bg-white border border-[#c2c6d6] px-1.5 py-0.5 rounded-md font-bold text-[#565e74] w-fit">
+                        <span className="text-[9px] sm:text-[10px] bg-white border border-[#c2c6d6] px-2 py-0.5 rounded-md font-bold text-[#565e74] w-fit">
                           Capacity: {v.cap}
                         </span>
                       </div>
