@@ -316,66 +316,21 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               </div>
             </div>
 
-            <div className="flex-1 w-full relative h-[250px] sm:h-[270px] lg:h-[280px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl bg-[#0b1c30] select-none">
-              {/* Vector Map Canvas Grid & River Thames Curve */}
-              <svg className="absolute inset-0 w-full h-full opacity-40" viewBox="0 0 600 400" preserveAspectRatio="none">
-                {/* River Thames Path */}
-                <path d="M 0 220 Q 120 200, 200 240 T 350 210 T 500 250 T 600 220" fill="none" stroke="#2170e4" strokeWidth="24" strokeLinecap="round" opacity="0.6" />
-                <path d="M 0 220 Q 120 200, 200 240 T 350 210 T 500 250 T 600 220" fill="none" stroke="#60a5fa" strokeWidth="8" strokeLinecap="round" opacity="0.8" />
-                
-                {/* Major Road Arterials (M25, A40, A13) */}
-                <circle cx="300" cy="200" r="170" fill="none" stroke="#475569" strokeWidth="2" strokeDasharray="6,6" opacity="0.5" />
-                <line x1="0" y1="180" x2="600" y2="180" stroke="#334155" strokeWidth="3" />
-                <line x1="280" y1="0" x2="280" y2="400" stroke="#334155" strokeWidth="3" />
-                <line x1="50" y1="50" x2="550" y2="350" stroke="#334155" strokeWidth="2" />
-                <line x1="50" y1="350" x2="550" y2="50" stroke="#334155" strokeWidth="2" />
-
-                {/* Radar Scan Rings */}
-                <circle cx="300" cy="200" r="100" fill="none" stroke="#0058be" strokeWidth="1.5" opacity="0.3" />
-                <circle cx="300" cy="200" r="40" fill="none" stroke="#3b82f6" strokeWidth="1" opacity="0.4" />
-              </svg>
-
-              {/* Top Badge */}
-              <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-extrabold text-[#0058be] shadow-md flex items-center gap-2 border border-[#adc6ff] z-10 pointer-events-none">
+            <div className="flex-1 w-full relative h-[300px] sm:h-[340px] lg:h-[320px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl group bg-[#eef2f7]">
+              <iframe 
+                title="Central London Fleet Coverage Map"
+                className="w-full h-full border-0"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=-0.35%2C51.30%2C0.10%2C51.70&amp;layer=mapnik"
+              />
+              <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-extrabold text-[#0058be] shadow-md flex items-center gap-2 border border-[#adc6ff] pointer-events-none z-10">
                 <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0058be]" />
                 London, UK • Central Operational Zone
               </div>
 
-              {/* Fleet Pin 1: Towing Heathrow */}
-              <div className="absolute top-[28%] left-[18%] sm:left-[22%] z-10 flex flex-col items-center group cursor-pointer">
-                <div className="bg-white border border-[#c2c6d6] px-2 py-0.5 rounded shadow text-[10px] font-bold text-[#0b1c30] mb-1 group-hover:scale-105 transition-transform">
-                  Tow #12 (M25 Corridor)
-                </div>
-                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-[#f59e0b] text-white rounded-full flex items-center justify-center border-2 border-white shadow-xl amber-pulse">
-                  <Truck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                </div>
-              </div>
-
-              {/* Fleet Pin 2: Moving Van Kensington */}
-              <div className="absolute top-[42%] left-[40%] sm:left-[42%] z-10 flex flex-col items-center group cursor-pointer">
-                <div className="bg-white border border-[#c2c6d6] px-2 py-0.5 rounded shadow text-[10px] font-bold text-[#0b1c30] mb-1 group-hover:scale-105 transition-transform">
-                  Van #04 (Kensington)
-                </div>
-                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-[#0058be] text-white rounded-full flex items-center justify-center border-2 border-white shadow-xl map-marker-pulse">
-                  <Car className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                </div>
-              </div>
-
-              {/* Fleet Pin 3: Docklands Mover */}
-              <div className="absolute top-[32%] right-[14%] sm:right-[20%] z-10 flex flex-col items-center group cursor-pointer">
-                <div className="bg-white border border-[#c2c6d6] px-2 py-0.5 rounded shadow text-[10px] font-bold text-[#0b1c30] mb-1 group-hover:scale-105 transition-transform">
-                  Van #09 (Canary Wharf)
-                </div>
-                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-[#10b981] text-white rounded-full flex items-center justify-center border-2 border-white shadow-xl">
-                  <Truck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                </div>
-              </div>
-
-              {/* Bottom Floating Control Card */}
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0b1c30] via-[#0b1c30]/70 to-transparent p-3 sm:p-4 z-20">
-                <div className="bg-white/95 backdrop-blur-md p-3 sm:p-4 rounded-2xl border border-[#c2c6d6] shadow-lg w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2.5 sm:gap-4">
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0b1c30]/90 via-[#0b1c30]/40 to-transparent p-3 sm:p-4 pointer-events-none z-10">
+                <div className="bg-white/95 backdrop-blur-md p-3 sm:p-4 rounded-2xl border border-[#c2c6d6] shadow-md w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2.5 sm:gap-4 pointer-events-auto">
                   <div>
-                    <span className="text-xs font-extrabold text-[#0b1c30] block">Greater London Live Fleet</span>
+                    <span className="text-xs font-bold text-[#0b1c30] block">Greater London Live Fleet</span>
                     <span className="text-[10px] sm:text-[11px] text-emerald-600 font-semibold flex items-center gap-1.5 mt-0.5">
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                       18 Active Moving Vans & Tow Trucks On Standby
