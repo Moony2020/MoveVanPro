@@ -184,11 +184,11 @@ export default function MovingBooking({ onNavigateTo }) {
                           : 'border-[#c2c6d6]/60 hover:border-[#0058be]/40 bg-white shadow-sm'
                       }`}
                     >
-                      <div className="h-28 sm:h-32 w-full bg-[#f8f9ff] relative overflow-hidden flex items-center justify-center p-1.5">
+                      <div className="h-36 sm:h-44 w-full relative overflow-hidden bg-slate-100">
                         <img 
                           src={v.img} 
                           alt={v.name} 
-                          className="w-full h-full object-contain"
+                          className="w-full h-full object-cover"
                         />
                         <div className="absolute top-2.5 right-2.5 z-10">
                           <div className={`w-5 h-5 rounded-full flex items-center justify-center border shadow-sm ${
