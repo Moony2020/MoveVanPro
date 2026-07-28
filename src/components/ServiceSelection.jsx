@@ -316,29 +316,29 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               </div>
             </div>
 
-            <div className="flex-1 w-full relative h-[340px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl group">
+            <div className="flex-1 w-full relative h-[420px] sm:h-[460px] lg:h-[400px] min-h-[380px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl group">
               <iframe 
                 title="Central London Fleet Coverage Map"
                 className="w-full h-full border-0 grayscale-[0.1] contrast-[1.05]"
                 src="https://www.openstreetmap.org/export/embed.html?bbox=-0.25%2C51.46%2C-0.01%2C51.56&amp;layer=mapnik"
               />
-              <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-extrabold text-[#0058be] shadow-md flex items-center gap-2 border border-[#adc6ff] pointer-events-none">
-                <MapPin className="w-4 h-4 text-[#0058be]" />
+              <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-extrabold text-[#0058be] shadow-md flex items-center gap-2 border border-[#adc6ff] pointer-events-none">
+                <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0058be]" />
                 London, UK • Central Operational Zone
               </div>
 
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0b1c30]/90 via-[#0b1c30]/40 to-transparent p-4 pointer-events-none">
-                <div className="bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-[#c2c6d6] shadow-md w-full flex justify-between items-center pointer-events-auto">
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0b1c30]/90 via-[#0b1c30]/40 to-transparent p-3 sm:p-4 pointer-events-none">
+                <div className="bg-white/95 backdrop-blur-md p-3 sm:p-4 rounded-2xl border border-[#c2c6d6] shadow-md w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2.5 sm:gap-4 pointer-events-auto">
                   <div>
                     <span className="text-xs font-bold text-[#0b1c30] block">Greater London Live Fleet</span>
-                    <span className="text-[11px] text-emerald-600 font-semibold flex items-center gap-1.5 mt-0.5">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="text-[10px] sm:text-[11px] text-emerald-600 font-semibold flex items-center gap-1.5 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                       18 Active Moving Vans & Tow Trucks On Standby
                     </span>
                   </div>
                   <button 
                     onClick={() => onNavigateTo('dispatch')}
-                    className="bg-[#0058be] hover:bg-[#2170e4] text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-sm cursor-pointer"
+                    className="w-full sm:w-auto bg-[#0058be] hover:bg-[#2170e4] text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-sm cursor-pointer whitespace-nowrap text-center"
                   >
                     View Dispatch Board
                   </button>
