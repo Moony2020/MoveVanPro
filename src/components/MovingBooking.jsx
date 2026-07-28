@@ -148,7 +148,7 @@ export default function MovingBooking({ onNavigateTo }) {
                   <p className="text-xs text-[#424754]">Choose your service option and vehicle size.</p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
                   {[
                     { 
                       id: 'small', 
@@ -184,11 +184,11 @@ export default function MovingBooking({ onNavigateTo }) {
                           : 'border-[#c2c6d6]/60 hover:border-[#0058be]/40 bg-white shadow-sm'
                       }`}
                     >
-                      <div className="h-36 sm:h-44 w-full bg-[#f8f9ff] relative overflow-hidden">
+                      <div className="h-28 sm:h-32 w-full bg-[#f8f9ff] relative overflow-hidden flex items-center justify-center p-1.5">
                         <img 
                           src={v.img} 
                           alt={v.name} 
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-contain"
                         />
                         <div className="absolute top-2.5 right-2.5 z-10">
                           <div className={`w-5 h-5 rounded-full flex items-center justify-center border shadow-sm ${
