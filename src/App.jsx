@@ -5,7 +5,6 @@ import ServiceSelection from './components/ServiceSelection';
 import MovingBooking from './components/MovingBooking';
 import TowingRequest from './components/TowingRequest';
 import FleetManagement from './components/FleetManagement';
-import PRDSummaryView from './components/PRDSummaryView';
 import ExportModal from './components/ExportModal';
 import LoginModal from './components/LoginModal';
 import { ShieldAlert } from 'lucide-react';
@@ -81,12 +80,6 @@ export default function App() {
 
         {currentView === 'fleet' && (
           <FleetManagement 
-            onNavigateTo={(view) => setCurrentView(view)}
-          />
-        )}
-
-        {currentView === 'prd' && (
-          <PRDSummaryView 
             onNavigateTo={(view) => setCurrentView(view)}
           />
         )}

@@ -222,14 +222,6 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
             <AlertTriangle className="w-4 h-4 text-[#825100]" />
             Emergency Recovery
           </button>
-
-          <button 
-            onClick={() => onNavigateTo('prd')}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold text-[#424754] hover:bg-[#e5eeff] transition-all"
-          >
-            <BarChart3 className="w-4 h-4" />
-            PRD Specs & Tokens
-          </button>
         </nav>
 
         {/* Footer Settings & Support Buttons */}
@@ -692,12 +684,6 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
               <div className="p-4 bg-[#f8f9ff] rounded-2xl border border-[#c2c6d6] space-y-2 text-[#424754]">
                 <span className="font-bold text-[#0b1c30] block">London Command Operator Manual</span>
                 <p className="text-[11px]">Need assistance with auto-dispatching, driver location telemetry, or manual vehicle override?</p>
-                <button 
-                  onClick={() => onNavigateTo('prd')}
-                  className="text-xs font-bold text-[#0058be] hover:underline"
-                >
-                  View System Architecture Specs →
-                </button>
               </div>
             </div>
 
