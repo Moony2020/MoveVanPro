@@ -178,7 +178,7 @@ export default function MovingBooking({ onNavigateTo }) {
                     <div 
                       key={v.id}
                       onClick={() => setVehicle(v.id)}
-                      className={`col-span-1 max-w-[340px] min-[401px]:max-w-none w-full mx-auto rounded-2xl border-2 overflow-hidden cursor-pointer transition-all flex flex-col justify-between ${
+                      className={`col-span-1 max-w-[280px] min-[401px]:max-w-none w-full mx-auto rounded-2xl border-2 overflow-hidden cursor-pointer transition-all flex flex-col justify-between ${
                         vehicle === v.id 
                           ? 'border-[#0058be] bg-[#eff4ff] ring-2 ring-[#0058be]/20 shadow-md scale-[1.02]' 
                           : 'border-[#c2c6d6]/60 hover:border-[#0058be]/40 bg-white shadow-sm'
