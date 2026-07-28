@@ -137,7 +137,7 @@ export default function MovingBooking({ onNavigateTo }) {
           ))}
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-6 lg:gap-8">
+        <div className="grid lg:grid-cols-12 gap-4 lg:gap-4">
           {/* Left Column: Interactive Form Steps */}
           <div className="lg:col-span-8 bg-white border border-[#c2c6d6] rounded-2xl p-3 sm:p-6 md:p-8 shadow-sm">
             {/* STEP 1: VEHICLE & MOVERS */}
