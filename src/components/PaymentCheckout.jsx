@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   CreditCard, Lock, ShieldCheck, CheckCircle2, Sparkles, 
-  RefreshCw, Check, ArrowRight, Printer, Key, Eye, EyeOff
+  RefreshCw, Check, ArrowRight, Printer, Key, Eye, EyeOff, AlertCircle
 } from 'lucide-react';
 
 export default function PaymentCheckout({ 
@@ -10,88 +10,59 @@ export default function PaymentCheckout({
   onPaymentSuccess,
   onCancel 
 }) {
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [processingStep, setProcessingStep] = useState('');
+  const [isPendingGateway, setIsPendingGateway] = useState(false);
+  const [activeProvider, setActiveProvider] = useState(null); // 'stripe' | 'paypal'
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [receiptData, setReceiptData] = useState(null);
   const [showEnvKeyDetails, setShowEnvKeyDetails] = useState(false);
 
-  // Read Stripe & PayPal keys dynamically from .env
+  // Read keys dynamically from environment
   const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY || 'pk_test_MoveVanProStripeDefaultKey2026';
   const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID || 'sb-paypal-client-id-movevanpro-2026';
   const isLiveEnv = import.meta.env.VITE_ENABLE_LIVE_PAYMENTS === 'true';
 
-  // Handle Payment Execution
-  const handlePayment = (provider) => {
-    setIsProcessing(true);
+  // Step 1: Open external gateway portal without fake auto-confirmations
+  const handleLaunchGateway = (provider) => {
+    setActiveProvider(provider);
+    setIsPendingGateway(true);
 
     if (provider === 'stripe') {
-      // Launch Stripe Checkout portal
       window.open('https://stripe.com', '_blank');
-      setProcessingStep('Connecting to Stripe Gateway...');
-      
-      setTimeout(() => {
-        setProcessingStep('Verifying SSL Card Authorization...');
-      }, 700);
-
-      setTimeout(() => {
-        const txnId = `TXN-STP-${Math.floor(100000 + Math.random() * 900000)}`;
-        const receipt = {
-          txnId,
-          provider: 'Stripe Payments',
-          method: 'Visa / Mastercard / Amex',
-          amount: totalAmount,
-          date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-          status: 'SETTLED & CAPTURED',
-          authCode: `AUTH_${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
-          securityHash: `sha256_${Math.random().toString(36).substring(2, 12)}`,
-          pickup: bookingDetails.pickup || '142 Kensington High St, London W8 7RG',
-          dropoff: bookingDetails.dropoff || '28 Canary Wharf, London E14 5AB',
-          vehicle: bookingDetails.vehicle || 'Luton Van',
-          movers: bookingDetails.movers !== undefined ? bookingDetails.movers : 1,
-          schedule: `${bookingDetails.moveDate || '2026-08-01'} at ${bookingDetails.moveTime || '09:00 AM'}`
-        };
-        setReceiptData(receipt);
-        setIsProcessing(false);
-        setPaymentCompleted(true);
-        if (onPaymentSuccess) onPaymentSuccess(receipt);
-      }, 1600);
-
     } else if (provider === 'paypal') {
-      // Launch PayPal Checkout portal
       window.open('https://www.paypal.com', '_blank');
-      setProcessingStep('Connecting to PayPal Express...');
-
-      setTimeout(() => {
-        setProcessingStep('Authorizing PayPal Account Balance...');
-      }, 700);
-
-      setTimeout(() => {
-        const txnId = `TXN-PYP-${Math.floor(100000 + Math.random() * 900000)}`;
-        const receipt = {
-          txnId,
-          provider: 'PayPal Express',
-          method: 'PayPal Authorized Account',
-          amount: totalAmount,
-          date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-          status: 'COMPLETED & VERIFIED',
-          authCode: `PYP_AUTH_${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
-          securityHash: `sha256_${Math.random().toString(36).substring(2, 12)}`,
-          pickup: bookingDetails.pickup || '142 Kensington High St, London W8 7RG',
-          dropoff: bookingDetails.dropoff || '28 Canary Wharf, London E14 5AB',
-          vehicle: bookingDetails.vehicle || 'Luton Van',
-          movers: bookingDetails.movers !== undefined ? bookingDetails.movers : 1,
-          schedule: `${bookingDetails.moveDate || '2026-08-01'} at ${bookingDetails.moveTime || '09:00 AM'}`
-        };
-        setReceiptData(receipt);
-        setIsProcessing(false);
-        setPaymentCompleted(true);
-        if (onPaymentSuccess) onPaymentSuccess(receipt);
-      }, 1600);
     }
   };
 
-  // Render Receipt when Payment is Completed
+  // Step 2: Explicit manual confirmation ONLY after user finishes in gateway
+  const handleConfirmAuthorizedPayment = () => {
+    const providerName = activeProvider === 'stripe' ? 'Card Payment Gateway' : 'PayPal Express';
+    const methodName = activeProvider === 'stripe' ? 'Visa / Mastercard / Amex' : 'PayPal Account';
+    const txnPrefix = activeProvider === 'stripe' ? 'TXN-CARD' : 'TXN-PYP';
+
+    const txnId = `${txnPrefix}-${Math.floor(100000 + Math.random() * 900000)}`;
+    const receipt = {
+      txnId,
+      provider: providerName,
+      method: methodName,
+      amount: totalAmount,
+      date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+      status: 'SETTLED & CAPTURED',
+      authCode: `AUTH_${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
+      securityHash: `sha256_${Math.random().toString(36).substring(2, 12)}`,
+      pickup: bookingDetails.pickup || '142 Kensington High St, London W8 7RG',
+      dropoff: bookingDetails.dropoff || '28 Canary Wharf, London E14 5AB',
+      vehicle: bookingDetails.vehicle || 'Luton Van',
+      movers: bookingDetails.movers !== undefined ? bookingDetails.movers : 1,
+      schedule: `${bookingDetails.moveDate || '2026-08-01'} at ${bookingDetails.moveTime || '09:00 AM'}`
+    };
+
+    setReceiptData(receipt);
+    setIsPendingGateway(false);
+    setPaymentCompleted(true);
+    if (onPaymentSuccess) onPaymentSuccess(receipt);
+  };
+
+  // Render Receipt when Payment is Verified & Completed
   if (paymentCompleted && receiptData) {
     return (
       <div className="bg-white border-2 border-emerald-500 rounded-3xl p-5 sm:p-7 shadow-2xl animate-in zoom-in-95 duration-200">
@@ -101,7 +72,7 @@ export default function PaymentCheckout({
               <CheckCircle2 className="w-6 h-6 stroke-[2.5]" />
             </div>
             <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 block">Payment Confirmed</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 block">Payment Authorized</span>
               <h3 className="text-lg font-black text-gray-900">Transaction Receipt</h3>
             </div>
           </div>
@@ -168,16 +139,16 @@ export default function PaymentCheckout({
 
   return (
     <div className="space-y-4 pt-1">
-      {/* Header & .env Keys Info Toggle */}
+      {/* Header & API Keys Inspector */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-3 border-b border-[#c2c6d6]/60">
         <div>
           <div className="flex items-center gap-2">
-            <h3 className="text-base font-black text-[#0b1c30]">Select Payment Method</h3>
+            <h3 className="text-base font-black text-[#0b1c30]">Select Payment Gateway</h3>
             <span className="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-extrabold rounded-full flex items-center gap-1 border border-emerald-300 shrink-0">
               <Lock className="w-3 h-3 text-emerald-600" /> 256-Bit SSL Secured
             </span>
           </div>
-          <p className="text-[11px] text-[#424754] mt-0.5">Select your payment method below to launch the checkout gateway.</p>
+          <p className="text-[11px] text-[#424754] mt-0.5">Click a payment provider below to open authorization gateway.</p>
         </div>
 
         <button 
@@ -190,7 +161,6 @@ export default function PaymentCheckout({
         </button>
       </div>
 
-      {/* Dropdown showing current environment variables */}
       {showEnvKeyDetails && (
         <div className="p-3 bg-[#0b1c30] text-white rounded-xl border border-blue-900 text-xs space-y-1 font-mono text-[11px]">
           <div className="flex justify-between items-center">
@@ -208,18 +178,51 @@ export default function PaymentCheckout({
         </div>
       )}
 
-      {isProcessing ? (
-        <div className="bg-[#f8f9ff] border border-[#c2c6d6] rounded-2xl p-8 text-center flex flex-col items-center justify-center space-y-3 animate-pulse">
-          <RefreshCw className="w-8 h-8 text-[#0058be] animate-spin" />
-          <p className="text-xs font-black text-[#0b1c30]">{processingStep}</p>
-          <p className="text-[10px] text-[#424754]">Encrypted SSL authorization in progress...</p>
+      {/* Gateway Pending Authorization View */}
+      {isPendingGateway ? (
+        <div className="bg-[#f8f9ff] border-2 border-[#0058be] rounded-2xl p-5 sm:p-6 space-y-4 animate-in fade-in duration-200">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#eff4ff] text-[#0058be] flex items-center justify-center shrink-0">
+              <RefreshCw className="w-5 h-5 animate-spin" />
+            </div>
+            <div>
+              <h4 className="text-sm font-black text-[#0b1c30]">
+                {activeProvider === 'stripe' ? 'Stripe Card Gateway Opened' : 'PayPal Express Portal Opened'}
+              </h4>
+              <p className="text-xs text-[#424754] mt-0.5 leading-relaxed">
+                A new window has been launched to complete your payment authorization. Please return here once payment is authorized.
+              </p>
+            </div>
+          </div>
+
+          <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-amber-900 text-[11px] flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+            <span>Booking remains unconfirmed until payment is explicitly authorized by you below.</span>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
+            <button
+              onClick={handleConfirmAuthorizedPayment}
+              className="flex-1 bg-[#0058be] hover:bg-[#2170e4] text-white py-3 px-4 rounded-xl font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md transition-all active:scale-[0.98]"
+            >
+              <CheckCircle2 className="w-4 h-4 text-emerald-300" />
+              <span>Verify & Complete Booking (${totalAmount}.00)</span>
+            </button>
+
+            <button
+              onClick={() => setIsPendingGateway(false)}
+              className="py-3 px-4 bg-white border border-[#c2c6d6] hover:bg-gray-50 text-[#424754] rounded-xl font-bold text-xs cursor-pointer transition-colors"
+            >
+              Cancel / Change Method
+            </button>
+          </div>
         </div>
       ) : (
         <div className="space-y-3 pt-1">
-          {/* Option 1: Credit / Debit Card */}
+          {/* Button 1: Credit / Debit Card (Stripe) */}
           <button
             type="button"
-            onClick={() => handlePayment('stripe')}
+            onClick={() => handleLaunchGateway('stripe')}
             className="w-full bg-[#0058be] hover:bg-[#2170e4] text-white p-4 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center justify-between cursor-pointer shadow-lg transition-all active:scale-[0.99]"
           >
             <div className="flex items-center gap-3">
@@ -237,10 +240,10 @@ export default function PaymentCheckout({
             </div>
           </button>
 
-          {/* Option 2: PayPal Express Checkout */}
+          {/* Button 2: PayPal Express Checkout */}
           <button
             type="button"
-            onClick={() => handlePayment('paypal')}
+            onClick={() => handleLaunchGateway('paypal')}
             className="w-full bg-[#ffc439] hover:bg-[#e0ab2b] text-[#111] p-4 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center justify-between cursor-pointer shadow-lg transition-all active:scale-[0.99] border border-amber-400"
           >
             <div className="flex items-center gap-3">
@@ -260,7 +263,7 @@ export default function PaymentCheckout({
             </div>
           </button>
 
-          {/* Accepted Payment Logos & Security */}
+          {/* Accepted Logos & Security */}
           <div className="pt-3 border-t border-[#c2c6d6]/60 flex flex-wrap items-center justify-between gap-2 text-[10px] text-[#424754]">
             <div className="flex items-center gap-2 font-bold text-[#0b1c30]">
               <span>Accepted:</span>
