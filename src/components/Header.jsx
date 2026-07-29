@@ -173,7 +173,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
         >
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-[320px] sm:max-w-xs bg-white border border-slate-200 rounded-3xl p-5 shadow-2xl flex flex-col justify-between max-h-[85vh] overflow-y-auto animate-in slide-in-from-top-2 duration-200 text-slate-900 font-['Playfair_Display'] font-serif relative"
+            className="w-full max-w-[280px] bg-white border border-slate-200 rounded-3xl p-5 shadow-2xl flex flex-col justify-between max-h-[85vh] overflow-y-auto animate-in slide-in-from-top-2 duration-200 text-slate-900 font-['Playfair_Display'] font-serif relative"
           >
             <div className="space-y-1.5">
               <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2 px-2">
