@@ -120,49 +120,51 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               </div>
             </div>
 
-            {/* Trust Features Bar */}
-            <div className="border-t border-[#c2c6d6]/60 pt-8 mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {/* Feature 1: Professional Staff */}
-              <div className="flex items-center gap-3.5 text-left bg-white/70 backdrop-blur-md p-3.5 rounded-2xl border border-[#c2c6d6]/60 shadow-xs">
-                <div className="w-10 h-10 rounded-xl bg-white border border-[#c2c6d6] flex items-center justify-center text-[#0058be] shrink-0 shadow-xs">
-                  <Users className="w-5 h-5" />
+            {/* Trust Features Bar (Exact Mockup Layout: Single White Container Card) */}
+            <div className="mt-12 bg-white/90 backdrop-blur-md rounded-3xl p-6 border border-[#c2c6d6]/60 shadow-md">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#c2c6d6]/40 gap-6 sm:gap-0">
+                {/* Feature 1: Professional Staff */}
+                <div className="flex items-center gap-4 text-left sm:px-4 first:pl-0">
+                  <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0 shadow-xs">
+                    <Users className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <span className="font-extrabold text-sm text-[#0b1c30] block mb-0.5">Professional Staff</span>
+                    <span className="text-xs text-[#424754] block leading-tight font-normal">Trained and verified drivers &amp; movers</span>
+                  </div>
                 </div>
-                <div>
-                  <span className="font-extrabold text-xs text-[#0b1c30] block mb-0.5">Professional Staff</span>
-                  <span className="text-[11px] text-[#424754] block leading-tight font-medium">Trained and verified drivers &amp; movers</span>
-                </div>
-              </div>
 
-              {/* Feature 2: Secure Payments */}
-              <div className="flex items-center gap-3.5 text-left bg-white/70 backdrop-blur-md p-3.5 rounded-2xl border border-[#c2c6d6]/60 shadow-xs">
-                <div className="w-10 h-10 rounded-xl bg-white border border-[#c2c6d6] flex items-center justify-center text-[#0058be] shrink-0 shadow-xs">
-                  <Lock className="w-5 h-5" />
+                {/* Feature 2: Secure Payments */}
+                <div className="flex items-center gap-4 text-left sm:px-4 pt-4 sm:pt-0">
+                  <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0 shadow-xs">
+                    <Lock className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <span className="font-extrabold text-sm text-[#0b1c30] block mb-0.5">Secure Payments</span>
+                    <span className="text-xs text-[#424754] block leading-tight font-normal">Pay online securely with Stripe</span>
+                  </div>
                 </div>
-                <div>
-                  <span className="font-extrabold text-xs text-[#0b1c30] block mb-0.5">Secure Payments</span>
-                  <span className="text-[11px] text-[#424754] block leading-tight font-medium">Pay online securely with Stripe</span>
-                </div>
-              </div>
 
-              {/* Feature 3: Real-time Tracking */}
-              <div className="flex items-center gap-3.5 text-left bg-white/70 backdrop-blur-md p-3.5 rounded-2xl border border-[#c2c6d6]/60 shadow-xs">
-                <div className="w-10 h-10 rounded-xl bg-white border border-[#c2c6d6] flex items-center justify-center text-[#0058be] shrink-0 shadow-xs">
-                  <MapPin className="w-5 h-5" />
+                {/* Feature 3: Real-time Tracking */}
+                <div className="flex items-center gap-4 text-left sm:px-4 pt-4 sm:pt-0">
+                  <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0 shadow-xs">
+                    <MapPin className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <span className="font-extrabold text-sm text-[#0b1c30] block mb-0.5">Real-time Tracking</span>
+                    <span className="text-xs text-[#424754] block leading-tight font-normal">Track your driver or tow truck live</span>
+                  </div>
                 </div>
-                <div>
-                  <span className="font-extrabold text-xs text-[#0b1c30] block mb-0.5">Real-time Tracking</span>
-                  <span className="text-[11px] text-[#424754] block leading-tight font-medium">Track your driver live on OpenStreetMap</span>
-                </div>
-              </div>
 
-              {/* Feature 4: 24/7 Support */}
-              <div className="flex items-center gap-3.5 text-left bg-white/70 backdrop-blur-md p-3.5 rounded-2xl border border-[#c2c6d6]/60 shadow-xs">
-                <div className="w-10 h-10 rounded-xl bg-white border border-[#c2c6d6] flex items-center justify-center text-[#0058be] shrink-0 shadow-xs">
-                  <Clock className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="font-extrabold text-xs text-[#0b1c30] block mb-0.5">24/7 Support</span>
-                  <span className="text-[11px] text-[#424754] block leading-tight font-medium">We're here for you anytime</span>
+                {/* Feature 4: 24/7 Support */}
+                <div className="flex items-center gap-4 text-left sm:px-4 pt-4 sm:pt-0 last:pr-0">
+                  <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0 shadow-xs">
+                    <Clock className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <span className="font-extrabold text-sm text-[#0b1c30] block mb-0.5">24/7 Support</span>
+                    <span className="text-xs text-[#424754] block leading-tight font-normal">We're here for you anytime</span>
+                  </div>
                 </div>
               </div>
             </div>
