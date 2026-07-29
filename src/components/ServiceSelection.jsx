@@ -19,7 +19,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               {/* Left Column: Text Content, CTAs, and Service Cards */}
               <div className="lg:col-span-7 text-left">
                 {/* Verified Logistics Badge */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#dce9ff] text-[#0058be] mb-4 md:mb-6 border border-[#0058be]/30 shadow-sm">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#f0f6ff]/90 backdrop-blur-md text-[#0058be] mb-4 md:mb-6 border border-[#0058be]/20 shadow-xs">
                   <CheckCircle2 className="w-4 h-4 text-[#0058be]" />
                   <span className="text-[11px] font-extrabold uppercase tracking-wider">Professional Logistics &amp; Recovery</span>
                 </div>
