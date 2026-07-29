@@ -12,112 +12,109 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex flex-col font-sans antialiased selection:bg-[#0058be] selection:text-white">
 
       <main className="flex-grow">
-        {/* Full-Width Background Layout using hero-image.png (As requested) */}
-        <section className="relative overflow-hidden min-h-[680px] lg:min-h-[740px] flex flex-col justify-center py-16 md:py-24 bg-[#0b1c30] border-b border-slate-800">
-          {/* Background Layer: Single Full-screen Image */}
-          <div className="absolute inset-0 z-0 select-none">
-            <img 
-              src="/hero-image.png" 
-              alt="Professional Logistics and Roadside Recovery Services"
-              className="w-full h-full object-cover object-[70%_center] md:object-center filter brightness-[1.05] contrast-[1.05]"
-            />
-            {/* Soft Blue Shadow & Gradient Overlay for optimal text contrast */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0b1c30]/75 via-[#0b1c30]/35 md:via-[#0b1c30]/45 to-transparent z-1 pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0b1c30]/85 via-transparent to-[#0b1c30]/30 z-1 pointer-events-none" />
-          </div>
-
-          {/* Foreground Overlay Content Layer (Shifted ~6% to the right for optimal breathing room) */}
+        {/* Modern 2-Column Hero Section with heroimage.png on the Right Side */}
+        <section className="relative overflow-hidden py-12 md:py-20 bg-gradient-to-b from-[#071220] via-[#0b1c30] to-[#0f243e] border-b border-slate-800 text-white">
           <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10 w-full">
-            <div className="max-w-3xl ml-0 md:ml-[5%] lg:ml-[7%] text-left">
-              {/* Verified Logistics Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0058be]/40 backdrop-blur-md text-[#adc6ff] mb-4 md:mb-6 border border-[#0058be]/50 shadow-sm">
-                <CheckCircle2 className="w-4 h-4 text-[#adc6ff]" />
-                <span className="text-[11px] font-bold uppercase tracking-wider">Professional Logistics &amp; Recovery</span>
-              </div>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+              {/* Left Column: Text Content, CTAs, and Service Cards */}
+              <div className="lg:col-span-7 text-left">
+                {/* Verified Logistics Badge */}
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0058be]/30 backdrop-blur-md text-[#adc6ff] mb-4 md:mb-6 border border-[#0058be]/40 shadow-sm">
+                  <CheckCircle2 className="w-4 h-4 text-[#adc6ff]" />
+                  <span className="text-[11px] font-bold uppercase tracking-wider">Professional Logistics &amp; Recovery</span>
+                </div>
 
-              {/* Mobile Dedicated Featured Visual Hero Banner */}
-              <div className="md:hidden mb-6 rounded-2xl overflow-hidden border border-white/25 shadow-2xl relative h-48 sm:h-56 group">
-                <img 
-                  src="/hero-image.png" 
-                  alt="MoveVan Pro Logistics Fleet" 
-                  className="w-full h-full object-cover object-[70%_center] filter brightness-[1.08] contrast-[1.05]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0b1c30]/90 via-transparent to-transparent flex items-end p-3.5">
-                  <span className="text-[11px] font-extrabold text-[#adc6ff] flex items-center gap-1.5 bg-[#0b1c30]/85 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/15 shadow-md">
-                    <Truck className="w-3.5 h-3.5 text-[#3b82f6]" /> London Logistics &amp; Recovery Fleet
-                  </span>
+                {/* Headlines */}
+                <h1 className="text-4xl sm:text-5xl md:text-[54px] leading-tight font-bold mb-2 text-white font-['Playfair_Display']">
+                  Moving Made Easy.
+                </h1>
+                <h2 className="text-2xl sm:text-3xl md:text-[34px] font-bold mb-5 text-[#adc6ff] font-['Playfair_Display']">
+                  We Move, You Relax.
+                </h2>
+
+                {/* Paragraph */}
+                <p className="text-base md:text-lg text-slate-300 max-w-xl mb-8 leading-relaxed font-normal">
+                  Professional moving services with van, driver and movers. Or get fast vehicle recovery with our tow trucks – anytime, anywhere.
+                </p>
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                  <button 
+                    onClick={() => onSelectService('moving')}
+                    className="bg-[#0058be] text-white px-8 py-3.5 rounded-xl font-bold text-sm hover:bg-[#2170e4] transition-all duration-300 shadow-xl shadow-[#0058be]/30 flex items-center justify-center gap-3 group cursor-pointer"
+                  >
+                    <Truck className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    Book a Move
+                  </button>
+
+                  <button 
+                    onClick={() => onSelectService('towing')}
+                    className="bg-white/10 backdrop-blur-lg text-white border border-white/30 px-8 py-3.5 rounded-xl font-bold text-sm hover:bg-white/20 transition-all duration-300 shadow-xl flex items-center justify-center gap-3 group cursor-pointer"
+                  >
+                    <AlertTriangle className="w-5 h-5 text-amber-400 group-hover:translate-x-1 transition-transform" />
+                    Book a Tow Truck
+                  </button>
+                </div>
+
+                {/* Side-by-Side Mini Service Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
+                  {/* Card 1: Moving Services */}
+                  <div 
+                    onClick={() => onSelectService('moving')}
+                    className="bg-[#071220]/80 backdrop-blur-lg border border-white/15 rounded-2xl p-5 flex gap-4 cursor-pointer hover:border-[#3b82f6] hover:bg-[#071220] hover:shadow-xl transition-all duration-300 group"
+                  >
+                    <div className="w-11 h-11 rounded-xl bg-white/10 border border-white/15 text-[#3b82f6] flex items-center justify-center shrink-0">
+                      <Truck className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-extrabold text-sm text-white mb-1">Moving Services</h4>
+                      <p className="text-[12px] text-slate-300 leading-tight mb-2 font-normal">
+                        Van with driver and up to 2 movers for homes, apartments and offices.
+                      </p>
+                      <span className="text-[12px] font-bold text-[#3b82f6] flex items-center gap-1 group-hover:underline">
+                        Get a Quote <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Card 2: Roadside Recovery */}
+                  <div 
+                    onClick={() => onSelectService('towing')}
+                    className="bg-[#071220]/80 backdrop-blur-lg border border-white/15 rounded-2xl p-5 flex gap-4 cursor-pointer hover:border-emerald-400 hover:bg-[#071220] hover:shadow-xl transition-all duration-300 group"
+                  >
+                    <div className="w-11 h-11 rounded-xl bg-white/10 border border-white/15 text-emerald-400 flex items-center justify-center shrink-0">
+                      <AlertTriangle className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-extrabold text-sm text-white mb-1">Roadside Recovery</h4>
+                      <p className="text-[12px] text-slate-300 leading-tight mb-2 font-normal">
+                        Fast vehicle recovery and transport with our flatbed tow trucks.
+                      </p>
+                      <span className="text-[12px] font-bold text-emerald-400 flex items-center gap-1 group-hover:underline">
+                        Book Rescue <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Headlines */}
-              <h1 className="text-4xl sm:text-5xl md:text-[58px] leading-tight font-bold mb-2 text-white drop-shadow-xl font-['Playfair_Display']">
-                Moving Made Easy.
-              </h1>
-              <h2 className="text-2xl sm:text-3xl md:text-[36px] font-bold mb-6 text-[#adc6ff] drop-shadow-md font-['Playfair_Display']">
-                We Move, You Relax.
-              </h2>
-
-              {/* Reduced Paragraph Width for Scannability & Clean Composition */}
-              <p className="text-base md:text-lg text-slate-200 max-w-md mb-8 drop-shadow-md leading-relaxed font-normal">
-                Professional moving services with van, driver and movers. Or get fast vehicle recovery with our tow trucks – anytime, anywhere.
-              </p>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <button 
-                  onClick={() => onSelectService('moving')}
-                  className="bg-[#0058be] text-white px-8 py-3.5 rounded-xl font-bold text-sm hover:bg-[#2170e4] transition-all duration-300 shadow-xl shadow-[#0058be]/30 flex items-center justify-center gap-3 group cursor-pointer"
-                >
-                  <Truck className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  Book a Move
-                </button>
-
-                <button 
-                  onClick={() => onSelectService('towing')}
-                  className="bg-white/10 backdrop-blur-lg text-white border border-white/30 px-8 py-3.5 rounded-xl font-bold text-sm hover:bg-white/20 transition-all duration-300 shadow-xl flex items-center justify-center gap-3 group cursor-pointer"
-                >
-                  <AlertTriangle className="w-5 h-5 text-amber-400 group-hover:translate-x-1 transition-transform" />
-                  Book a Tow Truck
-                </button>
-              </div>
-
-              {/* Side-by-Side Mini Service Cards (Balanced Glassmorphism Style) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mb-8">
-                {/* Card 1: Moving Services */}
-                <div 
-                  onClick={() => onSelectService('moving')}
-                  className="bg-[#071220]/60 backdrop-blur-lg border border-white/20 rounded-2xl p-5 flex gap-4 cursor-pointer hover:border-[#3b82f6] hover:bg-[#071220]/80 hover:shadow-xl transition-all duration-300 group"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-white/10 border border-white/15 text-[#3b82f6] flex items-center justify-center shrink-0">
-                    <Truck className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-extrabold text-sm text-white mb-1">Moving Services</h4>
-                    <p className="text-[12px] text-slate-300 leading-tight mb-2 font-normal">
-                      Van with driver and up to 2 movers for homes, apartments and offices.
-                    </p>
-                    <span className="text-[12px] font-bold text-[#3b82f6] flex items-center gap-1 group-hover:underline">
-                      Get a Quote <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </span>
-                  </div>
-                </div>
-
-                {/* Card 2: Roadside Recovery */}
-                <div 
-                  onClick={() => onSelectService('towing')}
-                  className="bg-[#071220]/60 backdrop-blur-lg border border-white/20 rounded-2xl p-5 flex gap-4 cursor-pointer hover:border-emerald-400 hover:bg-[#071220]/80 hover:shadow-xl transition-all duration-300 group"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-white/10 border border-white/15 text-emerald-400 flex items-center justify-center shrink-0">
-                    <AlertTriangle className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-extrabold text-sm text-white mb-1">Roadside Recovery</h4>
-                    <p className="text-[12px] text-slate-300 leading-tight mb-2 font-normal">
-                      Fast vehicle recovery and transport with our flatbed tow trucks.
-                    </p>
-                    <span className="text-[12px] font-bold text-emerald-400 flex items-center gap-1 group-hover:underline">
-                      Book Rescue <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </span>
+              {/* Right Column: Dedicated Standalone heroimage.png Container */}
+              <div className="lg:col-span-5 relative flex justify-center">
+                <div className="relative rounded-3xl overflow-hidden border border-white/20 shadow-2xl shadow-[#0058be]/30 w-full max-w-lg group bg-[#071220]">
+                  <img 
+                    src="/heroimage.png" 
+                    alt="MoveVan Pro Logistics & Recovery Services" 
+                    className="w-full h-auto object-cover max-h-[520px] rounded-3xl transform group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b1c30]/90 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute bottom-4 left-4 right-4 bg-[#071220]/90 backdrop-blur-md p-3.5 rounded-2xl border border-white/20 text-white flex items-center gap-3 shadow-lg">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#0058be] to-[#2170e4] flex items-center justify-center shrink-0 shadow-md">
+                      <Truck className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <span className="font-extrabold text-xs block text-white">London Fast Moving &amp; Recovery Fleet</span>
+                      <span className="text-[11px] text-[#adc6ff] block font-medium">24/7 Guaranteed Response Across Greater London</span>
+                    </div>
                   </div>
                 </div>
               </div>
