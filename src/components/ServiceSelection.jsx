@@ -12,159 +12,179 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex flex-col font-sans antialiased selection:bg-[#0058be] selection:text-white">
 
       <main className="flex-grow">
-        {/* Modern Clean White Hero Section (Pure White Theme, Ultra-Crisp & High Contrast) */}
-        <section className="relative overflow-hidden py-12 md:py-20 bg-[#ffffff] border-b border-slate-200/80 text-slate-900">
-          <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10 w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-              {/* Left Column: Text Content, CTAs, and Service Cards */}
-              <div className="lg:col-span-6 text-left">
-                {/* Verified Logistics Badge */}
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100/90 text-[#0058be] mb-5 border border-slate-200 shadow-2xs">
-                  <CheckCircle2 className="w-4 h-4 text-[#0058be]" />
-                  <span className="text-[11px] font-extrabold uppercase tracking-wider">Professional Logistics &amp; Recovery</span>
-                </div>
+        {/* Modern Mesh Gradient Hero Section */}
+        <section className="relative overflow-hidden pt-6 pb-2 md:pt-10 md:pb-3 lg:pb-4 xl:pb-6 mesh-bg border-b border-slate-200/80 text-slate-900 min-h-[600px] lg:min-h-[600px] xl:min-h-[640px] flex flex-col justify-start">
+          {/* Ambient Background Radial Glow Blobs */}
+          <div className="absolute top-10 right-[10%] w-96 h-96 bg-[#0058be]/15 rounded-full blur-3xl pointer-events-none z-0" />
+          <div className="absolute bottom-10 left-[5%] w-[450px] h-[450px] bg-amber-500/10 rounded-full blur-3xl pointer-events-none z-0" />
 
-                {/* Headlines */}
-                <h1 className="text-4xl sm:text-5xl md:text-[56px] leading-tight font-extrabold mb-2 text-slate-900 font-['Playfair_Display'] font-serif">
-                  Moving Made Easy.
-                </h1>
-                <h2 className="text-2xl sm:text-3xl md:text-[36px] font-bold mb-5 text-[#0058be] font-['Playfair_Display'] font-serif">
-                  We Move, You Relax.
-                </h2>
+          {/* White shadow/glow backdrop behind text on screens <= 1024px to make text 100% clear and readable */}
+          <div className="absolute inset-y-0 left-0 w-full sm:w-[85%] md:w-[75%] lg:hidden bg-gradient-to-r from-white/90 via-white/75 via-white/60 to-transparent pointer-events-none z-10" />
 
-                {/* Paragraph */}
-                <p className="text-base md:text-lg text-slate-600 max-w-xl mb-8 leading-relaxed font-normal">
-                  Professional moving services with van, driver and movers. Or get fast vehicle recovery with our tow trucks – anytime, anywhere.
-                </p>
+          {/* 3D Hero Van Visual Background (High Opacity on Desktop, Low Opacity on Tablet/Mobile) */}
+          <div 
+            className="absolute right-[1%] sm:right-[3%] lg:right-[5%] top-1/2 sm:top-[calc(50%+10px)] md:top-1/2 -translate-y-1/2 w-[89%] max-[500px]:w-[92%] sm:w-[74%] md:w-[66%] lg:w-[52%] xl:w-[48%] max-w-6xl h-auto pointer-events-none z-0 flex justify-end opacity-55 sm:opacity-65 lg:opacity-95"
+          >
+            <img 
+              src="/hero-image.png" 
+              alt="MoveVan Pro Professional Service Fleet" 
+              className="w-full h-auto object-contain drop-shadow-2xl -translate-x-1 sm:-translate-x-3 lg:-translate-x-5 scale-116 max-[500px]:scale-118 sm:scale-110 lg:scale-115"
+            />
+          </div>
 
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                  <button 
-                    onClick={() => onSelectService('moving')}
-                    className="bg-[#0058be] hover:bg-[#00469b] text-white px-8 py-3.5 rounded-xl font-extrabold text-sm transition-all duration-200 shadow-lg shadow-[#0058be]/20 flex items-center justify-center gap-3 cursor-pointer"
-                  >
-                    <Truck className="w-5 h-5" />
-                    Book a Move
-                  </button>
+          {/* Stat Pills Positioned on the Left Side on Mobile/Tablet, Right Side on Desktop (Elevated to avoid trust bar overlap) */}
+          <div className="absolute left-6 lg:left-auto lg:right-12 bottom-[150px] sm:bottom-[108px] z-20 hidden min-[501px]:flex flex-col min-[501px]:flex-row items-start lg:items-center gap-2 min-[501px]:gap-3">
+            <div className="bg-white/95 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/90 shadow-md flex items-center gap-2 text-xs font-bold text-slate-800">
+              <Clock className="w-4 h-4 text-[#0058be]" />
+              <span>Avg. Response: <strong className="text-[#0058be] font-playfair font-bold">24 Mins</strong></span>
+            </div>
+            <div className="bg-white/95 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/90 shadow-md flex items-center gap-2 text-xs font-bold text-slate-800">
+              <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+              <span>Rating: <strong className="text-amber-700 font-playfair font-bold">4.9/5 Trustpilot</strong></span>
+            </div>
+          </div>
 
+          <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10 w-full flex-grow flex flex-col justify-between max-md:min-h-[600px]">
+            <div className="max-w-xl text-left flex flex-col relative z-10">
+              {/* Verified Logistics Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card text-[#0058be] mb-4 sm:mb-5 border border-[#0058be]/20 shadow-2xs self-start">
+                <ShieldCheck className="w-4 h-4 text-[#0058be]" />
+                <span className="text-[11px] font-extrabold uppercase tracking-wider">Elite Logistics &amp; Recovery</span>
+              </div>
+
+              {/* Headlines (Playfair Serif Display Font Style) */}
+              <h1 className="text-4xl sm:text-5xl md:text-[58px] leading-[1.08] font-extrabold mb-1 text-[#0b1c30] font-playfair tracking-tight">
+                Moving Made Easy.
+              </h1>
+              <h2 className="text-2xl sm:text-3xl md:text-[40px] font-bold mb-4 sm:mb-5 text-[#0058be] font-playfair tracking-tight">
+                We Move, You Relax.
+              </h2>
+
+              {/* Paragraph */}
+              <p className="text-base md:text-lg text-[#0b1c30]/95 leading-relaxed font-normal max-w-xl mb-6" style={{fontFamily: "'Roboto', sans-serif", textShadow: "0 0 18px rgba(255,255,255,0.95), 0 0 30px rgba(255,255,255,0.8), 0 0 6px rgba(255,255,255,1)"}}>
+                Experience white-glove logistics with our professional fleet. From seamless residential moves to urgent 24/7 recovery, we handle the heavy lifting with precision.
+              </p>
+
+
+              {/* Action Buttons (Playfair Serif Display Font Style - Smaller & Pushed Down on Mobile/Tablet <= 1024px) */}
+              <div className="flex flex-row items-center justify-start gap-2.5 mb-5 w-full max-w-[290px] sm:max-w-[340px] lg:max-w-[420px] mt-24 max-[500px]:mt-36 sm:mt-24 md:mt-1.5">
+                <button 
+                  onClick={() => onSelectService('moving')}
+                  className="flex-1 bg-[#0058be] hover:bg-[#2170e4] text-white px-3 py-2 sm:px-4 sm:py-2.5 lg:px-6 lg:py-3.5 rounded-xl font-playfair font-bold text-[10px] sm:text-xs lg:text-sm transition-all duration-300 shadow-md shadow-[#0058be]/20 flex items-center justify-center gap-1.5 hover:scale-[1.02] cursor-pointer group tracking-tight"
+                >
+                  <Truck className="w-3.5 h-3.5 lg:w-4.5 lg:h-4.5 group-hover:translate-x-1 transition-transform shrink-0" />
+                  <span className="whitespace-nowrap font-bold">Book a Move</span>
+                </button>
+ 
+                <div className="relative flex-1 group">
                   <button 
                     onClick={() => onSelectService('towing')}
-                    className="bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 px-8 py-3.5 rounded-xl font-bold text-sm transition-all duration-200 shadow-sm flex items-center justify-center gap-3 cursor-pointer"
+                    className="w-full glass-card text-[#0b1c30] border border-slate-300/80 px-3 py-2 sm:px-4 sm:py-2.5 lg:px-6 lg:py-3.5 rounded-xl font-playfair font-bold text-[10px] sm:text-xs lg:text-sm hover:bg-white transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs tracking-tight"
                   >
-                    <AlertTriangle className="w-5 h-5 text-amber-600" />
-                    Book a Tow Truck
+                    <AlertTriangle className="w-3.5 h-3.5 lg:w-4.5 lg:h-4.5 text-amber-700 group-hover:translate-x-1 transition-transform shrink-0" />
+                    <span className="whitespace-nowrap font-bold">Emergency Towing</span>
                   </button>
-                </div>
-
-                {/* Side-by-Side Mini Service Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
-                  {/* Card 1: Moving Services */}
-                  <div 
-                    onClick={() => onSelectService('moving')}
-                    className="bg-white border border-slate-200/90 rounded-2xl p-5 flex gap-4 cursor-pointer hover:border-[#0058be] hover:shadow-xl transition-all duration-200 group shadow-2xs"
-                  >
-                    <div className="w-11 h-11 rounded-xl bg-[#eff4ff] border border-[#dce9ff] text-[#0058be] flex items-center justify-center shrink-0">
-                      <Truck className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-extrabold text-sm text-slate-900 mb-1">Moving Services</h4>
-                      <p className="text-[12px] text-slate-500 leading-tight mb-2 font-normal">
-                        Van with driver and up to 2 movers for homes, apartments and offices.
-                      </p>
-                      <span className="text-[12px] font-bold text-[#0058be] flex items-center gap-1 group-hover:underline">
-                        Get a Quote <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Card 2: Roadside Recovery */}
-                  <div 
-                    onClick={() => onSelectService('towing')}
-                    className="bg-white border border-slate-200/90 rounded-2xl p-5 flex gap-4 cursor-pointer hover:border-amber-500 hover:shadow-xl transition-all duration-200 group shadow-2xs"
-                  >
-                    <div className="w-11 h-11 rounded-xl bg-[#fff7ed] border border-[#ffddb8] text-amber-700 flex items-center justify-center shrink-0">
-                      <AlertTriangle className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-extrabold text-sm text-slate-900 mb-1">Roadside Recovery</h4>
-                      <p className="text-[12px] text-slate-500 leading-tight mb-2 font-normal">
-                        Fast vehicle recovery and transport with our flatbed tow trucks.
-                      </p>
-                      <span className="text-[12px] font-bold text-amber-700 flex items-center gap-1 group-hover:underline">
-                        Book Rescue <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                      </span>
-                    </div>
+                  <div className="absolute -top-3 -right-1 bg-[#825100] text-white text-[8px] sm:text-[9px] font-extrabold px-1.5 py-0.5 rounded-full shadow-md border border-[#ffddb8] flex items-center gap-0.5 animate-bounce z-20 pointer-events-none">
+                    <Zap className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-amber-300" />
+                    Rapid Response
                   </div>
                 </div>
               </div>
 
-              {/* Right Column: Clean Standalone hero-image.png Visual + Floating Glass Badge */}
-              <div className="lg:col-span-6 relative flex justify-center items-center -mt-6 sm:-mt-10 lg:mt-0">
-                <div className="relative w-full max-w-xl lg:max-w-2xl group">
-                  <img 
-                    src="/hero-image.png" 
-                    alt="MoveVan Pro Professional Logistics &amp; Recovery Services" 
-                    className="w-full h-auto max-h-[560px] object-contain rounded-3xl"
-                  />
-                  {/* Floating Glassmorphism Badge */}
-                  <div className="absolute -bottom-4 left-3 right-3 sm:left-6 sm:right-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-slate-200 text-slate-900 flex items-center gap-3.5 shadow-xl z-10">
-                    <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-[#0058be] to-[#2170e4] flex items-center justify-center shrink-0 shadow-md">
-                      <Truck className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <span className="font-extrabold text-xs block text-slate-900">London Fast Moving &amp; Recovery Fleet</span>
-                      <span className="text-[11px] text-[#0058be] block font-bold">24/7 Guaranteed Response Across Greater London</span>
-                    </div>
+              {/* Active Vehicles Indicator */}
+              <div className="flex items-center gap-2 text-xs font-extrabold text-slate-700">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span>142 Vehicles Active in London</span>
+              </div>
+            </div>
+
+
+            {/* Transparent Trust Features Bar (No White Background Card) */}
+            <div className="mt-auto">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 pt-6 border-t border-slate-200/60">
+                <div className="flex items-center gap-3 text-left">
+                  <div className="w-10 h-10 rounded-xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0">
+                    <Users className="w-4.5 h-4.5" />
+                  </div>
+                  <div>
+                    <span className="font-bold text-xs text-slate-900 block whitespace-nowrap">Professional Staff</span>
+                    <span className="text-[11px] text-slate-500 block leading-tight font-normal">Trained drivers &amp; movers</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 text-left">
+                  <div className="w-10 h-10 rounded-xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0">
+                    <Lock className="w-4.5 h-4.5" />
+                  </div>
+                  <div>
+                    <span className="font-bold text-xs text-slate-900 block whitespace-nowrap">Secure Payments</span>
+                    <span className="text-[11px] text-slate-500 block leading-tight font-normal">Pay via Stripe</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 text-left">
+                  <div className="w-10 h-10 rounded-xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0">
+                    <MapPin className="w-4.5 h-4.5" />
+                  </div>
+                  <div>
+                    <span className="font-bold text-xs text-slate-900 block whitespace-nowrap">Real-time Tracking</span>
+                    <span className="text-[11px] text-slate-500 block leading-tight font-normal">Live GPS dispatch</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 text-left">
+                  <div className="w-10 h-10 rounded-xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0">
+                    <Clock className="w-4.5 h-4.5" />
+                  </div>
+                  <div>
+                    <span className="font-bold text-xs text-slate-900 block whitespace-nowrap">24/7 Support</span>
+                    <span className="text-[11px] text-slate-500 block leading-tight font-normal">Here anytime</span>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* Trust Features Bar */}
-            <div className="mt-12 bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-xs">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
-                {/* Feature 1: Professional Staff */}
-                <div className="flex items-center gap-3.5 text-left">
-                  <div className="w-11 h-11 rounded-xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0">
-                    <Users className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="font-extrabold text-sm text-slate-900 block mb-0.5 whitespace-nowrap">Professional Staff</span>
-                    <span className="text-xs text-slate-500 block leading-tight font-normal">Trained and verified drivers &amp; movers</span>
-                  </div>
+        {/* Dedicated Service Cards Section - Positioned Cleanly Below Hero */}
+        <section className="py-12 bg-slate-50/80 border-b border-slate-200">
+          <div className="max-w-5xl mx-auto px-4 md:px-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Moving Services Card */}
+              <div 
+                onClick={() => onSelectService('moving')}
+                className="bg-white border border-slate-200/90 rounded-2xl p-6 flex items-start gap-4 cursor-pointer hover:border-[#0058be] hover:shadow-xl transition-all duration-300 group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-[#eff4ff] border border-[#dce9ff] text-[#0058be] flex items-center justify-center shrink-0">
+                  <Truck className="w-6 h-6" />
                 </div>
-
-                {/* Feature 2: Secure Payments */}
-                <div className="flex items-center gap-3.5 text-left">
-                  <div className="w-11 h-11 rounded-xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0">
-                    <Lock className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="font-extrabold text-sm text-slate-900 block mb-0.5 whitespace-nowrap">Secure Payments</span>
-                    <span className="text-xs text-slate-500 block leading-tight font-normal">Pay online securely with Stripe</span>
-                  </div>
+                <div>
+                  <h3 className="font-playfair font-extrabold text-lg text-[#0b1c30] mb-1">Moving Services</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-3">
+                    Residential and commercial logistics handled by professionals. Van with driver and up to 2 movers.
+                  </p>
+                  <span className="text-xs font-extrabold text-[#0058be] flex items-center gap-1.5 group-hover:translate-x-1 transition-transform">
+                    Get Quote <ArrowRight className="w-4 h-4" />
+                  </span>
                 </div>
+              </div>
 
-                {/* Feature 3: Real-time Tracking */}
-                <div className="flex items-center gap-3.5 text-left">
-                  <div className="w-11 h-11 rounded-xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0">
-                    <MapPin className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="font-extrabold text-sm text-slate-900 block mb-0.5 whitespace-nowrap">Real-time Tracking</span>
-                    <span className="text-xs text-slate-500 block leading-tight font-normal">Track your driver or tow truck live</span>
-                  </div>
+              {/* Roadside Recovery Card */}
+              <div 
+                onClick={() => onSelectService('towing')}
+                className="bg-white border border-slate-200/90 rounded-2xl p-6 flex items-start gap-4 cursor-pointer hover:border-amber-500 hover:shadow-xl transition-all duration-300 group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-[#fff7ed] border border-[#ffddb8] text-amber-700 flex items-center justify-center shrink-0">
+                  <AlertTriangle className="w-6 h-6" />
                 </div>
-
-                {/* Feature 4: 24/7 Support */}
-                <div className="flex items-center gap-3.5 text-left">
-                  <div className="w-11 h-11 rounded-xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0">
-                    <Clock className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="font-extrabold text-sm text-slate-900 block mb-0.5 whitespace-nowrap">24/7 Support</span>
-                    <span className="text-xs text-slate-500 block leading-tight font-normal">We're here for you anytime</span>
-                  </div>
+                <div>
+                  <h3 className="font-playfair font-extrabold text-lg text-[#0b1c30] mb-1">Roadside Recovery</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-3">
+                    Specialized flatbed transport for any vehicle emergency. 24/7 fast dispatch across Greater London.
+                  </p>
+                  <span className="text-xs font-extrabold text-amber-700 flex items-center gap-1.5 group-hover:translate-x-1 transition-transform">
+                    Book Rescue <ArrowRight className="w-4 h-4" />
+                  </span>
                 </div>
               </div>
             </div>
@@ -175,7 +195,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
         {/* Service Cards Section */}
         <section className="py-20 max-w-7xl mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-extrabold text-[#0b1c30] mb-3">Our Core London Services</h2>
+            <h2 className="text-3xl font-extrabold text-[#0b1c30] mb-3 font-playfair">Our Core London Services</h2>
             <p className="text-sm text-[#565e74] max-w-xl mx-auto">
               Select your required service below for an instant, transparent quote powered by our London dispatch platform.
             </p>
@@ -202,7 +222,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               <div className="p-8 flex flex-col flex-grow">
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <h3 className="text-2xl font-bold text-[#0b1c30] mb-1">Professional Moving</h3>
+                    <h3 className="text-2xl font-bold text-[#0b1c30] mb-1 font-playfair">Professional Moving</h3>
                     <p className="text-xs text-[#565e74]">Home, apartment, and commercial office relocations across London.</p>
                   </div>
                   <div className="p-3 bg-[#dce9ff] text-[#0058be] rounded-2xl shrink-0">
@@ -231,7 +251,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
 
                 <button 
                   onClick={() => onSelectService('moving')}
-                  className="w-full bg-[#0058be] hover:bg-[#2170e4] text-white py-4 px-6 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md group/btn"
+                  className="w-full bg-[#0058be] hover:bg-[#2170e4] text-white py-4 px-6 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md group/btn font-playfair"
                 >
                   Configure Moving Quote
                   <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1.5 transition-transform" />
@@ -259,7 +279,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               <div className="p-8 flex flex-col flex-grow">
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <h3 className="text-2xl font-bold text-[#0b1c30] mb-1">Roadside Recovery</h3>
+                    <h3 className="text-2xl font-bold text-[#0b1c30] mb-1 font-playfair">Roadside Recovery</h3>
                     <p className="text-xs text-[#565e74]">Rapid emergency breakdown, EV, and accident recovery in London.</p>
                   </div>
                   <div className="p-3 bg-[#ffddb8] text-[#825100] rounded-2xl shrink-0">
@@ -288,7 +308,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
 
                 <button 
                   onClick={() => onSelectService('towing')}
-                  className="w-full bg-[#825100] hover:bg-[#a36700] text-white py-4 px-6 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md group/btn"
+                  className="w-full bg-[#825100] hover:bg-[#a36700] text-white py-4 px-6 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md group/btn font-playfair"
                 >
                   Request Emergency Recovery
                   <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1.5 transition-transform" />
@@ -306,7 +326,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                 <MapPin className="w-4 h-4" />
                 London Boroughs & M25 Motorway
               </div>
-              <h2 className="text-3xl font-extrabold text-[#0b1c30]">Full Greater London Coverage</h2>
+              <h2 className="text-3xl font-extrabold text-[#0b1c30] font-playfair">Full Greater London Coverage</h2>
               <p className="text-sm text-[#424754] leading-relaxed">
                 Our fleet is strategically stationed across Kensington, City of London, Canary Wharf, Camden, Westminster, and the M25 orbital corridor to guarantee immediate dispatch.
               </p>
@@ -366,7 +386,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
         <section className="bg-[#0b1c30] text-white py-20">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-extrabold mb-3">Why MoveVan Pro London?</h2>
+              <h2 className="text-3xl font-extrabold mb-3 font-playfair">Why MoveVan Pro London?</h2>
               <p className="text-sm text-[#adc6ff]">We are an enterprise operator with our own fleet — zero third-party gig workers.</p>
             </div>
 

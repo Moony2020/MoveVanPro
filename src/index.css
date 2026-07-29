@@ -41,6 +41,10 @@
   }
 }
 
+.font-playfair {
+  font-family: 'Playfair Display', Georgia, serif !important;
+}
+
 /* Custom Pulsing Markers for Maps */
 .map-marker-pulse {
   animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
@@ -78,13 +82,78 @@
   background: #727785;
 }
 
-/* Eliminate browser focus outlines and blinking tap highlights */
-*, button, a, input, select, textarea {
-  -webkit-tap-highlight-color: transparent !important;
+/* Custom Hero Styling & Animations */
+@keyframes pulse-ring {
+  0% { transform: scale(0.33); opacity: 1; }
+  80%, 100% { transform: scale(1.2); opacity: 0; }
 }
-button:focus, button:focus-visible, button:active,
-a:focus, a:focus-visible, a:active {
-  outline: none !important;
-  box-shadow: none !important;
+
+.pulse-ring::before {
+  content: '';
+  position: absolute;
+  left: -8px; 
+  top: -8px; 
+  width: 24px; 
+  height: 24px;
+  background-color: #4ade80;
+  border-radius: 50%;
+  animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
 }
+
+.headline-entry {
+  animation: entry-soft 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes entry-soft {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.floating-3d {
+  animation: float-hero 6s ease-in-out infinite;
+  filter: drop-shadow(0 20px 40px rgba(0, 88, 190, 0.15));
+}
+
+@keyframes float-hero {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(0.8deg); }
+}
+
+.mesh-bg {
+  background-color: #f8f9ff;
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(212,100%,90%,0.75) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(215,100%,93%,0.8) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, hsla(220,100%,92%,0.75) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, hsla(210,100%,95%,0.85) 0px, transparent 50%);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.82);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 30px rgba(31, 38, 135, 0.08);
+}
+
+.tilt-card {
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.tilt-card:hover {
+  transform: translateY(-6px) scale(1.015);
+  box-shadow: 0 16px 36px rgba(0, 88, 190, 0.12);
+}
+
+.hero-text-shadow {
+  text-shadow: 2px 2px 0px rgba(0, 88, 190, 0.05);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #0058be 0%, #2170e4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 
