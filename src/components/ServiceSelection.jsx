@@ -98,13 +98,25 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                 </div>
               </div>
 
-              {/* Right Column: Clean Standalone heroimage.png */}
+              {/* Right Column: Standalone heroimage.png with Floating Glassmorphism Badge */}
               <div className="lg:col-span-5 relative flex justify-center items-center">
-                <img 
-                  src="/heroimage.png" 
-                  alt="MoveVan Pro Logistics &amp; Recovery Services" 
-                  className="w-full h-auto max-h-[520px] object-contain max-w-lg drop-shadow-xl"
-                />
+                <div className="relative w-full max-w-lg group">
+                  <img 
+                    src="/heroimage.png" 
+                    alt="MoveVan Pro Logistics &amp; Recovery Services" 
+                    className="w-full h-auto max-h-[520px] object-contain drop-shadow-2xl rounded-3xl"
+                  />
+                  {/* Floating Glassmorphism Badge */}
+                  <div className="absolute bottom-3 left-3 right-3 bg-white/85 backdrop-blur-md p-3.5 rounded-2xl border border-[#c2c6d6]/85 text-[#0b1c30] flex items-center gap-3 shadow-xl">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#0058be] to-[#2170e4] flex items-center justify-center shrink-0 shadow-md">
+                      <Truck className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <span className="font-extrabold text-xs block text-[#0b1c30]">London Fast Moving &amp; Recovery Fleet</span>
+                      <span className="text-[11px] text-[#0058be] block font-bold">24/7 Guaranteed Response Across Greater London</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
