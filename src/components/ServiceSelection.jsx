@@ -98,19 +98,16 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                 </div>
               </div>
 
-              {/* Right Column: Prominent hero-image.png Visual + Floating Glass Badge */}
+              {/* Right Column: Clean Standalone hero-image.png Visual + Floating Glass Badge */}
               <div className="lg:col-span-6 relative flex justify-center items-center">
-                <div className="relative w-full max-w-xl lg:max-w-none group">
-                  <div className="relative rounded-3xl overflow-hidden border-2 border-white shadow-2xl shadow-[#0058be]/20 h-[380px] sm:h-[440px] lg:h-[480px]">
-                    <img 
-                      src="/hero-image.png" 
-                      alt="MoveVan Pro Professional Logistics &amp; Recovery Services" 
-                      className="w-full h-full object-cover object-[15%_center] transform group-hover:scale-[1.03] transition-transform duration-700 filter brightness-[1.05]"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0b1c30]/80 via-transparent to-transparent pointer-events-none" />
-                  </div>
+                <div className="relative w-full max-w-xl lg:max-w-2xl group">
+                  <img 
+                    src="/hero-image.png" 
+                    alt="MoveVan Pro Professional Logistics &amp; Recovery Services" 
+                    className="w-full h-auto max-h-[560px] object-contain rounded-3xl"
+                  />
                   {/* Floating Glassmorphism Badge */}
-                  <div className="absolute -bottom-4 left-3 right-3 sm:left-6 sm:right-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-[#c2c6d6] text-[#0b1c30] flex items-center gap-3.5 shadow-2xl z-10">
+                  <div className="absolute -bottom-4 left-3 right-3 sm:left-6 sm:right-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-[#c2c6d6] text-[#0b1c30] flex items-center gap-3.5 shadow-xl z-10">
                     <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-[#0058be] to-[#2170e4] flex items-center justify-center shrink-0 shadow-md">
                       <Truck className="w-6 h-6 text-white" />
                     </div>
