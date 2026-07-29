@@ -29,30 +29,30 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
 
   return (
     <header className="bg-white/95 backdrop-blur-md text-slate-900 border-b border-slate-200 sticky top-0 z-50 shadow-xs w-full max-w-full overflow-x-hidden transition-all">
-      <div className="w-full max-w-[1440px] mx-auto px-4 md:px-8 h-20 md:h-22 flex justify-between items-center gap-3 lg:gap-4">
+      <div className="w-full max-w-[1440px] mx-auto px-3 sm:px-4 md:px-6 h-18 md:h-20 flex justify-between items-center gap-2 lg:gap-3">
         {/* Premium Corporate Brand Logo */}
         <div 
           onClick={() => { setCurrentView('landing'); setMobileMenuOpen(false); }}
-          className="flex items-center gap-3 md:gap-3.5 cursor-pointer group shrink-0"
+          className="flex items-center gap-2.5 md:gap-3 cursor-pointer group shrink-0"
         >
-          <div className="w-11 h-11 md:w-12 md:h-12 rounded-2xl bg-[#0058be] text-white flex items-center justify-center shadow-md shadow-[#0058be]/25 border border-white/30 group-hover:scale-105 transition-all shrink-0">
-            <Truck className="w-5 h-5 md:w-6 md:h-6 text-white group-hover:translate-x-0.5 transition-transform" />
+          <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl bg-[#0058be] text-white flex items-center justify-center shadow-md shadow-[#0058be]/20 border border-white/20 group-hover:scale-105 transition-all shrink-0">
+            <Truck className="w-5 h-5 text-white group-hover:translate-x-0.5 transition-transform" />
           </div>
           <div className="flex flex-col shrink-0">
-            <div className="flex items-center gap-1.5">
-              <span className="font-extrabold text-lg md:text-2xl text-slate-900 leading-none tracking-tight whitespace-nowrap font-['Playfair_Display'] font-serif">
+            <div className="flex items-center gap-1">
+              <span className="font-extrabold text-base md:text-xl text-slate-900 leading-none tracking-tight whitespace-nowrap font-['Playfair_Display'] font-serif">
                 MoveVan<span className="text-[#0058be] font-bold ml-0.5">Pro</span>
               </span>
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse hidden sm:inline-block" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse hidden sm:inline-block" />
             </div>
-            <span className="text-[9px] md:text-[10px] font-extrabold text-slate-500 tracking-widest uppercase mt-0.5 whitespace-nowrap">
+            <span className="text-[8px] md:text-[9px] font-extrabold text-slate-500 tracking-widest uppercase mt-0.5 whitespace-nowrap">
               London Logistics
             </span>
           </div>
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2 shrink-0">
+        <nav className="hidden lg:flex items-center gap-1 xl:gap-2 shrink-0">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentView === item.id;
@@ -60,13 +60,13 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
               <button
                 key={item.id}
                 onClick={() => setCurrentView(item.id)}
-                className={`px-3 py-2.5 xl:px-3.5 xl:py-2.5 rounded-xl text-xs xl:text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap shrink-0 cursor-pointer ${
+                className={`px-2.5 py-2 xl:px-3 xl:py-2.5 rounded-xl text-xs xl:text-sm font-bold transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer ${
                   isActive 
                     ? 'bg-[#0058be] text-white shadow-xs' 
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
-                <Icon className={`w-4 h-4 shrink-0 ${item.color || ''}`} />
+                <Icon className={`w-3.5 h-3.5 xl:w-4 xl:h-4 shrink-0 ${item.color || ''}`} />
                 <span className="whitespace-nowrap">{item.shortLabel}</span>
               </button>
             );
@@ -74,48 +74,48 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
         </nav>
 
         {/* Desktop CTA Actions */}
-        <div className="hidden lg:flex items-center gap-2.5 xl:gap-3 shrink-0">
+        <div className="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
           <a 
             href="tel:08009176683" 
-            className="hidden xl:flex items-center gap-2 text-xs xl:text-sm font-bold text-slate-800 hover:text-slate-900 bg-slate-100/90 hover:bg-slate-200/80 px-3.5 py-2 rounded-xl border border-slate-200 transition-colors whitespace-nowrap shrink-0"
+            className="flex items-center gap-1.5 text-xs xl:text-sm font-bold text-slate-800 hover:text-slate-900 bg-slate-100/90 hover:bg-slate-200/80 px-3 py-2 rounded-xl border border-slate-200 transition-colors whitespace-nowrap shrink-0"
           >
-            <Phone className="w-4 h-4 text-[#0058be] shrink-0" />
+            <Phone className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-[#0058be] shrink-0" />
             <span className="whitespace-nowrap">0800 917 6683</span>
           </a>
 
           {/* User Account / Log In Button */}
           {currentUser ? (
-            <div className="flex items-center gap-2 bg-slate-100 border border-slate-200 px-3 py-2 rounded-xl text-xs xl:text-sm shrink-0">
-              <div className="w-6 h-6 rounded-full bg-[#0058be] text-white flex items-center justify-center text-xs font-bold shrink-0">
+            <div className="flex items-center gap-1.5 bg-slate-100 border border-slate-200 px-2.5 py-2 rounded-xl text-xs xl:text-sm shrink-0">
+              <div className="w-5 h-5 rounded-full bg-[#0058be] text-white flex items-center justify-center text-[10px] font-bold shrink-0">
                 {currentUser.name.charAt(0).toUpperCase()}
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-slate-900 text-xs max-w-[80px] xl:max-w-[110px] truncate">{currentUser.name}</span>
-                <span className="text-[9px] text-emerald-600 capitalize">{currentUser.role}</span>
+                <span className="font-bold text-slate-900 text-xs max-w-[80px] xl:max-w-[100px] truncate">{currentUser.name}</span>
+                <span className="text-[8px] text-emerald-600 capitalize">{currentUser.role}</span>
               </div>
               <button 
                 onClick={onLogout}
                 title="Log Out"
                 className="ml-1 text-slate-500 hover:text-red-500 p-0.5 transition-colors cursor-pointer shrink-0"
               >
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-3.5 h-3.5" />
               </button>
             </div>
           ) : (
             <button 
               onClick={onOpenLogin}
-              className="flex items-center gap-2 text-xs xl:text-sm font-bold text-slate-800 bg-slate-100 hover:bg-slate-200/80 px-3.5 py-2 rounded-xl border border-slate-200 transition-all whitespace-nowrap shrink-0 cursor-pointer"
+              className="flex items-center gap-1.5 text-xs xl:text-sm font-bold text-slate-800 bg-slate-100 hover:bg-slate-200/80 px-3 py-2 rounded-xl border border-slate-200 transition-all whitespace-nowrap shrink-0 cursor-pointer"
             >
-              <User className="w-4 h-4 text-[#0058be] shrink-0" />
+              <User className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-[#0058be] shrink-0" />
               <span className="whitespace-nowrap">Log In</span>
             </button>
           )}
 
           <button 
             onClick={() => setCurrentView('moving')}
-            className="bg-[#0058be] hover:bg-[#00469b] text-white px-4 py-2.5 xl:px-5 xl:py-2.5 rounded-xl text-xs xl:text-sm font-extrabold shadow-md shadow-[#0058be]/20 transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap shrink-0"
+            className="bg-[#0058be] hover:bg-[#00469b] text-white px-3.5 py-2 xl:px-4 xl:py-2.5 rounded-xl text-xs xl:text-sm font-extrabold shadow-sm shadow-[#0058be]/20 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0"
           >
-            <Truck className="w-4 h-4 shrink-0" />
+            <Truck className="w-3.5 h-3.5 xl:w-4 xl:h-4 shrink-0" />
             <span className="whitespace-nowrap">Get Instant Quote</span>
           </button>
         </div>
