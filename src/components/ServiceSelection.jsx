@@ -171,50 +171,50 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
           </div>
         </section>
 
-        {/* DEDICATED SECTION 2: 24/7 Emergency Towing & Roadside Recovery */}
-        <section className="py-16 md:py-24 bg-gradient-to-r from-[#071220] via-[#0b1c30] to-[#0f243e] text-white border-b border-slate-800 relative overflow-hidden">
+        {/* DEDICATED SECTION 2: 24/7 Emergency Towing & Roadside Recovery (Clean Light Theme) */}
+        <section className="py-16 md:py-24 bg-[#f8fafc] text-slate-900 border-b border-slate-200 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
               {/* Left Column: Towing Headline & Live Dispatch Info */}
               <div className="lg:col-span-6 text-left space-y-5">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/20 backdrop-blur-md text-amber-400 border border-amber-500/30">
-                  <Zap className="w-4 h-4 text-amber-400 animate-pulse" />
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
+                  <Zap className="w-4 h-4 text-amber-600 animate-pulse" />
                   <span className="text-[11px] font-extrabold uppercase tracking-wider">24/7 Emergency Vehicle Recovery</span>
                 </div>
 
-                <h2 className="text-3xl sm:text-4xl md:text-[44px] leading-tight font-extrabold text-white font-['Playfair_Display']">
-                  Vehicle Breakdown? <span className="text-amber-400">Fast Towing Rescue.</span>
+                <h2 className="text-3xl sm:text-4xl md:text-[44px] leading-tight font-extrabold text-slate-900 font-['Playfair_Display'] font-serif">
+                  Vehicle Breakdown? <span className="text-amber-600">Fast Towing Rescue.</span>
                 </h2>
 
-                <p className="text-slate-300 text-base md:text-lg leading-relaxed font-normal max-w-xl">
+                <p className="text-slate-600 text-base md:text-lg leading-relaxed font-normal max-w-xl">
                   Flatbed recovery trucks and wheel-lift towing on standby across M25, Heathrow, and Greater London. Average 15-minute dispatch response time.
                 </p>
 
                 <div className="grid grid-cols-2 gap-4 pt-2">
-                  <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/15">
-                    <span className="text-2xl font-black text-amber-400 block mb-0.5">15 Min</span>
-                    <span className="text-xs text-slate-300 font-medium">Average Response</span>
+                  <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+                    <span className="text-2xl font-black text-amber-600 block mb-0.5">15 Min</span>
+                    <span className="text-xs text-slate-500 font-medium">Average Response</span>
                   </div>
-                  <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/15">
-                    <span className="text-2xl font-black text-emerald-400 block mb-0.5">100%</span>
-                    <span className="text-xs text-slate-300 font-medium">Flatbed Safety</span>
+                  <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+                    <span className="text-2xl font-black text-emerald-600 block mb-0.5">100%</span>
+                    <span className="text-xs text-slate-500 font-medium">Flatbed Safety</span>
                   </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-3">
                   <button 
                     onClick={() => onSelectService('towing')}
-                    className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 px-8 py-3.5 rounded-xl font-extrabold text-sm shadow-xl flex items-center justify-center gap-3 group cursor-pointer"
+                    className="bg-amber-600 hover:bg-amber-700 text-white px-8 py-3.5 rounded-xl font-extrabold text-sm shadow-md flex items-center justify-center gap-3 group cursor-pointer transition-colors"
                   >
-                    <AlertTriangle className="w-5 h-5 text-slate-950 group-hover:scale-110 transition-transform" />
+                    <AlertTriangle className="w-5 h-5 text-white group-hover:scale-110 transition-transform" />
                     Book Tow Truck Online
                   </button>
 
                   <a 
                     href="tel:08009176683"
-                    className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/30 px-6 py-3.5 rounded-xl font-extrabold text-sm flex items-center justify-center gap-2.5 transition-colors"
+                    className="bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 px-6 py-3.5 rounded-xl font-extrabold text-sm flex items-center justify-center gap-2.5 transition-colors shadow-2xs"
                   >
-                    <Phone className="w-4 h-4 text-amber-400" />
+                    <Phone className="w-4 h-4 text-[#0058be]" />
                     0800 917 6683
                   </a>
                 </div>
@@ -222,25 +222,25 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
 
               {/* Right Column: High-Impact Tow Truck Visual */}
               <div className="lg:col-span-6 relative">
-                <div className="relative rounded-3xl overflow-hidden border-2 border-white/20 shadow-2xl h-[340px] sm:h-[400px] lg:h-[440px] group">
+                <div className="relative rounded-3xl overflow-hidden border border-slate-200 shadow-xl h-[340px] sm:h-[400px] lg:h-[440px] group bg-white">
                   <img 
                     src="/hero-image.png" 
                     alt="Emergency Roadside Tow Truck Recovery" 
-                    className="w-full h-full object-cover object-[85%_center] filter brightness-[1.05] group-hover:scale-[1.03] transition-transform duration-700"
+                    className="w-full h-full object-cover object-[85%_center] group-hover:scale-[1.03] transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#071220]/90 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent pointer-events-none" />
 
-                  <div className="absolute bottom-4 left-4 right-4 bg-[#071220]/85 backdrop-blur-md p-4 rounded-2xl border border-white/20 flex items-center justify-between">
+                  <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-slate-200 flex items-center justify-between shadow-lg">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold shrink-0 shadow-sm">
                         <AlertTriangle className="w-5 h-5" />
                       </div>
                       <div>
-                        <span className="font-extrabold text-xs text-white block">Flatbed Recovery Fleet Standby</span>
-                        <span className="text-[11px] text-amber-400 font-semibold">M25 • Heathrow • Central London</span>
+                        <span className="font-extrabold text-xs text-slate-900 block">Flatbed Recovery Fleet Standby</span>
+                        <span className="text-[11px] text-amber-700 font-semibold">M25 • Heathrow • Central London</span>
                       </div>
                     </div>
-                    <span className="hidden sm:inline-block bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/30">
+                    <span className="hidden sm:inline-block bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-200">
                       GPS Live
                     </span>
                   </div>
