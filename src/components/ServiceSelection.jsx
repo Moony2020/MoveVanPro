@@ -99,7 +99,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               </div>
 
               {/* Right Column: Clean Standalone hero-image.png Visual + Floating Glass Badge */}
-              <div className="lg:col-span-6 relative flex justify-center items-center">
+              <div className="lg:col-span-6 relative flex justify-center items-center -mt-6 sm:-mt-10 lg:mt-0">
                 <div className="relative w-full max-w-xl lg:max-w-2xl group">
                   <img 
                     src="/hero-image.png" 
@@ -221,7 +221,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               </div>
 
               {/* Right Column: High-Impact Tow Truck Visual */}
-              <div className="lg:col-span-6 relative">
+              <div className="lg:col-span-6 relative -mt-6 sm:-mt-10 lg:mt-0">
                 <div className="relative rounded-3xl overflow-hidden border border-slate-200 shadow-xl h-[340px] sm:h-[400px] lg:h-[440px] group bg-white">
                   <img 
                     src="/hero-image.png" 
