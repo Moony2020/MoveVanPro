@@ -193,7 +193,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
                     }`}
                   >
                     <Icon className={`w-4 h-4 shrink-0 ${item.color || ''}`} />
-                    <span className="whitespace-nowrap text-xs font-bold">{item.label}</span>
+                    <span className="whitespace-nowrap text-xs font-bold">{item.shortLabel}</span>
                   </button>
                 );
               })}
