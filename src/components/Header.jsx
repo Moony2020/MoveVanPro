@@ -179,7 +179,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
               <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2 px-2">
                 Platform Navigation
               </span>
-              {navItems.map((item, index) => {
+              {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = currentView === item.id;
                 return (
@@ -193,7 +193,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
                     }`}
                   >
                     <Icon className={`w-4 h-4 shrink-0 ${item.color || ''}`} />
-                    <span className="whitespace-nowrap text-xs font-bold">{index + 1}. {item.shortLabel}</span>
+                    <span className="whitespace-nowrap text-xs font-bold">{item.label}</span>
                   </button>
                 );
               })}
