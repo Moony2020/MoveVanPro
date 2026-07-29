@@ -165,54 +165,80 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
         </div>
       </div>
 
-      {/* Mobile Navigation Dropdown Menu (< lg screens) */}
+      {/* Seamless Full-Screen Mobile Navigation Overlay (< lg screens) */}
       {mobileMenuOpen && (
-        <div 
-          onClick={() => setMobileMenuOpen(false)}
-          className="fixed inset-x-0 top-16 md:top-18 bottom-0 z-40 bg-slate-900/60 backdrop-blur-sm lg:hidden flex justify-end p-3 sm:p-4 animate-in fade-in duration-200"
-        >
-          <div 
-            onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-[320px] sm:max-w-xs bg-white border border-slate-200 rounded-3xl p-5 shadow-2xl flex flex-col justify-between max-h-full overflow-y-auto animate-in slide-in-from-top-2 duration-200 text-slate-900 font-['Playfair_Display'] font-serif"
-          >
-            <div className="space-y-1.5">
-              {navItems.map((item) => {
-                const Icon = item.icon;
-                const isActive = currentView === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => { setCurrentView(item.id); setMobileMenuOpen(false); }}
-                    className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-3 transition-all cursor-pointer outline-none ${
-                      isActive 
-                        ? 'bg-[#eff4ff] text-[#0058be] border border-[#dce9ff] font-extrabold shadow-2xs' 
-                        : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900 border border-transparent'
-                    }`}
-                  >
-                    <Icon className={`w-4 h-4 shrink-0 ${item.color || ''}`} />
-                    <span className="whitespace-nowrap text-xs font-bold">{item.label}</span>
-                  </button>
-                );
-              })}
+        <div className="fixed inset-0 z-50 bg-white lg:hidden flex flex-col justify-between p-5 sm:p-6 animate-in slide-in-from-right-4 duration-200 text-slate-900 font-['Playfair_Display'] font-serif overflow-y-auto">
+          {/* Top Bar inside Full Overlay */}
+          <div className="flex justify-between items-center pb-4 border-b border-slate-200">
+            <div 
+              onClick={() => { setCurrentView('landing'); setMobileMenuOpen(false); }}
+              className="flex items-center gap-2.5 cursor-pointer"
+            >
+              <div className="w-9 h-9 rounded-xl bg-[#0058be] text-white flex items-center justify-center shadow-md shadow-[#0058be]/20">
+                <Truck className="w-4.5 h-4.5 text-white" />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-extrabold text-lg text-slate-900 leading-none tracking-tight font-['Playfair_Display'] font-serif">
+                  MoveVan<span className="text-[#0058be]">Pro</span>
+                </span>
+                <span className="text-[8px] font-extrabold text-slate-500 tracking-widest uppercase mt-0.5">
+                  London Logistics
+                </span>
+              </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-slate-200 space-y-2">
-              <button 
-                onClick={() => { setCurrentView('moving'); setMobileMenuOpen(false); }}
-                className="w-full py-2.5 bg-[#0058be] hover:bg-[#00469b] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-xs whitespace-nowrap cursor-pointer"
-              >
-                <Truck className="w-4 h-4" />
-                <span>Get Instant Quote</span>
-              </button>
+            <button 
+              type="button"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-2.5 rounded-xl text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 border border-slate-200 transition-colors cursor-pointer outline-none"
+              aria-label="Close Navigation Menu"
+            >
+              <X className="w-6 h-6 text-slate-900" />
+            </button>
+          </div>
 
-              <a 
-                href="tel:08009176683" 
-                className="w-full flex items-center justify-center gap-2 py-2.5 bg-slate-100 text-slate-800 hover:bg-slate-200/80 rounded-xl text-xs font-bold border border-slate-200 whitespace-nowrap shadow-2xs"
-              >
-                <Phone className="w-4 h-4 text-[#0058be]" />
-                <span>Call 0800 917 6683</span>
-              </a>
-            </div>
+          {/* Navigation Links List */}
+          <div className="py-6 space-y-2 flex-1">
+            <span className="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2 px-2">
+              Platform Navigation
+            </span>
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = currentView === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => { setCurrentView(item.id); setMobileMenuOpen(false); }}
+                  className={`w-full text-left px-4 py-3.5 rounded-2xl text-sm font-bold flex items-center gap-3.5 transition-all cursor-pointer outline-none ${
+                    isActive 
+                      ? 'bg-[#eff4ff] text-[#0058be] border border-[#dce9ff] font-extrabold shadow-xs' 
+                      : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900 border border-transparent'
+                  }`}
+                >
+                  <Icon className={`w-5 h-5 shrink-0 ${item.color || ''}`} />
+                  <span className="whitespace-nowrap text-sm font-bold">{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Bottom Actions */}
+          <div className="pt-4 border-t border-slate-200 space-y-3">
+            <button 
+              onClick={() => { setCurrentView('moving'); setMobileMenuOpen(false); }}
+              className="w-full py-3.5 bg-[#0058be] hover:bg-[#00469b] text-white rounded-2xl text-sm font-bold flex items-center justify-center gap-2.5 shadow-md whitespace-nowrap cursor-pointer"
+            >
+              <Truck className="w-5 h-5" />
+              <span>Get Instant Moving Quote</span>
+            </button>
+
+            <a 
+              href="tel:08009176683" 
+              className="w-full flex items-center justify-center gap-2.5 py-3.5 bg-slate-100 text-slate-800 hover:bg-slate-200/80 rounded-2xl text-sm font-bold border border-slate-200 whitespace-nowrap shadow-2xs"
+            >
+              <Phone className="w-5 h-5 text-[#0058be]" />
+              <span>Call 0800 917 6683</span>
+            </a>
           </div>
         </div>
       )}
