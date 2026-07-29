@@ -51,8 +51,8 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
           </div>
         </div>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 shrink-0 ml-1 lg:ml-2">
+        {/* Desktop Navigation Links (Visible on md 768px+ screens) */}
+        <nav className="hidden md:flex items-center gap-0.5 xl:gap-1.5 shrink-0 ml-1 md:ml-2">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentView === item.id;
@@ -60,7 +60,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
               <button
                 key={item.id}
                 onClick={() => setCurrentView(item.id)}
-                className={`px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-xl text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 cursor-pointer outline-none focus:outline-none focus:ring-0 focus-visible:outline-none select-none ${
+                className={`px-2 py-1.5 xl:px-3 xl:py-2 rounded-xl text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 cursor-pointer outline-none focus:outline-none focus:ring-0 focus-visible:outline-none select-none ${
                   isActive 
                     ? 'bg-[#eff4ff] text-[#0058be] border border-[#dce9ff] shadow-2xs font-extrabold' 
                     : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
@@ -74,10 +74,10 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
         </nav>
 
         {/* Desktop CTA Actions */}
-        <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 shrink-0">
+        <div className="hidden md:flex items-center gap-1.5 xl:gap-2.5 shrink-0">
           <a 
             href="tel:08009176683" 
-            className="flex items-center gap-1 xl:gap-1.5 text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif text-slate-800 hover:text-slate-900 bg-slate-100/90 hover:bg-slate-200/80 px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-xl border border-slate-200 transition-colors whitespace-nowrap shrink-0 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
+            className="hidden lg:flex items-center gap-1 xl:gap-1.5 text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif text-slate-800 hover:text-slate-900 bg-slate-100/90 hover:bg-slate-200/80 px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-xl border border-slate-200 transition-colors whitespace-nowrap shrink-0 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
           >
             <Phone className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-[#0058be] shrink-0" />
             <span className="whitespace-nowrap">0800 917 6683</span>
@@ -121,8 +121,8 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
           </button>
         </div>
 
-        {/* Mobile Header Actions (< lg screens) */}
-        <div className="flex lg:hidden items-center gap-2 shrink-0">
+        {/* Mobile Header Actions (< md screens) */}
+        <div className="flex md:hidden items-center gap-2 shrink-0">
           <a 
             href="tel:08009176683" 
             className="hidden sm:flex items-center gap-1.5 text-xs font-bold font-['Playfair_Display'] font-serif text-slate-800 bg-slate-100 hover:bg-slate-200/80 px-3 py-2 rounded-xl border border-slate-200 whitespace-nowrap shrink-0"
@@ -165,11 +165,11 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
         </div>
       </div>
 
-      {/* Clean Mobile Navigation Modal (< lg screens) */}
+      {/* Clean Mobile Navigation Modal (< md screens) */}
       {mobileMenuOpen && (
         <div 
           onClick={() => setMobileMenuOpen(false)}
-          className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-md lg:hidden flex justify-end p-3 sm:p-5 animate-in fade-in duration-200"
+          className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-md md:hidden flex justify-end p-3 sm:p-5 animate-in fade-in duration-200"
         >
           <div 
             onClick={(e) => e.stopPropagation()}
