@@ -100,14 +100,14 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
 
               {/* Right Column: Standalone heroimage.png with Floating Glassmorphism Badge */}
               <div className="lg:col-span-5 relative flex justify-center items-center">
-                <div className="relative w-full max-w-lg group">
+                <div className="relative w-full max-w-xl lg:max-w-2xl group">
                   <img 
                     src="/heroimage.png" 
                     alt="MoveVan Pro Logistics &amp; Recovery Services" 
-                    className="w-full h-auto max-h-[520px] object-contain drop-shadow-2xl rounded-3xl"
+                    className="w-full h-auto max-h-[600px] object-contain drop-shadow-2xl rounded-3xl transform group-hover:scale-[1.02] transition-transform duration-500"
                   />
-                  {/* Floating Glassmorphism Badge */}
-                  <div className="absolute bottom-3 left-3 right-3 bg-white/85 backdrop-blur-md p-3.5 rounded-2xl border border-[#c2c6d6]/85 text-[#0b1c30] flex items-center gap-3 shadow-xl">
+                  {/* Floating Glassmorphism Badge Pushed Down */}
+                  <div className="absolute -bottom-4 left-2 right-2 sm:left-4 sm:right-4 bg-white/90 backdrop-blur-md p-3.5 rounded-2xl border border-[#c2c6d6] text-[#0b1c30] flex items-center gap-3 shadow-2xl z-10">
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#0058be] to-[#2170e4] flex items-center justify-center shrink-0 shadow-md">
                       <Truck className="w-5 h-5 text-white" />
                     </div>
