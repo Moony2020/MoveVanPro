@@ -77,7 +77,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
         <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 shrink-0">
           <a 
             href="tel:08009176683" 
-            className="hidden xl:flex items-center gap-1 xl:gap-1.5 text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif text-slate-800 hover:text-slate-900 bg-slate-100/90 hover:bg-slate-200/80 px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-xl border border-slate-200 transition-colors whitespace-nowrap shrink-0 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
+            className="flex items-center gap-1 xl:gap-1.5 text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif text-slate-800 hover:text-slate-900 bg-slate-100/90 hover:bg-slate-200/80 px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-xl border border-slate-200 transition-colors whitespace-nowrap shrink-0 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
           >
             <Phone className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-[#0058be] shrink-0" />
             <span className="whitespace-nowrap">0800 917 6683</span>
@@ -122,13 +122,13 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
         </div>
 
         {/* Mobile Header Actions (< lg screens) */}
-        <div className="flex lg:hidden items-center gap-2 shrink-0">
+        <div className="flex lg:hidden items-center gap-1.5 sm:gap-2 shrink-0">
           <a 
             href="tel:08009176683" 
-            className="hidden sm:flex items-center gap-1.5 text-xs font-bold font-['Playfair_Display'] font-serif text-slate-800 bg-slate-100 hover:bg-slate-200/80 px-3 py-2 rounded-xl border border-slate-200 whitespace-nowrap shrink-0"
+            className="flex items-center gap-1.5 text-xs font-bold font-['Playfair_Display'] font-serif text-slate-800 bg-slate-100 hover:bg-slate-200/80 px-2.5 sm:px-3 py-2 rounded-xl border border-slate-200 whitespace-nowrap shrink-0"
           >
             <Phone className="w-4 h-4 text-[#0058be] shrink-0" />
-            <span className="whitespace-nowrap">0800 917 6683</span>
+            <span className="hidden sm:inline whitespace-nowrap">0800 917 6683</span>
           </a>
 
           {currentUser ? (
