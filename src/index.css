@@ -77,3 +77,14 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #727785;
 }
+
+/* Eliminate browser focus outlines and blinking tap highlights */
+*, button, a, input, select, textarea {
+  -webkit-tap-highlight-color: transparent !important;
+}
+button:focus, button:focus-visible, button:active,
+a:focus, a:focus-visible, a:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
