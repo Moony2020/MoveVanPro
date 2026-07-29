@@ -92,10 +92,10 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0b1c30]/80 backdrop-blur-md animate-in fade-in duration-200">
       <div className="bg-white border border-[#c2c6d6] w-full max-w-md rounded-3xl shadow-2xl overflow-hidden relative flex flex-col">
         {/* Modal Header */}
-        <div className="bg-[#0b1c30] text-white p-6 relative">
+        <div className="bg-[#f8fafc] border-b border-slate-200 text-slate-900 p-6 relative">
           <button 
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 text-[#93c5fd] hover:text-white hover:bg-white/10 rounded-full transition-colors"
+            className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-full transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -105,18 +105,18 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
               <User className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-xl font-black tracking-tight text-white">MoveVan<span className="text-[#3b82f6]">Pro</span> Portal</h2>
-              <p className="text-xs text-[#adc6ff]">Sign in to manage your moves & dispatch requests</p>
+              <h2 className="text-xl font-black tracking-tight text-slate-900">MoveVan<span className="text-[#0058be]">Pro</span> Portal</h2>
+              <p className="text-xs text-slate-500">Sign in to manage your moves & dispatch requests</p>
             </div>
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex bg-[#132338] p-1 rounded-xl mt-4 border border-white/10 text-xs font-bold">
+          <div className="flex bg-slate-200/80 p-1 rounded-xl mt-4 border border-slate-300/70 text-xs font-bold">
             <button
               type="button"
               onClick={() => { setActiveTab('customer'); setErrorMsg(''); setTrackResult(null); }}
               className={`flex-1 py-2 rounded-lg transition-all cursor-pointer ${
-                activeTab === 'customer' ? 'bg-[#0058be] text-white shadow' : 'text-[#adc6ff] hover:text-white'
+                activeTab === 'customer' ? 'bg-[#0058be] text-white shadow-sm font-extrabold' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               Customer
@@ -125,7 +125,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
               type="button"
               onClick={() => { setActiveTab('staff'); setErrorMsg(''); setTrackResult(null); }}
               className={`flex-1 py-2 rounded-lg transition-all cursor-pointer ${
-                activeTab === 'staff' ? 'bg-[#0058be] text-white shadow' : 'text-[#adc6ff] hover:text-white'
+                activeTab === 'staff' ? 'bg-[#0058be] text-white shadow-sm font-extrabold' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               Driver / Staff
@@ -134,7 +134,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
               type="button"
               onClick={() => { setActiveTab('track'); setErrorMsg(''); setTrackResult(null); }}
               className={`flex-1 py-2 rounded-lg transition-all cursor-pointer ${
-                activeTab === 'track' ? 'bg-[#0058be] text-white shadow' : 'text-[#adc6ff] hover:text-white'
+                activeTab === 'track' ? 'bg-[#0058be] text-white shadow-sm font-extrabold' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               Track Job

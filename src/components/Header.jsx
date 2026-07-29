@@ -28,7 +28,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
   ];
 
   return (
-    <header className="bg-white/95 backdrop-blur-md text-slate-900 border-b border-slate-200 sticky top-0 z-50 shadow-xs w-full max-w-full overflow-x-hidden transition-all">
+    <header className="bg-white/95 backdrop-blur-md text-slate-900 border-b border-slate-200 sticky top-0 z-50 shadow-xs w-full max-w-full relative transition-all">
       <div className="w-full max-w-[1440px] mx-auto px-2 sm:px-3 md:px-5 h-16 md:h-18 flex justify-between items-center gap-1.5 lg:gap-2.5">
         {/* Premium Corporate Brand Logo */}
         <div 
@@ -165,81 +165,60 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
         </div>
       </div>
 
-      {/* Floating Side Drawer Menu (< lg screens) */}
+      {/* Seamless Header Navigation Dropdown (< lg screens) */}
       {mobileMenuOpen && (
-        <div 
-          onClick={() => setMobileMenuOpen(false)}
-          className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-md lg:hidden flex justify-end p-3 sm:p-4 animate-in fade-in duration-200"
-        >
+        <>
+          {/* Soft Dim Backdrop */}
           <div 
-            onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-[320px] sm:max-w-xs bg-white border border-slate-200 rounded-3xl p-5 shadow-2xl flex flex-col justify-between max-h-full overflow-y-auto animate-in slide-in-from-right-4 duration-200 text-slate-900 font-['Playfair_Display'] font-serif relative z-50"
-          >
-            <div>
-              <div className="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
-                <span className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                  Platform Menu
-                </span>
+            onClick={() => setMobileMenuOpen(false)}
+            className="fixed inset-0 top-16 md:top-18 z-40 bg-slate-900/40 backdrop-blur-xs lg:hidden animate-in fade-in duration-200" 
+          />
+
+          {/* Navigation Dropdown Panel */}
+          <div className="absolute top-full left-0 right-0 w-full bg-white border-b border-slate-200 shadow-2xl p-4 lg:hidden animate-in slide-in-from-top-2 duration-200 text-slate-900 font-['Playfair_Display'] font-serif z-50">
+            <div className="max-w-md mx-auto space-y-1.5">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = currentView === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => { setCurrentView(item.id); setMobileMenuOpen(false); }}
+                    className={`w-full text-left px-4 py-3 rounded-xl text-xs font-bold flex items-center justify-between transition-all cursor-pointer outline-none ${
+                      isActive 
+                        ? 'bg-[#eff4ff] text-[#0058be] border border-[#dce9ff] font-extrabold shadow-2xs' 
+                        : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900 border border-transparent'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Icon className={`w-4.5 h-4.5 shrink-0 ${item.color || ''}`} />
+                      <span className="whitespace-nowrap text-sm">{item.label}</span>
+                    </div>
+                    <ChevronRight className="w-4 h-4 opacity-60 shrink-0" />
+                  </button>
+                );
+              })}
+
+              <div className="pt-3 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
                 <button 
-                  onClick={() => setMobileMenuOpen(false)} 
-                  className="text-slate-500 hover:text-slate-900 p-1 cursor-pointer outline-none"
+                  onClick={() => { setCurrentView('moving'); setMobileMenuOpen(false); }}
+                  className="w-full py-2.5 bg-[#0058be] hover:bg-[#00469b] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-xs whitespace-nowrap cursor-pointer"
                 >
-                  <X className="w-5 h-5" />
+                  <Truck className="w-4 h-4" />
+                  <span>Get Instant Quote</span>
                 </button>
+
+                <a 
+                  href="tel:08009176683" 
+                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-slate-100 text-slate-800 hover:bg-slate-200/80 rounded-xl text-xs font-bold border border-slate-200 whitespace-nowrap shadow-2xs"
+                >
+                  <Phone className="w-4 h-4 text-[#0058be]" />
+                  <span>Call 0800 917 6683</span>
+                </a>
               </div>
-
-              <div className="space-y-1.5">
-                {navItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = currentView === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => { setCurrentView(item.id); setMobileMenuOpen(false); }}
-                      className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-between transition-all cursor-pointer outline-none ${
-                        isActive 
-                          ? 'bg-[#eff4ff] text-[#0058be] border border-[#dce9ff] font-extrabold shadow-2xs' 
-                          : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Icon className={`w-4 h-4 shrink-0 ${item.color || ''}`} />
-                        <span className="whitespace-nowrap">{item.label}</span>
-                      </div>
-                      <ChevronRight className="w-3.5 h-3.5 opacity-60 shrink-0" />
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-slate-200 space-y-2.5">
-              <button 
-                onClick={() => { setCurrentView('moving'); setMobileMenuOpen(false); }}
-                className="w-full py-2.5 bg-[#0058be] hover:bg-[#00469b] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-xs whitespace-nowrap cursor-pointer"
-              >
-                <Truck className="w-4 h-4" />
-                <span>Get Instant Moving Quote</span>
-              </button>
-
-              <button 
-                onClick={() => { setCurrentView('towing'); setMobileMenuOpen(false); }}
-                className="w-full py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-xs whitespace-nowrap cursor-pointer"
-              >
-                <AlertTriangle className="w-4 h-4" />
-                <span>Emergency Towing</span>
-              </button>
-
-              <a 
-                href="tel:08009176683" 
-                className="w-full flex items-center justify-center gap-2 py-2.5 bg-slate-100 text-slate-800 hover:bg-slate-200/80 rounded-xl text-xs font-bold border border-slate-200 whitespace-nowrap shadow-2xs"
-              >
-                <Phone className="w-4 h-4 text-[#0058be]" />
-                <span>Call 0800 917 6683</span>
-              </a>
             </div>
           </div>
-        </div>
+        </>
       )}
     </header>
   );
