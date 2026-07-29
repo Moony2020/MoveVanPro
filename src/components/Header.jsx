@@ -52,7 +52,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1 xl:gap-2 shrink-0">
+        <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 shrink-0">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentView === item.id;
@@ -60,13 +60,13 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
               <button
                 key={item.id}
                 onClick={() => setCurrentView(item.id)}
-                className={`px-2.5 py-1.5 xl:px-3.5 xl:py-2 rounded-xl text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer ${
+                className={`px-2 py-1.5 xl:px-3 xl:py-2 rounded-xl text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 cursor-pointer ${
                   isActive 
                     ? 'bg-[#0058be] text-white shadow-xs' 
                     : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
-                <Icon className={`w-4 h-4 shrink-0 ${item.color || ''}`} />
+                <Icon className={`w-3.5 h-3.5 xl:w-4 xl:h-4 shrink-0 ${item.color || ''}`} />
                 <span className="whitespace-nowrap">{item.shortLabel}</span>
               </button>
             );
@@ -74,12 +74,12 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
         </nav>
 
         {/* Desktop CTA Actions */}
-        <div className="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
+        <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 shrink-0">
           <a 
             href="tel:08009176683" 
-            className="hidden xl:flex items-center gap-1.5 text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif text-slate-800 hover:text-slate-900 bg-slate-100/90 hover:bg-slate-200/80 px-3 py-2 rounded-xl border border-slate-200 transition-colors whitespace-nowrap shrink-0"
+            className="flex items-center gap-1 xl:gap-1.5 text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif text-slate-800 hover:text-slate-900 bg-slate-100/90 hover:bg-slate-200/80 px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-xl border border-slate-200 transition-colors whitespace-nowrap shrink-0"
           >
-            <Phone className="w-4 h-4 text-[#0058be] shrink-0" />
+            <Phone className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-[#0058be] shrink-0" />
             <span className="whitespace-nowrap">0800 917 6683</span>
           </a>
 
@@ -106,17 +106,17 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
               onClick={onOpenLogin}
               title="Log In"
               aria-label="Log In"
-              className="flex items-center justify-center text-slate-800 bg-slate-100 hover:bg-slate-200/80 p-2.5 rounded-xl border border-slate-200 transition-all shrink-0 cursor-pointer"
+              className="flex items-center justify-center text-slate-800 bg-slate-100 hover:bg-slate-200/80 p-2 xl:p-2.5 rounded-xl border border-slate-200 transition-all shrink-0 cursor-pointer"
             >
-              <User className="w-4 h-4 text-[#0058be] shrink-0" />
+              <User className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-[#0058be] shrink-0" />
             </button>
           )}
 
           <button 
             onClick={() => setCurrentView('moving')}
-            className="bg-[#0058be] hover:bg-[#00469b] text-white px-3.5 py-2 xl:px-4.5 xl:py-2.5 rounded-xl text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif shadow-xs transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0"
+            className="bg-[#0058be] hover:bg-[#00469b] text-white px-3 py-1.5 xl:px-4 xl:py-2.5 rounded-xl text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif shadow-xs transition-all cursor-pointer flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0"
           >
-            <Truck className="w-4 h-4 shrink-0" />
+            <Truck className="w-3.5 h-3.5 xl:w-4 xl:h-4 shrink-0" />
             <span className="whitespace-nowrap">Get Instant Quote</span>
           </button>
         </div>
