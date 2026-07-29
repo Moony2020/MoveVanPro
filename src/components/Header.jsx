@@ -169,50 +169,50 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
       {mobileMenuOpen && (
         <div 
           onClick={() => setMobileMenuOpen(false)}
-          className="fixed inset-x-0 top-16 md:top-18 bottom-0 z-40 bg-slate-900/60 backdrop-blur-sm lg:hidden flex justify-end p-3 sm:p-4 animate-in fade-in duration-200"
+          className="fixed inset-x-0 top-16 md:top-18 bottom-0 z-40 bg-slate-900/20 backdrop-blur-xs lg:hidden flex justify-end p-3 sm:p-4 animate-in fade-in duration-200"
         >
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-[320px] sm:max-w-xs bg-white border border-slate-200 rounded-3xl p-5 shadow-2xl flex flex-col justify-between max-h-[85vh] overflow-y-auto animate-in slide-in-from-top-2 duration-200 text-slate-900 font-['Playfair_Display'] font-serif relative"
+            className="w-full max-w-[240px] bg-white border border-slate-200 rounded-2xl p-4 shadow-2xl flex flex-col justify-between max-h-[75vh] overflow-y-auto animate-in slide-in-from-top-2 duration-200 text-slate-900 font-['Playfair_Display'] font-serif relative"
           >
-            <div className="space-y-1.5">
-              <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2 px-2">
-                Platform Navigation
+            <div className="space-y-1">
+              <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest block mb-1.5 px-2">
+                Navigation
               </span>
-              {navItems.map((item) => {
+              {navItems.map((item, index) => {
                 const Icon = item.icon;
                 const isActive = currentView === item.id;
                 return (
                   <button
                     key={item.id}
                     onClick={() => { setCurrentView(item.id); setMobileMenuOpen(false); }}
-                    className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-3 transition-all cursor-pointer outline-none ${
+                    className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-2.5 transition-all cursor-pointer outline-none ${
                       isActive 
-                        ? 'bg-[#eff4ff] text-[#0058be] border border-[#dce9ff] font-extrabold shadow-2xs' 
+                        ? 'bg-[#eff4ff] text-[#0058be] border border-[#dce9ff] font-extrabold shadow-3xs' 
                         : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900 border border-transparent'
                     }`}
                   >
-                    <Icon className={`w-4 h-4 shrink-0 ${item.color || ''}`} />
-                    <span className="whitespace-nowrap text-xs font-bold">{item.label}</span>
+                    <Icon className={`w-3.5 h-3.5 shrink-0 ${item.color || ''}`} />
+                    <span className="whitespace-nowrap text-xs font-bold">{index + 1}. {item.shortLabel}</span>
                   </button>
                 );
               })}
             </div>
 
-            <div className="mt-6 pt-4 border-t border-slate-200 space-y-2">
+            <div className="mt-4 pt-3 border-t border-slate-200 space-y-1.5">
               <button 
                 onClick={() => { setCurrentView('moving'); setMobileMenuOpen(false); }}
-                className="w-full py-2.5 bg-[#0058be] hover:bg-[#00469b] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-xs whitespace-nowrap cursor-pointer"
+                className="w-full py-2 bg-[#0058be] hover:bg-[#00469b] text-white rounded-lg text-xs font-bold flex items-center justify-center gap-2 shadow-xs whitespace-nowrap cursor-pointer"
               >
-                <Truck className="w-4 h-4" />
+                <Truck className="w-3.5 h-3.5" />
                 <span>Get Instant Quote</span>
               </button>
 
               <a 
                 href="tel:08009176683" 
-                className="w-full flex items-center justify-center gap-2 py-2.5 bg-slate-100 text-slate-800 hover:bg-slate-200/80 rounded-xl text-xs font-bold border border-slate-200 whitespace-nowrap shadow-2xs"
+                className="w-full flex items-center justify-center gap-2 py-2 bg-slate-100 text-slate-800 hover:bg-slate-200/80 rounded-lg text-xs font-bold border border-slate-200 whitespace-nowrap shadow-3xs"
               >
-                <Phone className="w-4 h-4 text-[#0058be]" />
+                <Phone className="w-3.5 h-3.5 text-[#0058be]" />
                 <span>Call 0800 917 6683</span>
               </a>
             </div>
