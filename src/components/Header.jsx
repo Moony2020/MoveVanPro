@@ -169,11 +169,11 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
       {mobileMenuOpen && (
         <div 
           onClick={() => setMobileMenuOpen(false)}
-          className="fixed inset-x-0 top-16 md:top-18 bottom-0 z-40 bg-slate-900/20 backdrop-blur-xs lg:hidden flex justify-end p-3 sm:p-4 animate-in fade-in duration-200"
+          className="fixed inset-x-0 top-16 md:top-18 bottom-0 z-40 bg-slate-900/20 backdrop-blur-xs lg:hidden flex justify-end items-start p-3 sm:p-4 animate-in fade-in duration-200"
         >
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-[280px] bg-white border border-slate-200 rounded-3xl p-5 shadow-2xl flex flex-col justify-between max-h-[85vh] overflow-y-auto animate-in slide-in-from-top-2 duration-200 text-slate-900 font-['Playfair_Display'] font-serif relative"
+            className="w-full max-w-[280px] bg-white border border-slate-200 rounded-3xl p-5 shadow-2xl flex flex-col animate-in slide-in-from-top-2 duration-200 text-slate-900 font-['Playfair_Display'] font-serif relative"
           >
             <div className="space-y-1.5">
               <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2 px-2">
@@ -199,7 +199,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
               })}
             </div>
 
-            <div className="mt-6 pt-4 border-t border-slate-200 space-y-2">
+            <div className="mt-5 pt-4 border-t border-slate-200 space-y-2">
               <button 
                 onClick={() => { setCurrentView('moving'); setMobileMenuOpen(false); }}
                 className="w-full py-2.5 bg-[#0058be] hover:bg-[#00469b] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-xs whitespace-nowrap cursor-pointer"
