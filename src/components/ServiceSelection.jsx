@@ -19,20 +19,34 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
             <img 
               src="/hero-image.png" 
               alt="Professional Logistics and Roadside Recovery Services"
-              className="w-full h-full object-cover object-center filter brightness-[0.95] contrast-[1.05]"
+              className="w-full h-full object-cover object-[70%_center] md:object-center filter brightness-[1.05] contrast-[1.05]"
             />
             {/* Soft Blue Shadow & Gradient Overlay for optimal text contrast */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0b1c30]/75 via-[#0b1c30]/45 to-transparent z-1 pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0b1c30]/90 via-transparent to-[#0b1c30]/30 z-1 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0b1c30]/75 via-[#0b1c30]/35 md:via-[#0b1c30]/45 to-transparent z-1 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0b1c30]/85 via-transparent to-[#0b1c30]/30 z-1 pointer-events-none" />
           </div>
 
           {/* Foreground Overlay Content Layer (Shifted ~6% to the right for optimal breathing room) */}
           <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10 w-full">
             <div className="max-w-3xl ml-0 md:ml-[5%] lg:ml-[7%] text-left">
               {/* Verified Logistics Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0058be]/30 backdrop-blur-md text-[#adc6ff] mb-6 border border-[#0058be]/40 shadow-sm">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0058be]/40 backdrop-blur-md text-[#adc6ff] mb-4 md:mb-6 border border-[#0058be]/50 shadow-sm">
                 <CheckCircle2 className="w-4 h-4 text-[#adc6ff]" />
                 <span className="text-[11px] font-bold uppercase tracking-wider">Professional Logistics &amp; Recovery</span>
+              </div>
+
+              {/* Mobile Dedicated Featured Visual Hero Banner */}
+              <div className="md:hidden mb-6 rounded-2xl overflow-hidden border border-white/25 shadow-2xl relative h-48 sm:h-56 group">
+                <img 
+                  src="/hero-image.png" 
+                  alt="MoveVan Pro Logistics Fleet" 
+                  className="w-full h-full object-cover object-[70%_center] filter brightness-[1.08] contrast-[1.05]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0b1c30]/90 via-transparent to-transparent flex items-end p-3.5">
+                  <span className="text-[11px] font-extrabold text-[#adc6ff] flex items-center gap-1.5 bg-[#0b1c30]/85 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/15 shadow-md">
+                    <Truck className="w-3.5 h-3.5 text-[#3b82f6]" /> London Logistics &amp; Recovery Fleet
+                  </span>
+                </div>
               </div>
 
               {/* Headlines */}
