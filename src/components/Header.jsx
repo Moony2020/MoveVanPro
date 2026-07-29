@@ -51,8 +51,8 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
           </div>
         </div>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 shrink-0 ml-1 lg:ml-2">
+        {/* Navigation Links - visible md+ */}
+        <nav className="hidden md:flex items-center gap-0.5 shrink-0 ml-1 flex-1 overflow-x-auto">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentView === item.id;
@@ -60,21 +60,21 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
               <button
                 key={item.id}
                 onClick={() => setCurrentView(item.id)}
-                className={`px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-xl text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 cursor-pointer outline-none focus:outline-none focus:ring-0 focus-visible:outline-none select-none ${
+                className={`px-2 py-1.5 lg:px-2.5 rounded-xl text-xs font-bold font-['Playfair_Display'] font-serif transition-all flex items-center gap-1 whitespace-nowrap shrink-0 cursor-pointer outline-none focus:outline-none focus:ring-0 focus-visible:outline-none select-none ${
                   isActive 
                     ? 'bg-[#eff4ff] text-[#0058be] border border-[#dce9ff] shadow-2xs font-extrabold' 
                     : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 xl:w-4 xl:h-4 shrink-0 ${item.color || ''}`} />
-                <span className="whitespace-nowrap">{item.shortLabel}</span>
+                <Icon className={`w-3.5 h-3.5 shrink-0 ${item.color || ''}`} />
+                <span className="hidden lg:inline whitespace-nowrap">{item.shortLabel}</span>
               </button>
             );
           })}
         </nav>
 
         {/* Desktop CTA Actions */}
-        <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 shrink-0">
+        <div className="hidden md:flex items-center gap-1.5 shrink-0">
           <a 
             href="tel:08009176683" 
             className="flex items-center gap-1 xl:gap-1.5 text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif text-slate-800 hover:text-slate-900 bg-slate-100/90 hover:bg-slate-200/80 px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-xl border border-slate-200 transition-colors whitespace-nowrap shrink-0 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
@@ -121,8 +121,8 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
           </button>
         </div>
 
-        {/* Mobile Header Actions (< lg screens) */}
-        <div className="flex lg:hidden items-center gap-1.5 sm:gap-2 shrink-0">
+        {/* Mobile Header Actions (< md screens only) */}
+        <div className="flex md:hidden items-center gap-1.5 sm:gap-2 shrink-0">
           <a 
             href="tel:08009176683" 
             className="flex items-center gap-1.5 text-xs font-bold font-['Playfair_Display'] font-serif text-slate-800 bg-slate-100 hover:bg-slate-200/80 px-2.5 sm:px-3 py-2 rounded-xl border border-slate-200 whitespace-nowrap shrink-0"
@@ -165,9 +165,9 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
         </div>
       </div>
 
-      {/* Seamless Full-Screen Mobile Navigation Overlay (< lg screens) */}
+      {/* Seamless Full-Screen Mobile Navigation Overlay (< md screens only) */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-white lg:hidden flex flex-col justify-between p-5 sm:p-6 animate-in slide-in-from-right-4 duration-200 text-slate-900 font-['Playfair_Display'] font-serif overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-white md:hidden flex flex-col justify-between p-5 sm:p-6 animate-in slide-in-from-right-4 duration-200 text-slate-900 font-['Playfair_Display'] font-serif overflow-y-auto">
           {/* Top Bar inside Full Overlay */}
           <div className="flex justify-between items-center pb-4 border-b border-slate-200">
             <div 
