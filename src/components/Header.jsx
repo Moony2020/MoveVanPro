@@ -29,30 +29,30 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
 
   return (
     <header className="bg-white/95 backdrop-blur-md text-slate-900 border-b border-slate-200 sticky top-0 z-50 shadow-xs w-full max-w-full overflow-x-hidden transition-all">
-      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-5 md:px-6 h-16 md:h-18 flex justify-between items-center gap-2 lg:gap-3">
+      <div className="w-full max-w-[1440px] mx-auto px-2 sm:px-3 md:px-5 h-16 md:h-18 flex justify-between items-center gap-1.5 lg:gap-2.5">
         {/* Premium Corporate Brand Logo */}
         <div 
           onClick={() => { setCurrentView('landing'); setMobileMenuOpen(false); }}
-          className="flex items-center gap-2.5 md:gap-3 cursor-pointer group shrink-0"
+          className="flex items-center gap-2 md:gap-2.5 cursor-pointer group shrink-0"
         >
-          <div className="w-9.5 h-9.5 md:w-10 md:h-10 rounded-xl bg-[#0058be] text-white flex items-center justify-center shadow-md shadow-[#0058be]/20 border border-white/20 group-hover:scale-105 transition-all shrink-0">
-            <Truck className="w-4.5 h-4.5 text-white group-hover:translate-x-0.5 transition-transform" />
+          <div className="w-8 h-8 md:w-8.5 md:h-8.5 rounded-lg bg-[#0058be] text-white flex items-center justify-center shadow-sm shadow-[#0058be]/20 border border-white/20 group-hover:scale-105 transition-all shrink-0">
+            <Truck className="w-4 h-4 text-white group-hover:translate-x-0.5 transition-transform" />
           </div>
           <div className="flex flex-col shrink-0">
             <div className="flex items-center gap-1">
-              <span className="font-extrabold text-base md:text-xl text-slate-900 leading-none tracking-tight whitespace-nowrap font-['Playfair_Display'] font-serif">
+              <span className="font-extrabold text-sm md:text-lg text-slate-900 leading-none tracking-tight whitespace-nowrap font-['Playfair_Display'] font-serif">
                 MoveVan<span className="text-[#0058be] font-bold ml-0.5">Pro</span>
               </span>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse hidden sm:inline-block" />
             </div>
-            <span className="text-[8px] md:text-[9px] font-extrabold text-slate-500 tracking-widest uppercase mt-0.5 whitespace-nowrap">
+            <span className="text-[7.5px] md:text-[8.5px] font-extrabold text-slate-500 tracking-widest uppercase mt-0.5 whitespace-nowrap">
               London Logistics
             </span>
           </div>
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 shrink-0">
+        <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 shrink-0 ml-1 lg:ml-2">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentView === item.id;
@@ -60,9 +60,9 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
               <button
                 key={item.id}
                 onClick={() => setCurrentView(item.id)}
-                className={`px-2 py-1.5 xl:px-3 xl:py-2 rounded-xl text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 cursor-pointer ${
+                className={`px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-xl text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 cursor-pointer ${
                   isActive 
-                    ? 'bg-[#0058be] text-white shadow-xs' 
+                    ? 'bg-[#eff4ff] text-[#0058be] border border-[#dce9ff] shadow-2xs font-extrabold' 
                     : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
@@ -191,7 +191,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
                       onClick={() => { setCurrentView(item.id); setMobileMenuOpen(false); }}
                       className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-between transition-all ${
                         isActive 
-                          ? 'bg-[#0058be] text-white shadow-xs' 
+                          ? 'bg-[#eff4ff] text-[#0058be] border border-[#dce9ff] font-extrabold shadow-2xs' 
                           : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
                       }`}
                     >
