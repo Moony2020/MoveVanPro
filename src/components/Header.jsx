@@ -74,15 +74,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
         </nav>
 
         {/* Desktop CTA Actions */}
-        <div className="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
-          <a 
-            href="tel:08009176683" 
-            className="hidden xl:flex items-center gap-1.5 text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif text-slate-800 hover:text-slate-900 bg-slate-100/90 hover:bg-slate-200/80 px-3 py-2 rounded-xl border border-slate-200 transition-colors whitespace-nowrap shrink-0"
-          >
-            <Phone className="w-4 h-4 text-[#0058be] shrink-0" />
-            <span className="whitespace-nowrap">0800 917 6683</span>
-          </a>
-
+        <div className="hidden lg:flex items-center gap-2.5 xl:gap-3 shrink-0">
           {/* User Account / Log In Button */}
           {currentUser ? (
             <div className="flex items-center gap-1.5 bg-slate-100 border border-slate-200 px-2.5 py-2 rounded-xl text-xs xl:text-sm font-['Playfair_Display'] font-serif shrink-0">
@@ -114,7 +106,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
 
           <button 
             onClick={() => setCurrentView('moving')}
-            className="bg-[#0058be] hover:bg-[#00469b] text-white px-3 py-2 xl:px-4 xl:py-2 rounded-xl text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif shadow-xs transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0"
+            className="bg-[#0058be] hover:bg-[#00469b] text-white px-3.5 py-2 xl:px-4.5 xl:py-2.5 rounded-xl text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif shadow-xs transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0"
           >
             <Truck className="w-4 h-4 shrink-0" />
             <span className="whitespace-nowrap">Get Instant Quote</span>
@@ -123,14 +115,6 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
 
         {/* Mobile Header Actions (< lg screens) */}
         <div className="flex lg:hidden items-center gap-2 shrink-0">
-          <a 
-            href="tel:08009176683" 
-            className="hidden sm:flex items-center gap-1.5 text-xs font-bold font-['Playfair_Display'] font-serif text-slate-800 bg-slate-100 hover:bg-slate-200/80 px-3 py-2 rounded-xl border border-slate-200 whitespace-nowrap shrink-0"
-          >
-            <Phone className="w-4 h-4 text-[#0058be] shrink-0" />
-            <span className="whitespace-nowrap">0800 917 6683</span>
-          </a>
-
           {currentUser ? (
             <button 
               onClick={onLogout}
