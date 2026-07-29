@@ -12,28 +12,28 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex flex-col font-sans antialiased selection:bg-[#0058be] selection:text-white">
 
       <main className="flex-grow">
-        {/* Modern Clean White Hero Section with heroimage.png on the Right Side (Exact User Mockup Layout) */}
-        <section className="relative overflow-hidden py-12 md:py-20 bg-gradient-to-b from-white via-[#eff4ff] to-[#f8f9ff] border-b border-[#c2c6d6]/60 text-[#0b1c30]">
+        {/* Modern Clean White Hero Section (Pure White Theme, Ultra-Crisp & High Contrast) */}
+        <section className="relative overflow-hidden py-12 md:py-20 bg-[#ffffff] border-b border-slate-200/80 text-slate-900">
           <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10 w-full">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
               {/* Left Column: Text Content, CTAs, and Service Cards */}
               <div className="lg:col-span-6 text-left">
                 {/* Verified Logistics Badge */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#f0f6ff]/90 backdrop-blur-md text-[#0058be] mb-4 md:mb-6 border border-[#0058be]/20 shadow-xs">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100/90 text-[#0058be] mb-5 border border-slate-200 shadow-2xs">
                   <CheckCircle2 className="w-4 h-4 text-[#0058be]" />
                   <span className="text-[11px] font-extrabold uppercase tracking-wider">Professional Logistics &amp; Recovery</span>
                 </div>
 
                 {/* Headlines */}
-                <h1 className="text-4xl sm:text-5xl md:text-[56px] leading-tight font-extrabold mb-2 text-[#0b1c30] font-['Playfair_Display']">
+                <h1 className="text-4xl sm:text-5xl md:text-[56px] leading-tight font-extrabold mb-2 text-slate-900 tracking-tight">
                   Moving Made Easy.
                 </h1>
-                <h2 className="text-2xl sm:text-3xl md:text-[36px] font-bold mb-5 text-[#0058be] font-['Playfair_Display']">
+                <h2 className="text-2xl sm:text-3xl md:text-[36px] font-extrabold mb-5 text-[#0058be] tracking-tight">
                   We Move, You Relax.
                 </h2>
 
                 {/* Paragraph */}
-                <p className="text-base md:text-lg text-[#424754] max-w-xl mb-8 leading-relaxed font-medium">
+                <p className="text-base md:text-lg text-slate-600 max-w-xl mb-8 leading-relaxed font-normal">
                   Professional moving services with van, driver and movers. Or get fast vehicle recovery with our tow trucks – anytime, anywhere.
                 </p>
 
@@ -41,17 +41,17 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
                   <button 
                     onClick={() => onSelectService('moving')}
-                    className="bg-[#0058be] text-white px-8 py-3.5 rounded-xl font-extrabold text-sm hover:bg-[#2170e4] transition-all duration-300 shadow-xl shadow-[#0058be]/25 border border-white/30 flex items-center justify-center gap-3 group cursor-pointer"
+                    className="bg-[#0058be] hover:bg-[#00469b] text-white px-8 py-3.5 rounded-xl font-extrabold text-sm transition-all duration-200 shadow-lg shadow-[#0058be]/20 flex items-center justify-center gap-3 cursor-pointer"
                   >
-                    <Truck className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    <Truck className="w-5 h-5" />
                     Book a Move
                   </button>
 
                   <button 
                     onClick={() => onSelectService('towing')}
-                    className="bg-white text-[#0b1c30] border border-[#c2c6d6] px-8 py-3.5 rounded-xl font-bold text-sm hover:bg-[#eff4ff] hover:border-[#0058be]/40 transition-all duration-300 shadow-md flex items-center justify-center gap-3 group cursor-pointer"
+                    className="bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 px-8 py-3.5 rounded-xl font-bold text-sm transition-all duration-200 shadow-sm flex items-center justify-center gap-3 cursor-pointer"
                   >
-                    <AlertTriangle className="w-5 h-5 text-[#825100] group-hover:translate-x-1 transition-transform" />
+                    <AlertTriangle className="w-5 h-5 text-amber-600" />
                     Book a Tow Truck
                   </button>
                 </div>
@@ -61,14 +61,14 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                   {/* Card 1: Moving Services */}
                   <div 
                     onClick={() => onSelectService('moving')}
-                    className="bg-white/80 backdrop-blur-md border border-[#c2c6d6]/80 rounded-2xl p-5 flex gap-4 cursor-pointer hover:border-[#0058be] hover:bg-white hover:shadow-xl transition-all duration-300 group shadow-sm"
+                    className="bg-white border border-slate-200/90 rounded-2xl p-5 flex gap-4 cursor-pointer hover:border-[#0058be] hover:shadow-xl transition-all duration-200 group shadow-2xs"
                   >
                     <div className="w-11 h-11 rounded-xl bg-[#eff4ff] border border-[#dce9ff] text-[#0058be] flex items-center justify-center shrink-0">
                       <Truck className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="font-extrabold text-sm text-[#0b1c30] mb-1">Moving Services</h4>
-                      <p className="text-[12px] text-[#424754] leading-tight mb-2 font-normal">
+                      <h4 className="font-extrabold text-sm text-slate-900 mb-1">Moving Services</h4>
+                      <p className="text-[12px] text-slate-500 leading-tight mb-2 font-normal">
                         Van with driver and up to 2 movers for homes, apartments and offices.
                       </p>
                       <span className="text-[12px] font-bold text-[#0058be] flex items-center gap-1 group-hover:underline">
@@ -80,17 +80,17 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                   {/* Card 2: Roadside Recovery */}
                   <div 
                     onClick={() => onSelectService('towing')}
-                    className="bg-white/80 backdrop-blur-md border border-[#c2c6d6]/80 rounded-2xl p-5 flex gap-4 cursor-pointer hover:border-[#825100] hover:bg-white hover:shadow-xl transition-all duration-300 group shadow-sm"
+                    className="bg-white border border-slate-200/90 rounded-2xl p-5 flex gap-4 cursor-pointer hover:border-amber-500 hover:shadow-xl transition-all duration-200 group shadow-2xs"
                   >
-                    <div className="w-11 h-11 rounded-xl bg-[#fff7ed] border border-[#ffddb8] text-[#825100] flex items-center justify-center shrink-0">
+                    <div className="w-11 h-11 rounded-xl bg-[#fff7ed] border border-[#ffddb8] text-amber-700 flex items-center justify-center shrink-0">
                       <AlertTriangle className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="font-extrabold text-sm text-[#0b1c30] mb-1">Roadside Recovery</h4>
-                      <p className="text-[12px] text-[#424754] leading-tight mb-2 font-normal">
+                      <h4 className="font-extrabold text-sm text-slate-900 mb-1">Roadside Recovery</h4>
+                      <p className="text-[12px] text-slate-500 leading-tight mb-2 font-normal">
                         Fast vehicle recovery and transport with our flatbed tow trucks.
                       </p>
-                      <span className="text-[12px] font-bold text-[#825100] flex items-center gap-1 group-hover:underline">
+                      <span className="text-[12px] font-bold text-amber-700 flex items-center gap-1 group-hover:underline">
                         Book Rescue <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                       </span>
                     </div>
@@ -107,12 +107,12 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                     className="w-full h-auto max-h-[560px] object-contain rounded-3xl"
                   />
                   {/* Floating Glassmorphism Badge */}
-                  <div className="absolute -bottom-4 left-3 right-3 sm:left-6 sm:right-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-[#c2c6d6] text-[#0b1c30] flex items-center gap-3.5 shadow-xl z-10">
+                  <div className="absolute -bottom-4 left-3 right-3 sm:left-6 sm:right-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-slate-200 text-slate-900 flex items-center gap-3.5 shadow-xl z-10">
                     <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-[#0058be] to-[#2170e4] flex items-center justify-center shrink-0 shadow-md">
                       <Truck className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <span className="font-extrabold text-xs block text-[#0b1c30]">London Fast Moving &amp; Recovery Fleet</span>
+                      <span className="font-extrabold text-xs block text-slate-900">London Fast Moving &amp; Recovery Fleet</span>
                       <span className="text-[11px] text-[#0058be] block font-bold">24/7 Guaranteed Response Across Greater London</span>
                     </div>
                   </div>
@@ -121,49 +121,49 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
             </div>
 
             {/* Trust Features Bar (Exact Mockup Layout: Single White Container Card) */}
-            <div className="mt-12 bg-white/90 backdrop-blur-md rounded-3xl p-6 border border-[#c2c6d6]/60 shadow-md">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#c2c6d6]/40 gap-6 sm:gap-0">
+            <div className="mt-12 bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-200 gap-6 sm:gap-0">
                 {/* Feature 1: Professional Staff */}
                 <div className="flex items-center gap-4 text-left sm:px-4 first:pl-0">
-                  <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0 shadow-xs">
+                  <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0 shadow-2xs">
                     <Users className="w-6 h-6" />
                   </div>
                   <div>
-                    <span className="font-extrabold text-sm text-[#0b1c30] block mb-0.5">Professional Staff</span>
-                    <span className="text-xs text-[#424754] block leading-tight font-normal">Trained and verified drivers &amp; movers</span>
+                    <span className="font-extrabold text-sm text-slate-900 block mb-0.5">Professional Staff</span>
+                    <span className="text-xs text-slate-500 block leading-tight font-normal">Trained and verified drivers &amp; movers</span>
                   </div>
                 </div>
 
                 {/* Feature 2: Secure Payments */}
                 <div className="flex items-center gap-4 text-left sm:px-4 pt-4 sm:pt-0">
-                  <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0 shadow-xs">
+                  <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0 shadow-2xs">
                     <Lock className="w-6 h-6" />
                   </div>
                   <div>
-                    <span className="font-extrabold text-sm text-[#0b1c30] block mb-0.5">Secure Payments</span>
-                    <span className="text-xs text-[#424754] block leading-tight font-normal">Pay online securely with Stripe</span>
+                    <span className="font-extrabold text-sm text-slate-900 block mb-0.5">Secure Payments</span>
+                    <span className="text-xs text-slate-500 block leading-tight font-normal">Pay online securely with Stripe</span>
                   </div>
                 </div>
 
                 {/* Feature 3: Real-time Tracking */}
                 <div className="flex items-center gap-4 text-left sm:px-4 pt-4 sm:pt-0">
-                  <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0 shadow-xs">
+                  <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0 shadow-2xs">
                     <MapPin className="w-6 h-6" />
                   </div>
                   <div>
-                    <span className="font-extrabold text-sm text-[#0b1c30] block mb-0.5">Real-time Tracking</span>
-                    <span className="text-xs text-[#424754] block leading-tight font-normal">Track your driver or tow truck live</span>
+                    <span className="font-extrabold text-sm text-slate-900 block mb-0.5">Real-time Tracking</span>
+                    <span className="text-xs text-slate-500 block leading-tight font-normal">Track your driver or tow truck live</span>
                   </div>
                 </div>
 
                 {/* Feature 4: 24/7 Support */}
                 <div className="flex items-center gap-4 text-left sm:px-4 pt-4 sm:pt-0 last:pr-0">
-                  <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0 shadow-xs">
+                  <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0 shadow-2xs">
                     <Clock className="w-6 h-6" />
                   </div>
                   <div>
-                    <span className="font-extrabold text-sm text-[#0b1c30] block mb-0.5">24/7 Support</span>
-                    <span className="text-xs text-[#424754] block leading-tight font-normal">We're here for you anytime</span>
+                    <span className="font-extrabold text-sm text-slate-900 block mb-0.5">24/7 Support</span>
+                    <span className="text-xs text-slate-500 block leading-tight font-normal">We're here for you anytime</span>
                   </div>
                 </div>
               </div>
