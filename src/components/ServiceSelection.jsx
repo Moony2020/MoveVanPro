@@ -19,7 +19,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               {/* Left Column: Text Content, CTAs, and Service Cards */}
               <div className="lg:col-span-7 text-left">
                 {/* Verified Logistics Badge */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0058be]/10 text-[#0058be] mb-4 md:mb-6 border border-[#0058be]/20 shadow-xs">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/70 backdrop-blur-md text-[#0058be] mb-4 md:mb-6 border border-[#0058be]/25 shadow-sm">
                   <CheckCircle2 className="w-4 h-4 text-[#0058be]" />
                   <span className="text-[11px] font-extrabold uppercase tracking-wider">Professional Logistics &amp; Recovery</span>
                 </div>
@@ -41,7 +41,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
                   <button 
                     onClick={() => onSelectService('moving')}
-                    className="bg-[#0058be] text-white px-8 py-3.5 rounded-xl font-extrabold text-sm hover:bg-[#2170e4] transition-all duration-300 shadow-lg shadow-[#0058be]/25 flex items-center justify-center gap-3 group cursor-pointer"
+                    className="bg-[#0058be]/95 backdrop-blur-md text-white px-8 py-3.5 rounded-xl font-extrabold text-sm hover:bg-[#2170e4] transition-all duration-300 shadow-xl shadow-[#0058be]/25 border border-white/30 flex items-center justify-center gap-3 group cursor-pointer"
                   >
                     <Truck className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     Book a Move
@@ -49,7 +49,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
 
                   <button 
                     onClick={() => onSelectService('towing')}
-                    className="bg-white text-[#0b1c30] border border-[#c2c6d6] px-8 py-3.5 rounded-xl font-bold text-sm hover:bg-[#eff4ff] hover:border-[#0058be]/40 transition-all duration-300 shadow-sm flex items-center justify-center gap-3 group cursor-pointer"
+                    className="bg-white/70 backdrop-blur-md text-[#0b1c30] border border-[#c2c6d6] px-8 py-3.5 rounded-xl font-bold text-sm hover:bg-white/95 hover:border-[#0058be]/40 transition-all duration-300 shadow-md flex items-center justify-center gap-3 group cursor-pointer"
                   >
                     <AlertTriangle className="w-5 h-5 text-[#825100] group-hover:translate-x-1 transition-transform" />
                     Book a Tow Truck
@@ -61,7 +61,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                   {/* Card 1: Moving Services */}
                   <div 
                     onClick={() => onSelectService('moving')}
-                    className="bg-white border border-[#c2c6d6]/70 rounded-2xl p-5 flex gap-4 cursor-pointer hover:border-[#0058be] hover:shadow-lg transition-all duration-300 group"
+                    className="bg-white/60 backdrop-blur-md border border-[#c2c6d6]/80 rounded-2xl p-5 flex gap-4 cursor-pointer hover:border-[#0058be] hover:bg-white/90 hover:shadow-xl transition-all duration-300 group shadow-sm"
                   >
                     <div className="w-11 h-11 rounded-xl bg-[#eff4ff] border border-[#dce9ff] text-[#0058be] flex items-center justify-center shrink-0">
                       <Truck className="w-5 h-5" />
@@ -80,7 +80,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                   {/* Card 2: Roadside Recovery */}
                   <div 
                     onClick={() => onSelectService('towing')}
-                    className="bg-white border border-[#c2c6d6]/70 rounded-2xl p-5 flex gap-4 cursor-pointer hover:border-[#825100] hover:shadow-lg transition-all duration-300 group"
+                    className="bg-white/60 backdrop-blur-md border border-[#c2c6d6]/80 rounded-2xl p-5 flex gap-4 cursor-pointer hover:border-[#825100] hover:bg-white/90 hover:shadow-xl transition-all duration-300 group shadow-sm"
                   >
                     <div className="w-11 h-11 rounded-xl bg-[#fff7ed] border border-[#ffddb8] text-[#825100] flex items-center justify-center shrink-0">
                       <AlertTriangle className="w-5 h-5" />
@@ -123,7 +123,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
             {/* Trust Features Bar */}
             <div className="border-t border-[#c2c6d6]/60 pt-8 mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Feature 1: Professional Staff */}
-              <div className="flex items-center gap-3.5 text-left">
+              <div className="flex items-center gap-3.5 text-left bg-white/60 backdrop-blur-md p-3.5 rounded-2xl border border-[#c2c6d6]/60 shadow-xs">
                 <div className="w-10 h-10 rounded-xl bg-white border border-[#c2c6d6] flex items-center justify-center text-[#0058be] shrink-0 shadow-xs">
                   <Users className="w-5 h-5" />
                 </div>
@@ -134,7 +134,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               </div>
 
               {/* Feature 2: Secure Payments */}
-              <div className="flex items-center gap-3.5 text-left">
+              <div className="flex items-center gap-3.5 text-left bg-white/60 backdrop-blur-md p-3.5 rounded-2xl border border-[#c2c6d6]/60 shadow-xs">
                 <div className="w-10 h-10 rounded-xl bg-white border border-[#c2c6d6] flex items-center justify-center text-[#0058be] shrink-0 shadow-xs">
                   <Lock className="w-5 h-5" />
                 </div>
@@ -145,7 +145,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               </div>
 
               {/* Feature 3: Real-time Tracking */}
-              <div className="flex items-center gap-3.5 text-left">
+              <div className="flex items-center gap-3.5 text-left bg-white/60 backdrop-blur-md p-3.5 rounded-2xl border border-[#c2c6d6]/60 shadow-xs">
                 <div className="w-10 h-10 rounded-xl bg-white border border-[#c2c6d6] flex items-center justify-center text-[#0058be] shrink-0 shadow-xs">
                   <MapPin className="w-5 h-5" />
                 </div>
@@ -156,7 +156,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               </div>
 
               {/* Feature 4: 24/7 Support */}
-              <div className="flex items-center gap-3.5 text-left">
+              <div className="flex items-center gap-3.5 text-left bg-white/60 backdrop-blur-md p-3.5 rounded-2xl border border-[#c2c6d6]/60 shadow-xs">
                 <div className="w-10 h-10 rounded-xl bg-white border border-[#c2c6d6] flex items-center justify-center text-[#0058be] shrink-0 shadow-xs">
                   <Clock className="w-5 h-5" />
                 </div>
