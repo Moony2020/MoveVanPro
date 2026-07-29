@@ -25,10 +25,10 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                 </div>
 
                 {/* Headlines */}
-                <h1 className="text-4xl sm:text-5xl md:text-[56px] leading-tight font-extrabold mb-2 text-slate-900 tracking-tight">
+                <h1 className="text-4xl sm:text-5xl md:text-[56px] leading-tight font-extrabold mb-2 text-slate-900 font-['Playfair_Display'] font-serif">
                   Moving Made Easy.
                 </h1>
-                <h2 className="text-2xl sm:text-3xl md:text-[36px] font-extrabold mb-5 text-[#0058be] tracking-tight">
+                <h2 className="text-2xl sm:text-3xl md:text-[36px] font-bold mb-5 text-[#0058be] font-['Playfair_Display'] font-serif">
                   We Move, You Relax.
                 </h2>
 
@@ -120,49 +120,49 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               </div>
             </div>
 
-            {/* Trust Features Bar (Exact Mockup Layout: Single White Container Card) */}
-            <div className="mt-12 bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-200 gap-6 sm:gap-0">
+            {/* Trust Features Bar */}
+            <div className="mt-12 bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
                 {/* Feature 1: Professional Staff */}
-                <div className="flex items-center gap-4 text-left sm:px-4 first:pl-0">
-                  <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0 shadow-2xs">
-                    <Users className="w-6 h-6" />
+                <div className="flex items-center gap-3.5 text-left">
+                  <div className="w-11 h-11 rounded-xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0">
+                    <Users className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="font-extrabold text-sm text-slate-900 block mb-0.5">Professional Staff</span>
+                    <span className="font-extrabold text-sm text-slate-900 block mb-0.5 whitespace-nowrap">Professional Staff</span>
                     <span className="text-xs text-slate-500 block leading-tight font-normal">Trained and verified drivers &amp; movers</span>
                   </div>
                 </div>
 
                 {/* Feature 2: Secure Payments */}
-                <div className="flex items-center gap-4 text-left sm:px-4 pt-4 sm:pt-0">
-                  <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0 shadow-2xs">
-                    <Lock className="w-6 h-6" />
+                <div className="flex items-center gap-3.5 text-left">
+                  <div className="w-11 h-11 rounded-xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0">
+                    <Lock className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="font-extrabold text-sm text-slate-900 block mb-0.5">Secure Payments</span>
+                    <span className="font-extrabold text-sm text-slate-900 block mb-0.5 whitespace-nowrap">Secure Payments</span>
                     <span className="text-xs text-slate-500 block leading-tight font-normal">Pay online securely with Stripe</span>
                   </div>
                 </div>
 
                 {/* Feature 3: Real-time Tracking */}
-                <div className="flex items-center gap-4 text-left sm:px-4 pt-4 sm:pt-0">
-                  <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0 shadow-2xs">
-                    <MapPin className="w-6 h-6" />
+                <div className="flex items-center gap-3.5 text-left">
+                  <div className="w-11 h-11 rounded-xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0">
+                    <MapPin className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="font-extrabold text-sm text-slate-900 block mb-0.5">Real-time Tracking</span>
+                    <span className="font-extrabold text-sm text-slate-900 block mb-0.5 whitespace-nowrap">Real-time Tracking</span>
                     <span className="text-xs text-slate-500 block leading-tight font-normal">Track your driver or tow truck live</span>
                   </div>
                 </div>
 
                 {/* Feature 4: 24/7 Support */}
-                <div className="flex items-center gap-4 text-left sm:px-4 pt-4 sm:pt-0 last:pr-0">
-                  <div className="w-12 h-12 rounded-2xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0 shadow-2xs">
-                    <Clock className="w-6 h-6" />
+                <div className="flex items-center gap-3.5 text-left">
+                  <div className="w-11 h-11 rounded-xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0">
+                    <Clock className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="font-extrabold text-sm text-slate-900 block mb-0.5">24/7 Support</span>
+                    <span className="font-extrabold text-sm text-slate-900 block mb-0.5 whitespace-nowrap">24/7 Support</span>
                     <span className="text-xs text-slate-500 block leading-tight font-normal">We're here for you anytime</span>
                   </div>
                 </div>
