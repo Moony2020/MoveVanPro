@@ -104,10 +104,11 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
           ) : (
             <button 
               onClick={onOpenLogin}
-              className="flex items-center gap-1.5 text-xs xl:text-sm font-bold text-slate-800 bg-slate-100 hover:bg-slate-200/80 px-3 py-2 rounded-xl border border-slate-200 transition-all whitespace-nowrap shrink-0 cursor-pointer"
+              title="Log In"
+              aria-label="Log In"
+              className="flex items-center justify-center text-slate-800 bg-slate-100 hover:bg-slate-200/80 p-2.5 rounded-xl border border-slate-200 transition-all shrink-0 cursor-pointer"
             >
-              <User className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-[#0058be] shrink-0" />
-              <span className="whitespace-nowrap">Log In</span>
+              <User className="w-4 h-4 text-[#0058be] shrink-0" />
             </button>
           )}
 
@@ -142,11 +143,11 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
           ) : (
             <button 
               onClick={onOpenLogin}
-              className="bg-slate-100 hover:bg-slate-200/80 text-slate-800 text-xs font-bold p-2.5 sm:px-3 sm:py-2 rounded-xl border border-slate-200 flex items-center gap-1.5 cursor-pointer shrink-0"
+              className="bg-slate-100 hover:bg-slate-200/80 text-slate-800 p-2.5 rounded-xl border border-slate-200 flex items-center justify-center cursor-pointer shrink-0"
               title="Log In"
+              aria-label="Log In"
             >
               <User className="w-4 h-4 text-[#0058be] shrink-0" />
-              <span className="hidden sm:inline whitespace-nowrap">Log In</span>
             </button>
           )}
 
