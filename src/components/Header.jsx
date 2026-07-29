@@ -77,7 +77,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
         <div className="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
           <a 
             href="tel:08009176683" 
-            className="flex items-center gap-1.5 text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif text-slate-800 hover:text-slate-900 bg-slate-100/90 hover:bg-slate-200/80 px-3 py-2 rounded-xl border border-slate-200 transition-colors whitespace-nowrap shrink-0"
+            className="hidden xl:flex items-center gap-1.5 text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif text-slate-800 hover:text-slate-900 bg-slate-100/90 hover:bg-slate-200/80 px-3 py-2 rounded-xl border border-slate-200 transition-colors whitespace-nowrap shrink-0"
           >
             <Phone className="w-4 h-4 text-[#0058be] shrink-0" />
             <span className="whitespace-nowrap">0800 917 6683</span>
