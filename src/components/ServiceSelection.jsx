@@ -28,7 +28,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
             width: 80% !important;
           }
           .hero-trust-mobile {
-            margin-top: 8px !important;
+            margin-top: 45px !important;
           }
         }
         @media (max-width: 500px) {
