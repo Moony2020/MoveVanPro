@@ -167,15 +167,21 @@
   }
 }
 
+@media (max-width: 640px) {
+  .hero-pills-mobile {
+    bottom: 155px !important;
+  }
+  .hero-buttons-mobile {
+    margin-top: 145px !important;
+  }
+}
+
 @media (max-width: 500px) {
   .hero-section-mobile {
     min-height: 350px !important;
   }
   .hero-container-mobile {
     min-height: 350px !important;
-  }
-  .hero-van-mobile {
-    top: calc(50% + 2px) !important;
   }
   .hero-buttons-mobile {
     margin-top: 135px !important;
