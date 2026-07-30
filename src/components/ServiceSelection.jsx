@@ -90,21 +90,21 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
           <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10 w-full flex-grow flex flex-col justify-between max-md:min-h-[600px] hero-container-mobile">
             <div className="max-w-xl text-left flex flex-col relative z-10">
               {/* Verified Logistics Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card text-[#0058be] mb-4 sm:mb-5 border border-[#0058be]/20 shadow-2xs self-start">
+              <div data-scroll="fade-up" className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card text-[#0058be] mb-4 sm:mb-5 border border-[#0058be]/20 shadow-2xs self-start">
                 <ShieldCheck className="w-4 h-4 text-[#0058be]" />
                 <span className="text-[11px] font-extrabold uppercase tracking-wider">Elite Logistics &amp; Recovery</span>
               </div>
 
               {/* Headlines (Playfair Serif Display Font Style) */}
-              <h1 className="text-4xl sm:text-5xl md:text-[58px] leading-[1.08] font-extrabold mb-1 text-[#0b1c30] font-playfair tracking-tight">
+              <h1 data-scroll="fade-up" data-scroll-delay="1" className="text-4xl sm:text-5xl md:text-[58px] leading-[1.08] font-extrabold mb-1 text-[#0b1c30] font-playfair tracking-tight">
                 Moving Made Easy.
               </h1>
-              <h2 className="text-2xl sm:text-3xl md:text-[40px] font-bold mb-4 sm:mb-5 text-[#0058be] font-playfair tracking-tight">
+              <h2 data-scroll="fade-up" data-scroll-delay="2" className="text-2xl sm:text-3xl md:text-[40px] font-bold mb-4 sm:mb-5 text-[#0058be] font-playfair tracking-tight">
                 We Move, You Relax.
               </h2>
 
               {/* Paragraph */}
-              <p className="text-base md:text-lg text-[#0b1c30]/95 leading-relaxed font-semibold max-w-xl mb-6 font-['Roboto'] [text-shadow:0_0_4px_#fff,0_0_8px_#fff,0_0_16px_#fff,0_0_24px_#fff]">
+              <p data-scroll="fade-up" data-scroll-delay="3" className="text-base md:text-lg text-[#0b1c30]/95 leading-relaxed font-semibold max-w-xl mb-6 font-['Roboto'] [text-shadow:0_0_4px_#fff,0_0_8px_#fff,0_0_16px_#fff,0_0_24px_#fff]">
                 Experience white-glove logistics with our professional fleet. From seamless residential moves to urgent 24/7 recovery, we handle the heavy lifting with precision.
               </p>
 
@@ -190,7 +190,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
         </section>
 
         {/* Dedicated Service Cards Section - Positioned Cleanly Below Hero */}
-        <section className="py-12 bg-slate-50/80 border-b border-slate-200">
+        <section data-scroll="fade-up" className="py-12 bg-slate-50/80 border-b border-slate-200">
           <div className="max-w-5xl mx-auto px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Moving Services Card */}
@@ -237,7 +237,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
 
         {/* Service Cards Section */}
         <section className="py-20 max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
+          <div data-scroll="fade-up" className="text-center mb-12">
             <h2 className="text-3xl font-extrabold text-[#0b1c30] mb-3 font-playfair">Our Core London Services</h2>
             <p className="text-sm text-[#565e74] max-w-xl mx-auto">
               Select your required service below for an instant, transparent quote powered by our London dispatch platform.
@@ -246,7 +246,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
 
           <div className="grid md:grid-cols-2 gap-10">
             {/* Moving Service Card */}
-            <div className="bg-white rounded-3xl border-2 border-[#c2c6d6]/80 overflow-hidden group hover:border-[#0058be] hover:shadow-2xl transition-all duration-300 flex flex-col relative">
+            <div data-scroll="fade-up" data-scroll-delay="1" className="bg-white rounded-3xl border-2 border-[#c2c6d6]/80 overflow-hidden group hover:border-[#0058be] hover:shadow-2xl transition-all duration-300 flex flex-col relative">
               <div className="h-72 w-full relative overflow-hidden bg-[#eff4ff]">
                 <img 
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJNYdXeEr0han0h1NHMavpDAWCDpxsXEL-nvPfBqVUbnWpcLZVVdwj-SsBrjkldP6xfugvAzEOsLeDhICcOQlbN0rYeYatClZtezgk2rb79yKUBT71mlUJdR5x978aqXNUoaVdEalFdPKWsPWMR8GPIOW7Zr-NLlWWFpmX_KBEgMi5ivQW7DP5IzCn5yduZY1JejBPxqLhX7kwayBtWPftx1fZnkV1dw-Xjf6MrcuDL0npSQyC8_IxSP80S-wVms7KB8DgRExmK5DH" 
@@ -303,7 +303,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
             </div>
 
             {/* Towing / Recovery Service Card */}
-            <div className="bg-white rounded-3xl border-2 border-[#c2c6d6]/80 overflow-hidden group hover:border-[#825100] hover:shadow-2xl transition-all duration-300 flex flex-col relative">
+            <div data-scroll="fade-up" data-scroll-delay="2" className="bg-white rounded-3xl border-2 border-[#c2c6d6]/80 overflow-hidden group hover:border-[#825100] hover:shadow-2xl transition-all duration-300 flex flex-col relative">
               <div className="h-72 w-full relative overflow-hidden bg-[#eff4ff]">
                 <img 
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuAp6IZfWJigGdzAE4NOsZ2QxCp-jGXzhTdAutKRzCNdezRpL9r8sXIxpVAJlO03v7EfoCcdFF4Whovr3q-K1g-pvMDDRY3D19eqJBWl1h6QgBH729xAUnp_LL2gG63cAexFdBP3uMMhX-SIuoppLXPKl38d7ysf3_lCiwG4xgJQXkO4P2h7o5qn8xFgeslyhkRM31tnv5UXOP-4xyyR14NCS9S9rvCsEtvqR5WjJfmBD9yQ2qomUXGrRPiBokzCHWUujWwMkgI2QRvl" 
@@ -364,7 +364,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
         {/* London Coverage Map Section */}
         <section className="py-16 bg-[#eff4ff] border-y border-[#c2c6d6]/50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
-            <div className="space-y-4">
+            <div data-scroll="fade-left" className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0058be]/10 text-[#0058be] text-xs font-bold">
                 <MapPin className="w-4 h-4" />
                 London Boroughs & M25 Motorway
@@ -393,7 +393,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               </div>
             </div>
 
-            <div className="w-full relative h-[320px] sm:h-[360px] lg:h-[350px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl group bg-[#eef2f7]">
+            <div data-scroll="fade-right" className="w-full relative h-[320px] sm:h-[360px] lg:h-[350px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl group bg-[#eef2f7]">
               <iframe 
                 title="Central London Fleet Coverage Map"
                 className="w-full h-full border-0 contrast-[1.08] saturate-[1.25] brightness-[1.02]"
@@ -426,40 +426,40 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
         </section>
 
         {/* Corporate Trust Features */}
-        <section className="bg-[#0b1c30] text-white py-20">
+        <section className="bg-white text-[#0b1c30] py-20 border-y border-slate-200/80">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-extrabold mb-3 font-playfair">Why MoveVan Pro London?</h2>
-              <p className="text-sm text-[#adc6ff]">We are an enterprise operator with our own fleet — zero third-party gig workers.</p>
+            <div data-scroll="fade-up" className="text-center mb-16">
+              <h2 className="text-3xl font-extrabold mb-3 font-playfair text-[#0b1c30]">Why MoveVan Pro London?</h2>
+              <p className="text-sm text-[#565e74]">We are an enterprise operator with our own fleet — zero third-party gig workers.</p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-[#213145]/70 border border-[#3f465c] p-8 rounded-3xl hover:border-[#0058be] transition-colors">
-                <div className="w-14 h-14 rounded-2xl bg-[#0058be]/20 text-[#adc6ff] flex items-center justify-center mb-6 border border-[#0058be]/40">
+              <div data-scroll="fade-up" data-scroll-delay="1" className="bg-white border border-slate-200/90 p-8 rounded-3xl hover:border-[#0058be] hover:shadow-lg transition-all duration-300">
+                <div className="w-14 h-14 rounded-2xl bg-[#eff4ff] text-[#0058be] flex items-center justify-center mb-6 border border-[#dce9ff]">
                   <Truck className="w-7 h-7" />
                 </div>
-                <h4 className="font-bold text-xl mb-3">100% Owned Fleet</h4>
-                <p className="text-xs text-[#c2c6d6] leading-relaxed">
+                <h4 className="font-bold text-xl mb-3 text-[#0b1c30]">100% Owned Fleet</h4>
+                <p className="text-xs text-[#565e74] leading-relaxed">
                   Every van and tow truck is enterprise-maintained, equipped with GPS telemetry and protective moving equipment.
                 </p>
               </div>
 
-              <div className="bg-[#213145]/70 border border-[#3f465c] p-8 rounded-3xl hover:border-[#0058be] transition-colors">
-                <div className="w-14 h-14 rounded-2xl bg-[#0058be]/20 text-[#adc6ff] flex items-center justify-center mb-6 border border-[#0058be]/40">
+              <div data-scroll="fade-up" data-scroll-delay="2" className="bg-white border border-slate-200/90 p-8 rounded-3xl hover:border-[#0058be] hover:shadow-lg transition-all duration-300">
+                <div className="w-14 h-14 rounded-2xl bg-[#eff4ff] text-[#0058be] flex items-center justify-center mb-6 border border-[#dce9ff]">
                   <Award className="w-7 h-7" />
                 </div>
-                <h4 className="font-bold text-xl mb-3">Trained Salaried Staff</h4>
-                <p className="text-xs text-[#c2c6d6] leading-relaxed">
+                <h4 className="font-bold text-xl mb-3 text-[#0b1c30]">Trained Salaried Staff</h4>
+                <p className="text-xs text-[#565e74] leading-relaxed">
                   Full-time salaried movers and licensed recovery technicians, trained in heavy lifting and damage prevention.
                 </p>
               </div>
 
-              <div className="bg-[#213145]/70 border border-[#3f465c] p-8 rounded-3xl hover:border-[#0058be] transition-colors">
-                <div className="w-14 h-14 rounded-2xl bg-[#0058be]/20 text-[#adc6ff] flex items-center justify-center mb-6 border border-[#0058be]/40">
+              <div data-scroll="fade-up" data-scroll-delay="3" className="bg-white border border-slate-200/90 p-8 rounded-3xl hover:border-[#0058be] hover:shadow-lg transition-all duration-300">
+                <div className="w-14 h-14 rounded-2xl bg-[#eff4ff] text-[#0058be] flex items-center justify-center mb-6 border border-[#dce9ff]">
                   <Clock className="w-7 h-7" />
                 </div>
-                <h4 className="font-bold text-xl mb-3">Transparent Instant Quoting</h4>
-                <p className="text-xs text-[#c2c6d6] leading-relaxed">
+                <h4 className="font-bold text-xl mb-3 text-[#0b1c30]">Transparent Instant Quoting</h4>
+                <p className="text-xs text-[#565e74] leading-relaxed">
                   Algorithmic distance and inventory quoting. Clear breakdown of hourly, distance, and mover rates.
                 </p>
               </div>
@@ -467,20 +467,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
           </div>
         </section>
       </main>
-
-      <footer className="bg-white border-t border-[#c2c6d6] py-8 text-center text-xs text-[#424754]">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-[#0058be]">MoveVan Pro London</span>
-            <span>© 2026 Corporate Logistics & Emergency Recovery Platform.</span>
-          </div>
-          <div className="flex gap-6 font-semibold">
-            <button onClick={() => onNavigateTo('moving')} className="hover:underline">Moving</button>
-            <button onClick={() => onNavigateTo('towing')} className="hover:underline">Towing</button>
-            <button onClick={() => onNavigateTo('dispatch')} className="hover:underline">Dispatcher</button>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
+

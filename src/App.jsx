@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import DispatcherDashboard from './components/DispatcherDashboard';
 import ServiceSelection from './components/ServiceSelection';
@@ -7,6 +7,7 @@ import TowingRequest from './components/TowingRequest';
 import FleetManagement from './components/FleetManagement';
 import ExportModal from './components/ExportModal';
 import LoginModal from './components/LoginModal';
+import Footer from './components/Footer';
 import { ShieldAlert } from 'lucide-react';
 
 export default function App() {
@@ -15,6 +16,33 @@ export default function App() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [emergencyAlert, setEmergencyAlert] = useState(false);
+
+  // Global scroll animation observer — watches all [data-scroll] elements across every page
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('scroll-visible');
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    const observe = () => {
+      document.querySelectorAll('[data-scroll]:not(.scroll-visible)').forEach((el) => io.observe(el));
+    };
+
+    observe();
+
+    // Re-observe when DOM changes (page navigation renders new elements)
+    const mo = new MutationObserver(() => observe());
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    return () => { io.disconnect(); mo.disconnect(); };
+  }, [currentView]);
 
   const handleLoginSuccess = (user) => {
     setCurrentUser(user);
@@ -84,6 +112,9 @@ export default function App() {
           />
         )}
       </div>
+
+      {/* Global Footer — visible on all pages */}
+      <Footer onNavigateTo={(view) => setCurrentView(view)} />
 
       {/* Export Modal */}
       {showExportModal && (
