@@ -21,7 +21,10 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
             bottom: 155px !important;
           }
           .hero-buttons-mobile {
-            margin-top: 145px !important;
+            margin-top: 175px !important;
+          }
+          .hero-van-mobile {
+            top: calc(50% - 25px) !important;
           }
         }
         @media (max-width: 500px) {
@@ -30,6 +33,9 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
           }
           .hero-container-mobile {
             min-height: 350px !important;
+          }
+          .hero-van-mobile {
+            top: 50% !important;
           }
           .hero-buttons-mobile {
             margin-top: 135px !important;
