@@ -6,11 +6,11 @@ export default function LegalPages({ view, onNavigateTo }) {
 
   return (
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex flex-col font-sans antialiased">
-      <main className="flex-grow max-w-4xl mx-auto px-6 py-12 md:py-20">
+      <main className="flex-grow max-w-4xl mx-auto px-6 pt-6 pb-12 md:pt-8 md:pb-20">
         {/* Back navigation */}
         <button 
           onClick={() => onNavigateTo('landing')}
-          className="inline-flex items-center gap-2 text-sm font-bold text-[#0058be] hover:text-[#2170e4] transition-colors mb-8 cursor-pointer group"
+          className="inline-flex items-center gap-2 text-sm font-bold text-[#0058be] hover:text-[#2170e4] transition-colors mb-4 cursor-pointer group"
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           Back to Home
