@@ -8,6 +8,7 @@ import FleetManagement from './components/FleetManagement';
 import ExportModal from './components/ExportModal';
 import LoginModal from './components/LoginModal';
 import Footer from './components/Footer';
+import LegalPages from './components/LegalPages';
 import { ShieldAlert } from 'lucide-react';
 
 export default function App() {
@@ -108,6 +109,13 @@ export default function App() {
 
         {currentView === 'fleet' && (
           <FleetManagement 
+            onNavigateTo={(view) => setCurrentView(view)}
+          />
+        )}
+
+        {(currentView === 'privacy' || currentView === 'terms') && (
+          <LegalPages 
+            view={currentView}
             onNavigateTo={(view) => setCurrentView(view)}
           />
         )}

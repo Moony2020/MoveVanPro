@@ -39,8 +39,8 @@ export default function Footer({ onNavigateTo }) {
             <div className="space-y-2.5">
               <button onClick={() => onNavigateTo('dispatch')} className="block text-sm text-[#c2c6d6] hover:text-white transition-colors cursor-pointer">Dispatch Board</button>
               <button onClick={() => onNavigateTo('fleet')} className="block text-sm text-[#c2c6d6] hover:text-white transition-colors cursor-pointer">Fleet Management</button>
-              <span className="block text-sm text-[#c2c6d6]">Privacy Policy</span>
-              <span className="block text-sm text-[#c2c6d6]">Terms of Service</span>
+              <button onClick={() => onNavigateTo('privacy')} className="block text-sm text-[#c2c6d6] hover:text-white transition-colors cursor-pointer text-left">Privacy Policy</button>
+              <button onClick={() => onNavigateTo('terms')} className="block text-sm text-[#c2c6d6] hover:text-white transition-colors cursor-pointer text-left">Terms of Service</button>
             </div>
           </div>
 
