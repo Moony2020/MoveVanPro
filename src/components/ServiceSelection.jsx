@@ -39,6 +39,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
             min-height: 350px !important;
           }
           .hero-van-mobile {
+            top: 50% !important;
             width: 96% !important;
           }
           .hero-buttons-mobile {
