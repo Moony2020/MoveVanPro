@@ -24,8 +24,11 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
             margin-top: 170px !important;
           }
           .hero-van-mobile {
-            top: calc(50% - 20px) !important;
+            top: calc(50% - 50px) !important;
             width: 80% !important;
+          }
+          .hero-trust-mobile {
+            margin-top: 8px !important;
           }
         }
         @media (max-width: 500px) {
