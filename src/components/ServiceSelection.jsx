@@ -10,6 +10,25 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
 
   return (
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex flex-col font-sans antialiased selection:bg-[#0058be] selection:text-white">
+      <style>{`
+        @media (max-width: 500px) {
+          .hero-section-mobile {
+            min-height: 350px !important;
+          }
+          .hero-container-mobile {
+            min-height: 350px !important;
+          }
+          .hero-van-mobile {
+            top: calc(50% - 15px) !important;
+          }
+          .hero-buttons-mobile {
+            margin-top: 135px !important;
+          }
+          .hero-trust-mobile {
+            margin-top: -20px !important;
+          }
+        }
+      `}</style>
 
       <main className="flex-grow">
         {/* Modern Mesh Gradient Hero Section */}
