@@ -454,43 +454,43 @@ export default function MovingBooking({ onNavigateTo }) {
           </div>
 
           {/* Right Column: Live Price Breakdown Box */}
-          <div className="lg:col-span-4 bg-[#131b2e] text-white rounded-2xl p-6 h-fit shadow-xl">
-            <h3 className="font-bold text-base mb-4 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#ffb95f]" />
+          <div className="lg:col-span-4 bg-white border border-slate-200/90 rounded-2xl p-6 h-fit shadow-md">
+            <h3 className="font-bold text-base text-[#0b1c30] mb-4 flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-amber-500" />
               Live Quote Breakdown
             </h3>
 
-            <div className="space-y-3 text-xs border-b border-[#3f465c] pb-4 mb-4">
-              <div className="flex justify-between text-[#c2c6d6]">
+            <div className="space-y-3 text-xs border-b border-slate-100 pb-4 mb-4">
+              <div className="flex justify-between text-slate-600">
                 <span>Base Rate ({vehicle.toUpperCase()}):</span>
                 <span>${baseRate}/hr</span>
               </div>
-              <div className="flex justify-between text-[#c2c6d6]">
+              <div className="flex justify-between text-slate-600">
                 <span>Helper Crew ({movers} Mover):</span>
                 <span>+${moverAddon}/hr</span>
               </div>
-              <div className="flex justify-between text-[#c2c6d6]">
+              <div className="flex justify-between text-slate-600">
                 <span>Est. Duration:</span>
                 <span>{estimatedHours} hours</span>
               </div>
-              <div className="flex justify-between text-[#c2c6d6]">
+              <div className="flex justify-between text-slate-600">
                 <span>Distance Fee (~{distanceKm} km):</span>
                 <span>${distanceFee}</span>
               </div>
-              <div className="flex justify-between text-[#c2c6d6]">
+              <div className="flex justify-between text-slate-600">
                 <span>Inventory Fee ({itemTotalCount} items):</span>
                 <span>${inventoryFee}</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center text-sm font-bold mb-4">
+            <div className="flex justify-between items-center text-sm font-bold text-[#0b1c30] mb-4">
               <span>Estimated Total:</span>
-              <span className="text-xl text-[#adc6ff]">${totalPrice}</span>
+              <span className="text-xl text-[#0058be]">${totalPrice}</span>
             </div>
 
-            <div className="bg-[#213145] p-3 rounded-xl text-[11px] text-[#c2c6d6] space-y-1">
-              <div className="flex items-center gap-1.5 text-white font-semibold">
-                <ShieldCheck className="w-4 h-4 text-[#adc6ff]" />
+            <div className="bg-[#eff4ff] border border-[#dce9ff] p-3 rounded-xl text-[11px] text-[#424754] space-y-1">
+              <div className="flex items-center gap-1.5 text-[#0058be] font-semibold">
+                <ShieldCheck className="w-4 h-4 text-[#0058be]" />
                 MoveVan Pro Guarantee
               </div>
               <p>No hidden fees. Full cargo insurance included up to $100,000.</p>
