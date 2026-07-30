@@ -25,7 +25,10 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
             margin-top: 135px !important;
           }
           .hero-trust-mobile {
-            margin-top: -20px !important;
+            margin-top: -8px !important;
+          }
+          .hero-trust-grid-mobile {
+            padding-top: 12px !important;
           }
         }
       `}</style>
@@ -120,7 +123,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
 
             {/* Transparent Trust Features Bar (No White Background Card) */}
             <div className="mt-auto max-[1024px]:mt-20 md:max-[1024px]:mt-20 max-sm:mt-28 hero-trust-mobile">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 pt-6 max-[1024px]:pt-10 border-t border-slate-200/60">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 pt-6 max-[1024px]:pt-10 border-t border-slate-200/60 hero-trust-grid-mobile">
                 <div className="flex items-center gap-3 text-left">
                   <div className="w-10 h-10 rounded-xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0">
                     <Users className="w-4.5 h-4.5" />
