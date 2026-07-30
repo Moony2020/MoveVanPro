@@ -17,6 +17,12 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
           }
         }
         @media (max-width: 640px) {
+          .hero-section-mobile {
+            min-height: 420px !important;
+          }
+          .hero-container-mobile {
+            min-height: 420px !important;
+          }
           .hero-pills-mobile {
             bottom: 155px !important;
           }
