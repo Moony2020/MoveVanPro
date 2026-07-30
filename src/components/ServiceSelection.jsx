@@ -35,7 +35,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
 
       <main className="flex-grow">
         {/* Modern Mesh Gradient Hero Section */}
-        <section className="relative overflow-hidden pt-6 pb-2 md:pt-10 md:pb-3 lg:pb-8 xl:pb-10 mesh-bg border-b border-slate-200/80 text-slate-900 min-h-[600px] lg:min-h-[650px] xl:min-h-[667px] flex flex-col justify-start hero-section-mobile">
+        <section className="relative overflow-hidden pt-6 pb-2 md:pt-10 md:pb-6 lg:pb-8 xl:pb-10 mesh-bg border-b border-slate-200/80 text-slate-900 min-h-[600px] lg:min-h-[650px] xl:min-h-[667px] flex flex-col justify-start hero-section-mobile">
           {/* Ambient Background Radial Glow Blobs */}
           <div className="absolute top-10 right-[10%] w-96 h-96 bg-[#0058be]/15 rounded-full blur-3xl pointer-events-none z-0" />
           <div className="absolute bottom-10 left-[5%] w-[450px] h-[450px] bg-amber-500/10 rounded-full blur-3xl pointer-events-none z-0" />
@@ -123,7 +123,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
 
             {/* Transparent Trust Features Bar (No White Background Card) */}
             <div className="mt-auto max-[1024px]:mt-20 md:max-[1024px]:mt-20 max-sm:mt-28 hero-trust-mobile">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 pt-6 max-[1024px]:pt-10 border-t border-slate-200/60 hero-trust-grid-mobile">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 pt-6 max-[1024px]:pt-6 border-t border-slate-200/60 hero-trust-grid-mobile">
                 <div className="flex items-center gap-3 text-left">
                   <div className="w-10 h-10 rounded-xl bg-[#eff4ff] border border-[#dce9ff] flex items-center justify-center text-[#0058be] shrink-0">
                     <Users className="w-4.5 h-4.5" />
