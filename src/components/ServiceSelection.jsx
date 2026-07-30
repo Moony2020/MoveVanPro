@@ -19,11 +19,11 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
           <div className="absolute bottom-10 left-[5%] w-[450px] h-[450px] bg-amber-500/10 rounded-full blur-3xl pointer-events-none z-0" />
 
           {/* White shadow/glow backdrop behind text on screens <= 1280px to make text 100% clear and readable */}
-          <div className="absolute inset-y-0 left-0 w-[70%] sm:w-[60%] md:w-[55%] lg:w-[65%] xl:hidden bg-gradient-to-r from-white/90 via-white/50 to-transparent pointer-events-none z-10" />
+          <div className="absolute inset-y-0 left-0 w-[65%] sm:w-[60%] md:w-[55%] lg:w-[65%] xl:hidden bg-gradient-to-r from-white/90 via-white/50 to-transparent pointer-events-none z-10" />
  
           {/* 3D Hero Van Visual Background (High Opacity on Desktop, Low Opacity on Tablet/Mobile) */}
           <div 
-            className="absolute right-[-35px] max-[500px]:right-[-25px] md:right-[3%] lg:right-[2%] xl:right-[1.5%] top-1/2 max-[500px]:top-[calc(50%+2px)] sm:top-[calc(50%+10px)] md:top-1/2 -translate-y-1/2 w-[94%] max-[500px]:w-[96%] sm:w-[74%] md:w-[66%] lg:w-[52%] xl:w-[48%] max-w-6xl h-auto pointer-events-none z-0 flex justify-end opacity-55 max-[500px]:opacity-65 sm:opacity-65 lg:opacity-75 xl:opacity-95"
+            className="absolute right-[-35px] max-[500px]:right-[-25px] md:right-[3%] lg:right-[2%] xl:right-[1.5%] top-1/2 max-[500px]:top-[calc(50%+2px)] sm:top-[calc(50%+10px)] md:top-1/2 -translate-y-1/2 w-[94%] max-[500px]:w-[96%] sm:w-[74%] md:w-[66%] lg:w-[52%] xl:w-[48%] max-w-6xl h-auto pointer-events-none z-0 flex justify-end opacity-72 sm:opacity-65 lg:opacity-75 xl:opacity-95"
           >
             <img 
               src="/hero-image.png" 
@@ -67,10 +67,10 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
 
 
               {/* Action Buttons (Playfair Serif Display Font Style - Smaller & Pushed Down on Mobile/Tablet <= 1024px) */}
-              <div className="flex flex-row items-center justify-start gap-2.5 mb-5 w-full max-w-[290px] sm:max-w-[320px] md:max-w-[380px] lg:max-w-[420px] mt-24 max-[500px]:mt-36 sm:mt-24 md:mt-14 lg:mt-1.5">
+              <div className="flex flex-row items-center justify-start gap-2.5 mb-5 w-full max-w-[310px] sm:max-w-[320px] md:max-w-[380px] lg:max-w-[420px] mt-24 max-[500px]:mt-[134px] sm:mt-24 md:mt-14 lg:mt-1.5">
                 <button 
                   onClick={() => onSelectService('moving')}
-                  className="flex-1 bg-[#0058be] hover:bg-[#2170e4] text-white px-3 py-2 sm:px-4 sm:py-2.5 md:px-5 md:py-3 lg:px-6 lg:py-3.5 rounded-xl font-playfair font-bold text-[10px] sm:text-[13px] md:text-sm lg:text-sm transition-all duration-300 shadow-md shadow-[#0058be]/20 flex items-center justify-center gap-1.5 hover:scale-[1.02] cursor-pointer group tracking-tight"
+                  className="flex-1 bg-[#0058be] hover:bg-[#2170e4] text-white px-4 py-2.5 sm:px-4 sm:py-2.5 md:px-5 md:py-3 lg:px-6 lg:py-3.5 rounded-xl font-playfair font-bold text-[12px] sm:text-[13px] md:text-sm lg:text-sm transition-all duration-300 shadow-md shadow-[#0058be]/20 flex items-center justify-center gap-1.5 hover:scale-[1.02] cursor-pointer group tracking-tight"
                 >
                   <Truck className="w-3.5 h-3.5 lg:w-4.5 lg:h-4.5 group-hover:translate-x-1 transition-transform shrink-0" />
                   <span className="whitespace-nowrap font-bold">Book a Move</span>
@@ -79,7 +79,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                 <div className="relative flex-1 group">
                   <button 
                     onClick={() => onSelectService('towing')}
-                    className="w-full glass-card text-[#0b1c30] border border-slate-300/80 px-3 py-2 sm:px-4 sm:py-2.5 md:px-5 md:py-3 lg:px-6 lg:py-3.5 rounded-xl font-playfair font-bold text-[10px] sm:text-[13px] md:text-sm lg:text-sm hover:bg-white transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs tracking-tight"
+                    className="w-full glass-card text-[#0b1c30] border border-slate-300/80 px-4 py-2.5 sm:px-4 sm:py-2.5 md:px-5 md:py-3 lg:px-6 lg:py-3.5 rounded-xl font-playfair font-bold text-[12px] sm:text-[13px] md:text-sm lg:text-sm hover:bg-white transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs tracking-tight"
                   >
                     <AlertTriangle className="w-3.5 h-3.5 lg:w-4.5 lg:h-4.5 text-amber-700 group-hover:translate-x-1 transition-transform shrink-0" />
                     <span className="whitespace-nowrap font-bold">Emergency Towing</span>
