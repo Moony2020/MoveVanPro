@@ -35,7 +35,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
 
       <main className="flex-grow">
         {/* Modern Mesh Gradient Hero Section */}
-        <section className="relative overflow-hidden pt-6 pb-2 md:pt-10 md:pb-6 lg:pb-8 xl:pb-10 mesh-bg border-b border-slate-200/80 text-slate-900 min-h-[600px] lg:min-h-[650px] xl:min-h-[667px] flex flex-col justify-start hero-section-mobile">
+        <section className="relative overflow-hidden pt-6 pb-8 xl:pb-10 mesh-bg border-b border-slate-200/80 text-slate-900 min-h-[600px] lg:min-h-[650px] xl:min-h-[667px] flex flex-col justify-start hero-section-mobile">
           {/* Ambient Background Radial Glow Blobs */}
           <div className="absolute top-10 right-[10%] w-96 h-96 bg-[#0058be]/15 rounded-full blur-3xl pointer-events-none z-0" />
           <div className="absolute bottom-10 left-[5%] w-[450px] h-[450px] bg-amber-500/10 rounded-full blur-3xl pointer-events-none z-0" />
