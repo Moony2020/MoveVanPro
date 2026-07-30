@@ -11,6 +11,11 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
   return (
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex flex-col font-sans antialiased selection:bg-[#0058be] selection:text-white">
       <style>{`
+        @media (max-width: 786px) {
+          .hero-pills-mobile {
+            bottom: 180px !important;
+          }
+        }
         @media (max-width: 500px) {
           .hero-section-mobile {
             min-height: 350px !important;
@@ -55,7 +60,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
           </div>
 
           {/* Stat Pills Positioned on the Left Side on Mobile/Tablet, Right Side on Desktop (Elevated to avoid trust bar overlap) */}
-          <div className="absolute left-6 lg:left-auto lg:right-12 bottom-[140px] md:max-[1024px]:bottom-[145px] lg:bottom-[118px] max-sm:bottom-[175px] max-[786px]:bottom-[180px] z-20 hidden min-[501px]:flex flex-col min-[501px]:flex-row items-start lg:items-center gap-2 min-[501px]:gap-3">
+          <div className="absolute left-6 lg:left-auto lg:right-12 bottom-[140px] md:bottom-[110px] lg:bottom-[118px] max-sm:bottom-[175px] z-20 hidden min-[501px]:flex flex-col min-[501px]:flex-row items-start lg:items-center gap-2 min-[501px]:gap-3 hero-pills-mobile">
             <div className="bg-white/95 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200/90 shadow-md flex items-center gap-2 text-xs font-bold text-slate-800">
               <Clock className="w-4 h-4 text-[#0058be]" />
               <span>Avg. Response: <strong className="text-[#0058be] font-playfair font-bold">24 Mins</strong></span>
