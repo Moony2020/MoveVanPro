@@ -15,6 +15,9 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
           .hero-pills-mobile {
             bottom: 180px !important;
           }
+          .hero-van-mobile {
+            width: 76% !important;
+          }
         }
         @media (max-width: 500px) {
           .hero-section-mobile {
@@ -25,6 +28,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
           }
           .hero-van-mobile {
             top: calc(50% + 2px) !important;
+            width: 96% !important;
           }
           .hero-buttons-mobile {
             margin-top: 135px !important;
