@@ -40,12 +40,12 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
           </div>
           <div className="flex flex-col shrink-0">
             <div className="flex items-center gap-1">
-              <span className="font-extrabold text-sm md:text-lg text-slate-900 leading-none tracking-tight whitespace-nowrap font-['Playfair_Display'] font-serif">
+              <span className="font-extrabold text-base md:text-lg text-slate-900 leading-none tracking-tight whitespace-nowrap font-['Playfair_Display'] font-serif">
                 MoveVan<span className="text-[#0058be] font-bold ml-0.5">Pro</span>
               </span>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse hidden sm:inline-block" />
             </div>
-            <span className="text-[7.5px] md:text-[8.5px] font-extrabold text-slate-500 tracking-widest uppercase mt-0.5 whitespace-nowrap">
+            <span className="text-[8.5px] md:text-[8.5px] font-extrabold text-slate-500 tracking-widest uppercase mt-0.5 whitespace-nowrap">
               London Logistics
             </span>
           </div>
