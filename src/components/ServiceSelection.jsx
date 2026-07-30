@@ -17,7 +17,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
         }
         @media (min-width: 641px) and (max-width: 786px) {
           .hero-van-mobile {
-            width: 82% !important;
+            width: 86% !important;
           }
         }
         @media (max-width: 500px) {
