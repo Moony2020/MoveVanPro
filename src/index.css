@@ -161,4 +161,22 @@
   text-shadow: 0 0 4px #fff, 0 0 8px #fff, 0 0 16px #fff, 0 0 24px #fff !important;
 }
 
+@media (max-width: 500px) {
+  .hero-section-mobile {
+    min-height: 400px !important;
+  }
+  .hero-container-mobile {
+    min-height: 400px !important;
+  }
+  .hero-van-mobile {
+    top: calc(50% - 50px) !important;
+  }
+  .hero-buttons-mobile {
+    margin-top: 185px !important;
+  }
+  .hero-trust-mobile {
+    margin-top: 32px !important;
+  }
+}
+
 
