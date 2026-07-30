@@ -17,19 +17,14 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
           }
         }
         @media (max-width: 640px) {
-          .hero-section-mobile {
-            min-height: 420px !important;
-          }
-          .hero-container-mobile {
-            min-height: 420px !important;
-          }
           .hero-pills-mobile {
             bottom: 155px !important;
           }
           .hero-buttons-mobile {
-            margin-top: 135px !important;
+            margin-top: 170px !important;
           }
           .hero-van-mobile {
+            top: calc(50% - 20px) !important;
             width: 80% !important;
           }
         }
