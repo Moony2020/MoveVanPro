@@ -165,11 +165,14 @@
   .hero-pills-mobile {
     bottom: 180px !important;
   }
+  .hero-van-mobile {
+    width: 74% !important;
+  }
 }
 
-@media (min-width: 640px) and (max-width: 786px) {
+@media (max-width: 640px) {
   .hero-van-mobile {
-    width: 78% !important;
+    width: 94% !important;
   }
 }
 

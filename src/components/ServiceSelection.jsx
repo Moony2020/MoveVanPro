@@ -7,7 +7,6 @@ import {
 export default function ServiceSelection({ onSelectService, onNavigateTo }) {
   const [activeTab, setActiveTab] = useState('all');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   return (
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex flex-col font-sans antialiased selection:bg-[#0058be] selection:text-white">
       <style>{`
@@ -15,10 +14,13 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
           .hero-pills-mobile {
             bottom: 180px !important;
           }
-        }
-        @media (min-width: 640px) and (max-width: 786px) {
           .hero-van-mobile {
-            width: 78% !important;
+            width: 74% !important;
+          }
+        }
+        @media (max-width: 640px) {
+          .hero-van-mobile {
+            width: 94% !important;
           }
         }
         @media (max-width: 500px) {
