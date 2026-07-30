@@ -18,17 +18,17 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
           <div className="absolute top-10 right-[10%] w-96 h-96 bg-[#0058be]/15 rounded-full blur-3xl pointer-events-none z-0" />
           <div className="absolute bottom-10 left-[5%] w-[450px] h-[450px] bg-amber-500/10 rounded-full blur-3xl pointer-events-none z-0" />
 
-          {/* White shadow/glow backdrop behind text on screens <= 1024px to make text 100% clear and readable */}
-          <div className="absolute inset-y-0 left-0 w-full sm:w-[85%] md:w-[75%] lg:hidden bg-gradient-to-r from-white/90 via-white/75 via-white/60 to-transparent pointer-events-none z-10" />
-
+          {/* White shadow/glow backdrop behind text on screens <= 1280px to make text 100% clear and readable */}
+          <div className="absolute inset-y-0 left-0 w-[70%] sm:w-[60%] md:w-[55%] lg:w-[65%] xl:hidden bg-gradient-to-r from-white/90 via-white/50 to-transparent pointer-events-none z-10" />
+ 
           {/* 3D Hero Van Visual Background (High Opacity on Desktop, Low Opacity on Tablet/Mobile) */}
           <div 
-            className="absolute right-[1%] sm:right-[3%] lg:right-[5%] top-1/2 sm:top-[calc(50%+10px)] md:top-1/2 -translate-y-1/2 w-[89%] max-[500px]:w-[92%] sm:w-[74%] md:w-[66%] lg:w-[52%] xl:w-[48%] max-w-6xl h-auto pointer-events-none z-0 flex justify-end opacity-55 sm:opacity-65 lg:opacity-95"
+            className="absolute right-[-35px] max-[500px]:right-[-25px] md:right-[3%] lg:right-[2%] xl:right-[1.5%] top-1/2 max-[500px]:top-[calc(50%+2px)] sm:top-[calc(50%+10px)] md:top-1/2 -translate-y-1/2 w-[94%] max-[500px]:w-[96%] sm:w-[74%] md:w-[66%] lg:w-[52%] xl:w-[48%] max-w-6xl h-auto pointer-events-none z-0 flex justify-end opacity-55 max-[500px]:opacity-65 sm:opacity-65 lg:opacity-75 xl:opacity-95"
           >
             <img 
               src="/hero-image.png" 
               alt="MoveVan Pro Professional Service Fleet" 
-              className="w-full h-auto object-contain drop-shadow-2xl -translate-x-1 sm:-translate-x-3 lg:-translate-x-5 scale-116 max-[500px]:scale-118 sm:scale-110 lg:scale-115"
+              className="w-full h-auto object-contain drop-shadow-2xl -translate-x-1 sm:-translate-x-3 lg:-translate-x-5 scale-122 max-[500px]:scale-124 sm:scale-110 lg:scale-115"
             />
           </div>
 
@@ -61,16 +61,16 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               </h2>
 
               {/* Paragraph */}
-              <p className="text-base md:text-lg text-[#0b1c30]/95 leading-relaxed font-normal max-w-xl mb-6" style={{fontFamily: "'Roboto', sans-serif", textShadow: "0 0 18px rgba(255,255,255,0.95), 0 0 30px rgba(255,255,255,0.8), 0 0 6px rgba(255,255,255,1)"}}>
+              <p className="text-base md:text-lg text-[#0b1c30]/95 leading-relaxed font-semibold max-w-xl mb-6 font-['Roboto'] [text-shadow:0_0_4px_#fff,0_0_8px_#fff,0_0_16px_#fff,0_0_24px_#fff]">
                 Experience white-glove logistics with our professional fleet. From seamless residential moves to urgent 24/7 recovery, we handle the heavy lifting with precision.
               </p>
 
 
               {/* Action Buttons (Playfair Serif Display Font Style - Smaller & Pushed Down on Mobile/Tablet <= 1024px) */}
-              <div className="flex flex-row items-center justify-start gap-2.5 mb-5 w-full max-w-[290px] sm:max-w-[340px] lg:max-w-[420px] mt-24 max-[500px]:mt-36 sm:mt-24 md:mt-1.5">
+              <div className="flex flex-row items-center justify-start gap-2.5 mb-5 w-full max-w-[290px] sm:max-w-[320px] md:max-w-[380px] lg:max-w-[420px] mt-24 max-[500px]:mt-36 sm:mt-24 md:mt-14 lg:mt-1.5">
                 <button 
                   onClick={() => onSelectService('moving')}
-                  className="flex-1 bg-[#0058be] hover:bg-[#2170e4] text-white px-3 py-2 sm:px-4 sm:py-2.5 lg:px-6 lg:py-3.5 rounded-xl font-playfair font-bold text-[10px] sm:text-xs lg:text-sm transition-all duration-300 shadow-md shadow-[#0058be]/20 flex items-center justify-center gap-1.5 hover:scale-[1.02] cursor-pointer group tracking-tight"
+                  className="flex-1 bg-[#0058be] hover:bg-[#2170e4] text-white px-3 py-2 sm:px-4 sm:py-2.5 md:px-5 md:py-3 lg:px-6 lg:py-3.5 rounded-xl font-playfair font-bold text-[10px] sm:text-[13px] md:text-sm lg:text-sm transition-all duration-300 shadow-md shadow-[#0058be]/20 flex items-center justify-center gap-1.5 hover:scale-[1.02] cursor-pointer group tracking-tight"
                 >
                   <Truck className="w-3.5 h-3.5 lg:w-4.5 lg:h-4.5 group-hover:translate-x-1 transition-transform shrink-0" />
                   <span className="whitespace-nowrap font-bold">Book a Move</span>
@@ -79,7 +79,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                 <div className="relative flex-1 group">
                   <button 
                     onClick={() => onSelectService('towing')}
-                    className="w-full glass-card text-[#0b1c30] border border-slate-300/80 px-3 py-2 sm:px-4 sm:py-2.5 lg:px-6 lg:py-3.5 rounded-xl font-playfair font-bold text-[10px] sm:text-xs lg:text-sm hover:bg-white transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs tracking-tight"
+                    className="w-full glass-card text-[#0b1c30] border border-slate-300/80 px-3 py-2 sm:px-4 sm:py-2.5 md:px-5 md:py-3 lg:px-6 lg:py-3.5 rounded-xl font-playfair font-bold text-[10px] sm:text-[13px] md:text-sm lg:text-sm hover:bg-white transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs tracking-tight"
                   >
                     <AlertTriangle className="w-3.5 h-3.5 lg:w-4.5 lg:h-4.5 text-amber-700 group-hover:translate-x-1 transition-transform shrink-0" />
                     <span className="whitespace-nowrap font-bold">Emergency Towing</span>
