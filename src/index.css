@@ -163,10 +163,10 @@
 
 @media (max-width: 500px) {
   .hero-section-mobile {
-    min-height: 400px !important;
+    min-height: 350px !important;
   }
   .hero-container-mobile {
-    min-height: 400px !important;
+    min-height: 350px !important;
   }
   .hero-van-mobile {
     top: calc(50% - 50px) !important;
@@ -175,7 +175,7 @@
     margin-top: 185px !important;
   }
   .hero-trust-mobile {
-    margin-top: 32px !important;
+    margin-top: 4px !important;
   }
 }
 
