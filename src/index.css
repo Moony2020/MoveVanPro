@@ -161,18 +161,6 @@
   text-shadow: 0 0 4px #fff, 0 0 8px #fff, 0 0 16px #fff, 0 0 24px #fff !important;
 }
 
-@media (max-width: 786px) {
-  .hero-pills-mobile {
-    bottom: 180px !important;
-  }
-}
-
-@media (min-width: 641px) and (max-width: 786px) {
-  .hero-van-mobile {
-    width: 86% !important;
-  }
-}
-
 @media (max-width: 500px) {
   .hero-section-mobile {
     min-height: 350px !important;
