@@ -393,12 +393,26 @@ export default function PaymentCheckout({
 
         {/* Accepted Payment Badges */}
         <div className="mt-3 pt-3 border-t border-[#c2c6d6]/60 flex flex-wrap items-center justify-between gap-2 text-[10px] text-[#424754]">
-          <div className="flex items-center gap-2 font-bold text-[#0b1c30]">
+          <div className="flex items-center gap-2.5 font-bold text-[#0b1c30]">
             <span>Accepted:</span>
-            <span className="px-2 py-0.5 bg-gray-100 rounded border border-gray-200">Visa</span>
-            <span className="px-2 py-0.5 bg-gray-100 rounded border border-gray-200">Mastercard</span>
-            <span className="px-2 py-0.5 bg-gray-100 rounded border border-gray-200">Amex</span>
-            <span className="px-2 py-0.5 bg-gray-100 rounded border border-gray-200">PayPal</span>
+            {/* Visa SVG */}
+            <svg className="h-4.5 w-auto" viewBox="0 0 24 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3.7 0L1.7 8H0L2 0H3.7ZM9.8 0L8.6 8H7.1L8.3 0H9.8ZM18 0C17.2 0 16.5 .4 16.2 1.1L14.3 8H15.9L16.2 7H18.2L18.4 8H20L18.6 0H18ZM16.6 5.8L17.2 3.8C17.2 3.8 17.5 2.5 17.6 2.1L18 4.1L18.1 5.8H16.6ZM13.8 0L11.3 5.4L10.2 0.8C10 0.3 9.6 0 9 0H6.5V0.3C7.5 0.6 8.2 1 8.5 1.5L9.9 8H11.6L14.4 0H13.8Z" fill="#1434CB"/>
+            </svg>
+            {/* Mastercard SVG */}
+            <svg className="h-5.5 w-auto" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="8" cy="8" r="8" fill="#EB001B" />
+              <circle cx="16" cy="8" r="8" fill="#F79E1B" fillOpacity="0.8" />
+            </svg>
+            {/* Amex SVG */}
+            <div className="bg-[#007cc3] text-white font-extrabold text-[7.5px] px-1 py-0.5 rounded leading-none flex items-center justify-center tracking-tighter" style={{ width: '22px', height: '15px' }}>
+              AMEX
+            </div>
+            {/* PayPal SVG */}
+            <svg className="h-4 w-auto" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8.2 0H2.2C1.3 0 .5 .7 .4 1.6L0 27.2C0 27.7 .4 28 .9 28H6.5C7.4 28 8.1 27.3 8.3 26.4L10.3 12.8C10.4 12.1 11.1 11.6 11.8 11.6H13.6C18.6 11.6 22 9.1 22.8 4.2C23.2 2 21.7 0 17 0H8.2Z" fill="#003087"/>
+              <path d="M10.8 5.6H4.8C3.9 5.6 3.1 6.3 3 7.2L1 20.3C1 20.8 1.4 21.1 1.9 21.1H6.1C7 21.1 7.7 20.4 7.9 19.5L9.3 10.3C9.4 9.6 10.1 9.1 10.8 9.1H12.3C16.8 9.1 19.8 6.9 20.5 2.5C20.8 .5 19.5 5.6 15.3 5.6H10.8Z" fill="#0079C1"/>
+            </svg>
           </div>
 
           <div className="flex items-center gap-1 text-emerald-700 font-bold shrink-0">
