@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { X, User, Lock, Mail, Phone, ShieldCheck, ArrowRight, Truck, LayoutDashboard, KeyRound, CheckCircle2 } from 'lucide-react';
 
-export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
-  const [activeTab, setActiveTab] = useState('customer'); // 'customer' | 'staff' | 'track'
+export default function LoginModal({ isOpen, onClose, onLoginSuccess, initialTab = 'customer' }) {
+  const [activeTab, setActiveTab] = useState(initialTab); // 'customer' | 'staff' | 'track'
   const [isRegistering, setIsRegistering] = useState(false);
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -14,6 +14,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
 
   useEffect(() => {
     if (isOpen) {
+      setActiveTab(initialTab);
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';

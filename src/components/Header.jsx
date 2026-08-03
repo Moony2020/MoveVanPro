@@ -23,9 +23,20 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
     { id: 'landing', label: '1. Customer Service Landing', shortLabel: 'Home', icon: Home },
     { id: 'moving', label: '2. Moving Quote Wizard', shortLabel: 'Book Move', icon: Truck },
     { id: 'towing', label: '3. Emergency Towing Dispatch', shortLabel: 'Towing', icon: AlertTriangle, color: 'text-amber-400' },
-    { id: 'dispatch', label: '4. Dispatcher Command Center', shortLabel: 'Dispatcher', icon: LayoutDashboard, color: 'text-emerald-400' },
-    { id: 'fleet', label: '5. Fleet & Drivers Telemetry', shortLabel: 'Fleet', icon: Users }
+    { id: 'dispatch', label: '4. Dispatcher Command Center', shortLabel: 'Dispatcher', icon: LayoutDashboard, color: 'text-emerald-400', staffOnly: true },
+    { id: 'fleet', label: '5. Fleet & Drivers Telemetry', shortLabel: 'Fleet', icon: Users, staffOnly: true }
   ];
+  const isDispatcher = currentUser?.role === 'dispatcher';
+
+  const handleNavigate = (item) => {
+    if (item.staffOnly && !isDispatcher) {
+      onOpenLogin?.('staff');
+      setMobileMenuOpen(false);
+      return;
+    }
+    setCurrentView(item.id);
+    setMobileMenuOpen(false);
+  };
 
   return (
     <header className={`bg-white/95 text-slate-900 border-b border-slate-200 sticky top-0 z-50 shadow-xs w-full max-w-full relative transition-all ${mobileMenuOpen ? '' : 'backdrop-blur-md'}`}>
@@ -59,7 +70,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
             return (
               <button
                 key={item.id}
-                onClick={() => setCurrentView(item.id)}
+                onClick={() => handleNavigate(item)}
                 className={`px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-xl text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif transition-all flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 cursor-pointer outline-none focus:outline-none focus:ring-0 focus-visible:outline-none select-none ${
                   isActive 
                     ? 'bg-[#eff4ff] text-[#0058be] border border-[#dce9ff] shadow-2xs font-extrabold' 
@@ -185,7 +196,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
                 return (
                   <button
                     key={item.id}
-                    onClick={() => { setCurrentView(item.id); setMobileMenuOpen(false); }}
+                    onClick={() => handleNavigate(item)}
                     className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-3 transition-all cursor-pointer outline-none ${
                       isActive 
                         ? 'bg-[#eff4ff] text-[#0058be] border border-[#dce9ff] font-extrabold shadow-2xs' 

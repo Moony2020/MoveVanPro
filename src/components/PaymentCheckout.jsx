@@ -1,425 +1,273 @@
-import React, { useState } from 'react';
-import { 
-  CreditCard, Lock, ShieldCheck, CheckCircle2, Sparkles, 
-  RefreshCw, Check, ArrowRight, Printer, AlertCircle
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  AlertCircle, Check, CheckCircle2, CreditCard, Lock,
+  Printer, RefreshCw, ShieldCheck,
 } from 'lucide-react';
 
-export default function PaymentCheckout({ 
-  totalAmount = 608, 
-  bookingDetails = {}, 
-  onPaymentSuccess,
-  onCancel 
-}) {
-  const [paymentMethod, setPaymentMethod] = useState('stripe'); // 'stripe' | 'paypal'
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [processingStep, setProcessingStep] = useState('');
-  const [paymentCompleted, setPaymentCompleted] = useState(false);
-  const [receiptData, setReceiptData] = useState(null);
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY;
+const currency = (import.meta.env.VITE_PAYMENT_CURRENCY || import.meta.env.VITE_PAYPAL_CURRENCY || 'USD').toUpperCase();
+const pendingCheckoutKey = 'movevanpro_pending_stripe_checkout';
 
-  // Stripe Card Form State (Starts Empty - User MUST enter valid info)
-  const [cardName, setCardName] = useState('');
-  const [cardNumber, setCardNumber] = useState('');
-  const [cardExpiry, setCardExpiry] = useState('');
-  const [cardCvc, setCardCvc] = useState('');
-  const [cardZip, setCardZip] = useState('');
-  const [cardErrors, setCardErrors] = useState({});
-
-  // PayPal State (Starts Empty - User MUST enter email)
-  const [paypalEmail, setPaypalEmail] = useState('');
-  const [paypalErrors, setPaypalErrors] = useState('');
-
-  // Card Brand Detection
-  const getCardBrand = (num) => {
-    const clean = num.replace(/\s+/g, '');
-    if (/^4/.test(clean)) return { name: 'Visa', color: 'bg-blue-600' };
-    if (/^5[1-5]|^2[2-7]/.test(clean)) return { name: 'Mastercard', color: 'bg-amber-600' };
-    if (/^3[47]/.test(clean)) return { name: 'American Express', color: 'bg-emerald-600' };
-    if (/^6/.test(clean)) return { name: 'Discover', color: 'bg-orange-600' };
-    return { name: 'Card', color: 'bg-gray-600' };
-  };
-
-  const cardBrand = getCardBrand(cardNumber);
-
-  // Input auto-formatters
-  const handleCardNumberChange = (e) => {
-    let val = e.target.value.replace(/\D/g, '').slice(0, 16);
-    let formatted = val.replace(/(.{4})/g, '$1 ').trim();
-    setCardNumber(formatted);
-    if (cardErrors.cardNumber) setCardErrors(prev => ({ ...prev, cardNumber: null }));
-  };
-
-  const handleExpiryChange = (e) => {
-    let val = e.target.value.replace(/\D/g, '').slice(0, 4);
-    if (val.length >= 3) {
-      val = `${val.slice(0, 2)}/${val.slice(2)}`;
+async function apiRequest(path, options = {}) {
+  let response;
+  try {
+    response = await fetch(`${apiBaseUrl}${path}`, {
+      ...options,
+      headers: { 'Content-Type': 'application/json', ...options.headers },
+    });
+  } catch {
+    throw new Error('Payment server is not reachable. Restart the backend on port 5000, then try again.');
+  }
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    if (payload.error === 'PayPal is not configured') {
+      throw new Error('PayPal credentials are not loaded by the backend yet. Restart the payment server and refresh the page.');
     }
-    setCardExpiry(val);
-    if (cardErrors.cardExpiry) setCardErrors(prev => ({ ...prev, cardExpiry: null }));
-  };
+    throw new Error(payload.error || 'The payment service returned an error');
+  }
+  return payload;
+}
 
-  const handleCvcChange = (e) => {
-    let val = e.target.value.replace(/\D/g, '').slice(0, 4);
-    setCardCvc(val);
-    if (cardErrors.cardCvc) setCardErrors(prev => ({ ...prev, cardCvc: null }));
+function createReceipt({ provider, method, transactionId, status, amount, receiptCurrency, date }) {
+  return {
+    txnId: transactionId,
+    provider,
+    method,
+    amount: Number(amount),
+    currency: (receiptCurrency || currency).toUpperCase(),
+    date: date || new Date().toLocaleString('en-GB'),
+    status,
   };
+}
 
-  // Strict Form Validation before processing payment
-  const validateForm = () => {
-    if (paymentMethod === 'stripe') {
-      const errors = {};
-      if (!cardName.trim()) errors.cardName = 'Cardholder name is required';
-      if (cardNumber.replace(/\s+/g, '').length < 15) errors.cardNumber = 'Enter a valid 16-digit card number';
-      if (!cardExpiry.includes('/') || cardExpiry.length < 5) errors.cardExpiry = 'Enter valid MM/YY';
-      if (cardCvc.length < 3) errors.cardCvc = 'Enter 3 or 4 digit CVC';
-      setCardErrors(errors);
-      return Object.keys(errors).length === 0;
-    } else if (paymentMethod === 'paypal') {
-      if (!paypalEmail.trim() || !paypalEmail.includes('@')) {
-        setPaypalErrors('Please enter your PayPal account email');
-        return false;
-      }
-      setPaypalErrors('');
-      return true;
+function PayPalButton({ amount, bookingDetails, disabled, onProcessing, onSuccess, onError }) {
+  const containerRef = useRef(null);
+  const renderedRef = useRef(false);
+  const handlersRef = useRef({ onProcessing, onSuccess, onError });
+  const clientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
+  const paypalConfigured = Boolean(clientId && !clientId.includes('your_paypal') && !clientId.includes('sample'));
+
+  useEffect(() => {
+    handlersRef.current = { onProcessing, onSuccess, onError };
+  }, [onError, onProcessing, onSuccess]);
+
+  useEffect(() => {
+    if (!paypalConfigured) return undefined;
+
+    let cancelled = false;
+    const scriptId = 'movevanpro-paypal-sdk';
+    let script = document.getElementById(scriptId);
+
+    const renderButton = () => {
+      if (cancelled || renderedRef.current || !window.paypal || !containerRef.current) return;
+      renderedRef.current = true;
+      window.paypal.Buttons({
+        style: { layout: 'horizontal', shape: 'rect', label: 'paypal', height: 48, tagline: false },
+        createOrder: async () => {
+          handlersRef.current.onProcessing('Opening PayPal...');
+          const order = await apiRequest('/paypal/create-order', {
+            method: 'POST',
+            body: JSON.stringify({ amount, currency, bookingDetails }),
+          });
+          return order.id;
+        },
+        onApprove: async ({ orderID }) => {
+          handlersRef.current.onProcessing('Capturing approved PayPal payment...');
+          const result = await apiRequest('/paypal/capture-order', {
+            method: 'POST',
+            body: JSON.stringify({ orderId: orderID }),
+          });
+          if (result.status !== 'COMPLETED' || result.capture?.status !== 'COMPLETED') {
+            throw new Error(`PayPal capture status: ${result.capture?.status || result.status}`);
+          }
+          handlersRef.current.onSuccess(createReceipt({
+            provider: 'PayPal',
+            method: result.payerEmail ? `PayPal (${result.payerEmail})` : 'PayPal',
+            transactionId: result.capture.id,
+            status: result.capture.status,
+            amount: result.capture.amount.value,
+            receiptCurrency: result.capture.amount.currency_code,
+            date: result.capture.createTime ? new Date(result.capture.createTime).toLocaleString('en-GB') : undefined,
+          }));
+        },
+        onCancel: () => handlersRef.current.onError('PayPal checkout was cancelled. No payment was captured.'),
+        onError: (error) => handlersRef.current.onError(error.message || 'PayPal checkout failed.'),
+      }).render(containerRef.current);
+    };
+
+    if (window.paypal) renderButton();
+    else if (script) script.addEventListener('load', renderButton, { once: true });
+    else {
+      script = document.createElement('script');
+      script.id = scriptId;
+      script.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=${encodeURIComponent(currency)}&intent=capture`;
+      script.async = true;
+      script.addEventListener('load', renderButton, { once: true });
+      script.addEventListener('error', () => handlersRef.current.onError('Unable to load PayPal Checkout.'), { once: true });
+      document.head.appendChild(script);
     }
-    return false;
-  };
 
-  // Execute Payment ONLY after strict validation
-  const handleExecutePayment = () => {
-    if (!validateForm()) return;
+    return () => {
+      cancelled = true;
+      script?.removeEventListener('load', renderButton);
+    };
+  }, [amount, bookingDetails, clientId, paypalConfigured]);
 
-    setIsProcessing(true);
-
-    if (paymentMethod === 'stripe') {
-      setProcessingStep('Encrypting card token via 256-Bit SSL...');
-      
-      setTimeout(() => {
-        setProcessingStep('Authorizing card with issuing bank...');
-      }, 700);
-
-      setTimeout(() => {
-        const txnId = `TXN-STP-${Math.floor(100000 + Math.random() * 900000)}`;
-        const receipt = {
-          txnId,
-          provider: 'Credit / Debit Card Gateway',
-          method: `${cardBrand.name} ending in ${cardNumber.slice(-4)}`,
-          amount: totalAmount,
-          date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-          status: 'SETTLED & CAPTURED',
-          authCode: `AUTH_${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
-          securityHash: `sha256_${Math.random().toString(36).substring(2, 12)}`,
-          pickup: bookingDetails.pickup || '142 Kensington High St, London W8 7RG',
-          dropoff: bookingDetails.dropoff || '28 Canary Wharf, London E14 5AB',
-          vehicle: bookingDetails.vehicle || 'Luton Van',
-          movers: bookingDetails.movers !== undefined ? bookingDetails.movers : 1,
-          schedule: `${bookingDetails.moveDate || '2026-08-01'} at ${bookingDetails.moveTime || '09:00 AM'}`
-        };
-        setReceiptData(receipt);
-        setIsProcessing(false);
-        setPaymentCompleted(true);
-        if (onPaymentSuccess) onPaymentSuccess(receipt);
-      }, 1600);
-
-    } else if (paymentMethod === 'paypal') {
-      setProcessingStep('Authorizing PayPal account balance...');
-
-      setTimeout(() => {
-        const txnId = `TXN-PYP-${Math.floor(100000 + Math.random() * 900000)}`;
-        const receipt = {
-          txnId,
-          provider: 'PayPal Express Checkout',
-          method: `PayPal (${paypalEmail})`,
-          amount: totalAmount,
-          date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-          status: 'COMPLETED & VERIFIED',
-          authCode: `PYP_AUTH_${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
-          securityHash: `sha256_${Math.random().toString(36).substring(2, 12)}`,
-          pickup: bookingDetails.pickup || '142 Kensington High St, London W8 7RG',
-          dropoff: bookingDetails.dropoff || '28 Canary Wharf, London E14 5AB',
-          vehicle: bookingDetails.vehicle || 'Luton Van',
-          movers: bookingDetails.movers !== undefined ? bookingDetails.movers : 1,
-          schedule: `${bookingDetails.moveDate || '2026-08-01'} at ${bookingDetails.moveTime || '09:00 AM'}`
-        };
-        setReceiptData(receipt);
-        setIsProcessing(false);
-        setPaymentCompleted(true);
-        if (onPaymentSuccess) onPaymentSuccess(receipt);
-      }, 1600);
-    }
-  };
-
-  // Render Receipt when Payment is Verified & Completed
-  if (paymentCompleted && receiptData) {
-    return (
-      <div className="bg-white border-2 border-emerald-500 rounded-3xl p-5 sm:p-7 shadow-2xl animate-in zoom-in-95 duration-200">
-        <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center shadow-inner">
-              <CheckCircle2 className="w-6 h-6 stroke-[2.5]" />
-            </div>
-            <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 block">Payment Authorized</span>
-              <h3 className="text-lg font-black text-gray-900">Transaction Receipt</h3>
-            </div>
-          </div>
-          <span className="px-3 py-1 bg-emerald-50 text-emerald-700 font-extrabold text-xs rounded-full border border-emerald-200">
-            {receiptData.status}
-          </span>
-        </div>
-
-        {/* Receipt Box */}
-        <div className="bg-[#0b1c30] text-white rounded-2xl p-4 sm:p-5 mb-5 space-y-3.5 shadow-xl border border-gray-800">
-          <div className="flex justify-between items-start border-b border-white/10 pb-3">
-            <div>
-              <span className="text-[10px] text-gray-400 uppercase font-bold tracking-widest block mb-1">Transaction Ref</span>
-              <span className="text-sm sm:text-base font-mono font-black text-emerald-400">{receiptData.txnId}</span>
-            </div>
-            <div className="text-right">
-              <span className="text-[10px] text-gray-400 uppercase font-bold tracking-widest block mb-1">Total Paid</span>
-              <span className="text-xl sm:text-2xl font-black text-white">${receiptData.amount}.00</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 text-xs">
-            <div>
-              <span className="text-gray-400 block text-[10px]">Payment Provider</span>
-              <strong className="text-white text-[11px]">{receiptData.provider}</strong>
-            </div>
-            <div>
-              <span className="text-gray-400 block text-[10px]">Payment Method</span>
-              <strong className="text-white text-[11px]">{receiptData.method}</strong>
-            </div>
-            <div>
-              <span className="text-gray-400 block text-[10px]">Auth Code</span>
-              <strong className="text-emerald-300 font-mono text-[11px]">{receiptData.authCode}</strong>
-            </div>
-            <div>
-              <span className="text-gray-400 block text-[10px]">Timestamp</span>
-              <strong className="text-white text-[11px]">{receiptData.date}</strong>
-            </div>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-2.5">
-          <button 
-            onClick={() => window.print()}
-            className="flex-1 py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
-          >
-            <Printer className="w-4 h-4" />
-            Print Receipt
-          </button>
-          <button 
-            onClick={() => {
-              if (onCancel) onCancel();
-            }}
-            className="flex-1 py-3 px-4 bg-[#0058be] hover:bg-[#2170e4] text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer"
-          >
-            <Check className="w-4 h-4" />
-            Return to Booking Home
-          </button>
-        </div>
-      </div>
-    );
+  if (!paypalConfigured) {
+    return <button type="button" onClick={() => onError('Add your PayPal Client ID to VITE_PAYPAL_CLIENT_ID.')} className="h-12 rounded-lg bg-[#ffc439] text-[#111] font-bold text-[13px]">Pay securely with PayPal</button>;
   }
 
+  return <div className={disabled ? 'pointer-events-none opacity-60' : ''} ref={containerRef} />;
+}
+
+function Receipt({ receipt, onCancel }) {
   return (
-    <div className="space-y-4 pt-1">
-      {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-[#c2c6d6]/60">
+    <div className="bg-white border-2 border-emerald-500 rounded-3xl p-5 sm:p-7 shadow-2xl">
+      <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center"><CheckCircle2 className="w-6 h-6" /></div>
+          <div><span className="text-[10px] font-bold uppercase text-emerald-600">Payment verified</span><h3 className="text-lg font-black">Transaction Receipt</h3></div>
+        </div>
+        <span className="px-3 py-1 bg-emerald-50 text-emerald-700 font-extrabold text-xs rounded-full border border-emerald-200">{receipt.status}</span>
+      </div>
+      <div className="bg-[#0b1c30] text-white rounded-2xl p-5 mb-5 space-y-4 shadow-xl">
+        <div className="flex justify-between gap-4 border-b border-white/10 pb-3">
+          <div className="min-w-0"><span className="text-[10px] text-gray-400 uppercase block">Transaction ID</span><span className="text-xs sm:text-sm font-mono font-black text-emerald-400 break-all">{receipt.txnId}</span></div>
+          <div className="text-right shrink-0"><span className="text-[10px] text-gray-400 uppercase block">Total paid</span><span className="text-xl font-black">{new Intl.NumberFormat('en-GB', { style: 'currency', currency: receipt.currency }).format(receipt.amount)}</span></div>
+        </div>
+        <div className="grid grid-cols-2 gap-3 text-xs">
+          <div><span className="text-gray-400 block text-[10px]">Provider</span><strong>{receipt.provider}</strong></div>
+          <div><span className="text-gray-400 block text-[10px]">Method</span><strong>{receipt.method}</strong></div>
+          <div className="col-span-2"><span className="text-gray-400 block text-[10px]">Timestamp</span><strong>{receipt.date}</strong></div>
+        </div>
+      </div>
+      <div className="flex flex-col sm:flex-row gap-2.5">
+        <button onClick={() => window.print()} className="flex-1 py-3 bg-gray-100 rounded-xl font-bold text-xs flex items-center justify-center gap-2"><Printer className="w-4 h-4" />Print receipt</button>
+        <button onClick={onCancel} className="flex-1 py-3 bg-[#0058be] text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2"><Check className="w-4 h-4" />Return to booking</button>
+      </div>
+    </div>
+  );
+}
+
+export default function PaymentCheckout({ totalAmount = 608, bookingDetails = {}, onPaymentSuccess, onCancel }) {
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [processingStep, setProcessingStep] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [receipt, setReceipt] = useState(null);
+
+  const finishPayment = useCallback((paymentReceipt) => {
+    setReceipt(paymentReceipt);
+    setIsProcessing(false);
+    setProcessingStep('');
+    setErrorMessage('');
+    localStorage.removeItem(pendingCheckoutKey);
+    onPaymentSuccess?.(paymentReceipt);
+  }, [onPaymentSuccess]);
+
+  const failPayment = useCallback((error) => {
+    setIsProcessing(false);
+    setProcessingStep('');
+    setErrorMessage(typeof error === 'string' ? error : error.message || 'Payment failed. Please try again.');
+  }, []);
+
+  const verifyStripeSession = useCallback(async (sessionId) => {
+    try {
+      setIsProcessing(true);
+      setProcessingStep('Verifying Stripe payment...');
+      const session = await apiRequest(`/checkout-session/${sessionId}`);
+      if (session.status !== 'complete' || session.paymentStatus !== 'paid') {
+        throw new Error(`Stripe payment status: ${session.paymentStatus || session.status}`);
+      }
+      finishPayment(createReceipt({
+        provider: 'Stripe Checkout',
+        method: session.customerEmail ? `Card (${session.customerEmail})` : 'Credit / debit card',
+        transactionId: session.paymentIntentId || session.id,
+        status: session.paymentStatus.toUpperCase(),
+        amount: session.amountTotal / 100,
+        receiptCurrency: session.currency,
+        date: new Date(session.created * 1000).toLocaleString('en-GB'),
+      }));
+    } catch (error) {
+      failPayment(error);
+    }
+  }, [failPayment, finishPayment]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const sessionId = params.get('stripe_session_id');
+    const checkoutStatus = params.get('stripe_checkout');
+
+    if (checkoutStatus === 'cancelled') {
+      failPayment('Stripe checkout was cancelled. No payment was captured.');
+    }
+
+    if (sessionId) {
+      verifyStripeSession(sessionId);
+    }
+
+    if (checkoutStatus || sessionId) {
+      params.delete('stripe_checkout');
+      params.delete('stripe_session_id');
+      const cleanUrl = `${window.location.pathname}${params.toString() ? `?${params}` : ''}${window.location.hash}`;
+      window.history.replaceState({}, '', cleanUrl);
+    }
+  }, [failPayment, verifyStripeSession]);
+
+  const openStripeCheckout = useCallback(async () => {
+    if (!stripePublicKey) {
+      failPayment('Add VITE_STRIPE_PUBLIC_KEY to the frontend .env file.');
+      return;
+    }
+
+    try {
+      setIsProcessing(true);
+      setProcessingStep('Opening Stripe checkout...');
+      setErrorMessage('');
+      localStorage.setItem(pendingCheckoutKey, JSON.stringify({ amount: totalAmount, bookingDetails }));
+      const session = await apiRequest('/create-hosted-checkout-session', {
+        method: 'POST',
+        body: JSON.stringify({
+          amount: totalAmount,
+          currency,
+          bookingDetails,
+          returnUrl: window.location.href,
+        }),
+      });
+      window.location.assign(session.url);
+    } catch (error) {
+      failPayment(error);
+    }
+  }, [bookingDetails, failPayment, totalAmount]);
+
+  if (receipt) return <Receipt receipt={receipt} onCancel={onCancel} />;
+
+  return (
+    <div className="space-y-4 pt-2 font-['Plus_Jakarta_Sans',Inter,ui-sans-serif,system-ui,sans-serif]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#c2c6d6]/60">
         <div>
-          <h3 className="text-base font-black text-[#0b1c30]">Payment Details</h3>
-          <p className="text-[11px] text-[#424754] mt-0.5">Please enter your payment details below to complete your booking.</p>
+          <h3 className="text-[18px] font-bold tracking-normal text-[#0b1c30]">Choose payment provider</h3>
+          <p className="text-[12px] leading-5 text-[#565e74]">The provider's official checkout will open securely.</p>
         </div>
-        <span className="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-extrabold rounded-full flex items-center gap-1 border border-emerald-300 shrink-0">
-          <Lock className="w-3 h-3 text-emerald-600" /> 256-Bit SSL Secured
-        </span>
+        <span className="w-fit px-2.5 py-1 bg-emerald-100 text-emerald-800 text-[10px] font-semibold rounded-full flex items-center gap-1"><Lock className="w-3 h-3" />Secure payment</span>
       </div>
 
-      {/* Selector Tabs */}
-      <div className="grid grid-cols-2 gap-3">
-        <button 
-          type="button"
-          onClick={() => setPaymentMethod('stripe')}
-          className={`py-3 px-4 rounded-xl border-2 text-center font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all ${
-            paymentMethod === 'stripe' 
-              ? 'border-[#0058be] bg-[#eff4ff] text-[#0058be] ring-2 ring-[#0058be]/10 shadow-sm' 
-              : 'border-[#c2c6d6]/60 hover:border-[#0058be]/40 bg-white text-[#424754]'
-          }`}
-        >
-          <CreditCard className="w-4 h-4 text-[#0058be]" />
-          Credit / Debit Card
-        </button>
-        <button 
-          type="button"
-          onClick={() => setPaymentMethod('paypal')}
-          className={`py-3 px-4 rounded-xl border-2 text-center font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all ${
-            paymentMethod === 'paypal' 
-              ? 'border-[#0058be] bg-[#eff4ff] text-[#0058be] ring-2 ring-[#0058be]/10 shadow-sm' 
-              : 'border-[#c2c6d6]/60 hover:border-[#0058be]/40 bg-white text-[#424754]'
-          }`}
-        >
-          <Sparkles className="w-4 h-4 text-amber-500" />
-          PayPal Express
-        </button>
-      </div>
+      {errorMessage && <div className="flex gap-2 p-3 bg-red-50 border border-red-200 text-red-700 rounded-xl text-xs font-semibold"><AlertCircle className="w-4 h-4 shrink-0" /><span>{errorMessage}</span></div>}
+      {isProcessing && <div className="flex items-center gap-2 p-3 bg-blue-50 text-[#0058be] rounded-xl text-xs font-bold"><RefreshCw className="w-4 h-4 animate-spin" />{processingStep}</div>}
 
-      {/* Stripe Credit / Debit Card Form */}
-      {paymentMethod === 'stripe' && (
-        <div className="space-y-3 pt-1">
-          <div>
-            <label className="text-[11px] font-bold text-[#424754] block mb-1">Cardholder Name</label>
-            <input 
-              type="text" 
-              value={cardName}
-              onChange={(e) => setCardName(e.target.value)}
-              placeholder="e.g. John Doe" 
-              className={`w-full p-2.5 text-xs bg-white border rounded-xl focus:ring-2 focus:ring-[#0058be] focus:outline-none ${
-                cardErrors.cardName ? 'border-red-500' : 'border-[#c2c6d6]'
-              }`}
-            />
-            {cardErrors.cardName && <span className="text-[10px] text-red-600 font-bold mt-1 block">{cardErrors.cardName}</span>}
-          </div>
-
-          <div>
-            <div className="flex justify-between items-center mb-1">
-              <label className="text-[11px] font-bold text-[#424754]">Card Number (16 Digits)</label>
-              {cardNumber && (
-                <span className={`text-[9px] font-bold px-2 py-0.5 rounded text-white ${cardBrand.color}`}>
-                  {cardBrand.name}
-                </span>
-              )}
-            </div>
-            <div className="relative">
-              <input 
-                type="text" 
-                value={cardNumber}
-                onChange={handleCardNumberChange}
-                placeholder="1234 5678 9012 3456" 
-                className={`w-full p-2.5 text-xs font-mono bg-white border rounded-xl focus:ring-2 focus:ring-[#0058be] focus:outline-none ${
-                  cardErrors.cardNumber ? 'border-red-500' : 'border-[#c2c6d6]'
-                }`}
-              />
-              <Lock className="w-4 h-4 text-gray-400 absolute right-3 top-2.5" />
-            </div>
-            {cardErrors.cardNumber && <span className="text-[10px] text-red-600 font-bold mt-1 block">{cardErrors.cardNumber}</span>}
-          </div>
-
-          <div className="grid grid-cols-3 gap-2.5">
-            <div>
-              <label className="text-[10px] font-bold text-[#424754] block mb-1 truncate">Expires (MM/YY)</label>
-              <input 
-                type="text" 
-                value={cardExpiry}
-                onChange={handleExpiryChange}
-                placeholder="MM/YY" 
-                className={`w-full p-2.5 text-xs bg-white border rounded-xl text-center focus:ring-2 focus:ring-[#0058be] ${
-                  cardErrors.cardExpiry ? 'border-red-500' : 'border-[#c2c6d6]'
-                }`}
-              />
-              {cardErrors.cardExpiry && <span className="text-[10px] text-red-600 font-bold mt-1 block">{cardErrors.cardExpiry}</span>}
-            </div>
-
-            <div>
-              <label className="text-[10px] font-bold text-[#424754] block mb-1 truncate">CVC Code</label>
-              <input 
-                type="text" 
-                value={cardCvc}
-                onChange={handleCvcChange}
-                placeholder="123" 
-                className={`w-full p-2.5 text-xs font-mono bg-white border rounded-xl text-center focus:ring-2 focus:ring-[#0058be] ${
-                  cardErrors.cardCvc ? 'border-red-500' : 'border-[#c2c6d6]'
-                }`}
-              />
-              {cardErrors.cardCvc && <span className="text-[10px] text-red-600 font-bold mt-1 block">{cardErrors.cardCvc}</span>}
-            </div>
-
-            <div>
-              <label className="text-[10px] font-bold text-[#424754] block mb-1 truncate">Postcode / Zip</label>
-              <input 
-                type="text" 
-                value={cardZip}
-                onChange={(e) => setCardZip(e.target.value.toUpperCase())}
-                placeholder="e.g. W8 7RG" 
-                className="w-full p-2.5 text-xs bg-white border border-[#c2c6d6] rounded-xl text-center focus:ring-2 focus:ring-[#0058be]"
-              />
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* PayPal Express Form */}
-      {paymentMethod === 'paypal' && (
-        <div className="space-y-3 pt-1">
-          <div>
-            <label className="text-[11px] font-bold text-gray-700 block mb-1">PayPal Account Email</label>
-            <input 
-              type="email" 
-              value={paypalEmail}
-              onChange={(e) => {
-                setPaypalEmail(e.target.value);
-                if (paypalErrors) setPaypalErrors('');
-              }}
-              placeholder="e.g. yourname@example.com" 
-              className={`w-full p-2.5 text-xs bg-white border rounded-xl focus:ring-2 focus:ring-amber-500 font-mono ${
-                paypalErrors ? 'border-red-500' : 'border-gray-300'
-              }`}
-            />
-            {paypalErrors && <span className="text-[10px] text-red-600 font-bold mt-1 block">{paypalErrors}</span>}
-          </div>
-        </div>
-      )}
-
-      {/* Submit Action Button */}
-      <div className="pt-2">
+      <div className="grid sm:grid-cols-2 gap-3 items-start">
         <button
-          onClick={handleExecutePayment}
+          type="button"
+          onClick={openStripeCheckout}
           disabled={isProcessing}
-          className="w-full bg-[#0058be] hover:bg-[#2170e4] text-white py-3.5 px-4 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow-xl transition-all active:scale-[0.99] disabled:opacity-75"
+          className="h-12 px-5 rounded-lg bg-[#635bff] hover:bg-[#5147e5] text-white font-bold text-[13px] tracking-normal flex items-center justify-center gap-2 shadow-sm disabled:opacity-60"
         >
-          {isProcessing ? (
-            <>
-              <RefreshCw className="w-4 h-4 animate-spin" />
-              <span className="truncate">{processingStep}</span>
-            </>
-          ) : (
-            <>
-              <Lock className="w-4 h-4 text-emerald-300 shrink-0" />
-              <span className="truncate">Authorize & Pay (${totalAmount}.00)</span>
-              <ArrowRight className="w-4 h-4 ml-1 shrink-0" />
-            </>
-          )}
+          <CreditCard className="w-5 h-5" />Pay securely with Stripe
         </button>
-
-        {/* Accepted Payment Badges */}
-        <div className="mt-3 pt-3 border-t border-[#c2c6d6]/60 flex flex-wrap items-center justify-between gap-2 text-[10px] text-[#424754]">
-          <div className="flex items-center gap-2.5 font-bold text-[#0b1c30]">
-            <span>Accepted:</span>
-            {/* Visa SVG */}
-            <svg className="h-4.5 w-auto" viewBox="0 0 24 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3.7 0L1.7 8H0L2 0H3.7ZM9.8 0L8.6 8H7.1L8.3 0H9.8ZM18 0C17.2 0 16.5 .4 16.2 1.1L14.3 8H15.9L16.2 7H18.2L18.4 8H20L18.6 0H18ZM16.6 5.8L17.2 3.8C17.2 3.8 17.5 2.5 17.6 2.1L18 4.1L18.1 5.8H16.6ZM13.8 0L11.3 5.4L10.2 0.8C10 0.3 9.6 0 9 0H6.5V0.3C7.5 0.6 8.2 1 8.5 1.5L9.9 8H11.6L14.4 0H13.8Z" fill="#1434CB"/>
-            </svg>
-            {/* Mastercard SVG */}
-            <svg className="h-5.5 w-auto" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="8" cy="8" r="8" fill="#EB001B" />
-              <circle cx="16" cy="8" r="8" fill="#F79E1B" fillOpacity="0.8" />
-            </svg>
-            {/* Amex SVG */}
-            <div className="bg-[#007cc3] text-white font-extrabold text-[7.5px] px-1 py-0.5 rounded leading-none flex items-center justify-center tracking-tighter" style={{ width: '22px', height: '15px' }}>
-              AMEX
-            </div>
-            {/* PayPal SVG */}
-            <svg className="h-4 w-auto" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8.2 0H2.2C1.3 0 .5 .7 .4 1.6L0 27.2C0 27.7 .4 28 .9 28H6.5C7.4 28 8.1 27.3 8.3 26.4L10.3 12.8C10.4 12.1 11.1 11.6 11.8 11.6H13.6C18.6 11.6 22 9.1 22.8 4.2C23.2 2 21.7 0 17 0H8.2Z" fill="#003087"/>
-              <path d="M10.8 5.6H4.8C3.9 5.6 3.1 6.3 3 7.2L1 20.3C1 20.8 1.4 21.1 1.9 21.1H6.1C7 21.1 7.7 20.4 7.9 19.5L9.3 10.3C9.4 9.6 10.1 9.1 10.8 9.1H12.3C16.8 9.1 19.8 6.9 20.5 2.5C20.8 .5 19.5 5.6 15.3 5.6H10.8Z" fill="#0079C1"/>
-            </svg>
-          </div>
-
-          <div className="flex items-center gap-1 text-emerald-700 font-bold shrink-0">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> PCI-DSS Compliant
-          </div>
-        </div>
+        <PayPalButton amount={totalAmount} bookingDetails={bookingDetails} disabled={isProcessing} onProcessing={(step) => { setIsProcessing(true); setProcessingStep(step); setErrorMessage(''); }} onSuccess={finishPayment} onError={failPayment} />
       </div>
+
+      <div className="pt-3 border-t border-[#c2c6d6]/60 flex items-center justify-end text-[10px] text-[#424754]"><span className="flex items-center gap-1 text-emerald-700 font-bold"><ShieldCheck className="w-3.5 h-3.5" />Card details stay with Stripe</span></div>
     </div>
   );
 }

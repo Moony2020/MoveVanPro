@@ -15,6 +15,7 @@ export default function App() {
   const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'dispatch' | 'moving' | 'towing' | 'fleet' | 'prd'
   const [showExportModal, setShowExportModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [loginInitialTab, setLoginInitialTab] = useState('customer');
   const [currentUser, setCurrentUser] = useState(null);
   const [emergencyAlert, setEmergencyAlert] = useState(false);
 
@@ -52,6 +53,11 @@ export default function App() {
     }
   };
 
+  const openLogin = (initialTab = 'customer') => {
+    setLoginInitialTab(initialTab);
+    setShowLoginModal(true);
+  };
+
   return (
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex flex-col font-sans antialiased w-full max-w-full overflow-x-hidden">
       {/* Master Unified Responsive Navigation Header */}
@@ -59,7 +65,7 @@ export default function App() {
         currentView={currentView} 
         setCurrentView={setCurrentView} 
         currentUser={currentUser}
-        onOpenLogin={() => setShowLoginModal(true)}
+        onOpenLogin={openLogin}
         onLogout={() => setCurrentUser(null)}
       />
 
@@ -78,12 +84,19 @@ export default function App() {
 
       {/* Active Screen View Router */}
       <div className="flex-1">
-        {currentView === 'dispatch' && (
+        {currentView === 'dispatch' && currentUser?.role === 'dispatcher' && (
           <DispatcherDashboard 
             onTriggerEmergency={() => {
               setEmergencyAlert(true);
               setCurrentView('towing');
             }}
+            onNavigateTo={(view) => setCurrentView(view)}
+          />
+        )}
+
+        {(currentView === 'dispatch' || currentView === 'fleet') && currentUser?.role !== 'dispatcher' && (
+          <ServiceSelection
+            onSelectService={(service) => setCurrentView(service === 'moving' ? 'moving' : 'towing')}
             onNavigateTo={(view) => setCurrentView(view)}
           />
         )}
@@ -107,7 +120,7 @@ export default function App() {
           />
         )}
 
-        {currentView === 'fleet' && (
+        {currentView === 'fleet' && currentUser?.role === 'dispatcher' && (
           <FleetManagement 
             onNavigateTo={(view) => setCurrentView(view)}
           />
@@ -134,6 +147,7 @@ export default function App() {
         isOpen={showLoginModal} 
         onClose={() => setShowLoginModal(false)} 
         onLoginSuccess={handleLoginSuccess} 
+        initialTab={loginInitialTab}
       />
     </div>
   );

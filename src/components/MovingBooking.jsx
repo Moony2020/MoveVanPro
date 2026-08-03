@@ -1,25 +1,43 @@
 import React, { useState } from 'react';
 import { 
   Truck, Users, MapPin, Calendar, Clock, Package, Check, 
-  ChevronRight, ArrowLeft, ShieldCheck, CreditCard, Lock, Sparkles 
+  ChevronDown, ChevronRight, ArrowLeft, ShieldCheck, CreditCard, Lock, Sparkles 
 } from 'lucide-react';
 import PaymentCheckout from './PaymentCheckout';
 
+const pendingCheckoutKey = 'movevanpro_pending_stripe_checkout';
+
+function getPendingStripeCheckout() {
+  if (typeof window === 'undefined') return null;
+  const params = new URLSearchParams(window.location.search);
+  if (!params.has('stripe_session_id') && params.get('stripe_checkout') !== 'cancelled') return null;
+
+  try {
+    return JSON.parse(localStorage.getItem(pendingCheckoutKey) || 'null');
+  } catch {
+    return null;
+  }
+}
+
 export default function MovingBooking({ onNavigateTo }) {
-  const [step, setStep] = useState(1);
+  const pendingStripeCheckout = getPendingStripeCheckout();
+  const returningFromStripe = typeof window !== 'undefined'
+    && new URLSearchParams(window.location.search).has('stripe_checkout');
+  const [step, setStep] = useState(returningFromStripe ? 4 : 1);
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const [confirmedReceipt, setConfirmedReceipt] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [isProcessing, setIsProcessing] = useState(false);
 
   // Form State
-  const [vehicle, setVehicle] = useState('luton'); // small, medium, luton, truck
-  const [movers, setMovers] = useState(1); // 0 = Driver only, 1 = Driver + 1, 2 = Driver + 2
-  const [pickup, setPickup] = useState('142 Kensington High St, London W8 7RG');
-  const [dropoff, setDropoff] = useState('28 Canary Wharf, London E14 5AB');
+  const [vehicle, setVehicle] = useState(pendingStripeCheckout?.bookingDetails?.vehicle || 'small'); // small, medium, luton, truck
+  const [movers, setMovers] = useState(Number(pendingStripeCheckout?.bookingDetails?.movers ?? 0)); // 0 = Driver only, 1 = Driver + 1, 2 = Driver + 2
+  const [pickup, setPickup] = useState(pendingStripeCheckout?.bookingDetails?.pickup || '142 Kensington High St, London W8 7RG');
+  const [dropoff, setDropoff] = useState(pendingStripeCheckout?.bookingDetails?.dropoff || '28 Canary Wharf, London E14 5AB');
   const [distanceKm, setDistanceKm] = useState(24);
-  const [moveDate, setMoveDate] = useState('2026-08-01');
-  const [moveTime, setMoveTime] = useState('09:00 AM');
+  const [moveDate, setMoveDate] = useState(pendingStripeCheckout?.bookingDetails?.moveDate || '2026-08-01');
+  const [moveTime, setMoveTime] = useState(pendingStripeCheckout?.bookingDetails?.moveTime || '09:00 AM');
+  const [durationHours, setDurationHours] = useState(Number(pendingStripeCheckout?.bookingDetails?.durationHours ?? 2));
 
   const handleProcessPayment = () => {
     setIsProcessing(true);
@@ -60,8 +78,8 @@ export default function MovingBooking({ onNavigateTo }) {
   const inventoryFee = Math.ceil(itemTotalCount / 5) * 15;
   const distanceFee = Math.round(distanceKm * 2.2);
 
-  const estimatedHours = Math.max(2, Math.ceil((itemTotalCount * 0.1) + (distanceKm / 30)));
-  const subtotal = (baseRate + moverAddon) * estimatedHours + distanceFee + inventoryFee;
+  const suggestedHours = Math.max(2, Math.ceil((itemTotalCount * 0.1) + (distanceKm / 30)));
+  const subtotal = (baseRate + moverAddon) * durationHours + distanceFee + inventoryFee;
   const tax = Math.round(subtotal * 0.08);
   const totalPrice = subtotal + tax;
 
@@ -84,6 +102,7 @@ export default function MovingBooking({ onNavigateTo }) {
             </div>
             <div className="flex justify-between"><span>Payment Provider:</span> <strong>{confirmedReceipt?.provider || 'Stripe Secured'}</strong></div>
             <div className="flex justify-between"><span>Scheduled Date:</span> <strong>{moveDate} at {moveTime}</strong></div>
+            <div className="flex justify-between"><span>Booked Duration:</span> <strong>{durationHours} hour(s)</strong></div>
             <div className="flex justify-between"><span>Vehicle Allocated:</span> <strong className="capitalize">{vehicle} Van</strong></div>
             <div className="flex justify-between"><span>Crew:</span> <strong>Driver + {movers} Mover(s)</strong></div>
             <div className="flex justify-between border-t border-gray-800 pt-2 text-sm font-black">
@@ -93,10 +112,10 @@ export default function MovingBooking({ onNavigateTo }) {
 
           <div className="flex gap-3">
             <button 
-              onClick={() => onNavigateTo('dispatch')}
+              onClick={() => onNavigateTo('landing')}
               className="flex-1 bg-[#0058be] text-white py-3.5 rounded-xl font-bold text-xs hover:bg-[#2170e4] transition-colors cursor-pointer shadow-md"
             >
-              Open Dispatcher Live Tracker
+              Back to Home
             </button>
             <button 
               onClick={() => { setBookingConfirmed(false); setConfirmedReceipt(null); setStep(1); }}
@@ -111,7 +130,7 @@ export default function MovingBooking({ onNavigateTo }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] font-sans pb-16">
+    <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] font-['Plus_Jakarta_Sans',Inter,ui-sans-serif,system-ui,sans-serif] pb-16">
 
       {/* Main Container */}
       <main className="max-w-6xl mx-auto px-2.5 sm:px-6 pt-4 sm:pt-8">
@@ -130,7 +149,7 @@ export default function MovingBooking({ onNavigateTo }) {
               }`}>
                 {step > s.num ? <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : s.num}
               </div>
-              <span className={`text-xs font-semibold hidden sm:inline ${step === s.num ? 'text-[#0058be]' : 'text-[#424754]'}`}>
+              <span className={`text-[12px] font-medium hidden sm:inline ${step === s.num ? 'text-[#0058be]' : 'text-[#424754]'}`}>
                 {s.label}
               </span>
             </div>
@@ -144,32 +163,32 @@ export default function MovingBooking({ onNavigateTo }) {
             {step === 1 && (
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-xl font-extrabold text-[#0b1c30] mb-1">Book a Moving Service</h2>
-                  <p className="text-xs text-[#424754]">Choose your service option and vehicle size.</p>
+                  <h2 className="text-[21px] font-bold text-[#0b1c30] mb-1 tracking-normal">Book a Moving Service</h2>
+                  <p className="text-[13px] leading-5 text-[#565e74]">Choose your service option and vehicle size.</p>
                 </div>
 
                 <div className="grid grid-cols-1 min-[501px]:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
                   {[
                     { 
                       id: 'small', 
-                      name: 'Van + Driver', 
-                      desc: 'For small moves & studio', 
+                      name: 'Small Van', 
+                      desc: 'Best for studio and small moves', 
                       rate: 65, 
                       cap: '350 cu ft',
                       img: '/van-small.png'
                     },
                     { 
                       id: 'medium', 
-                      name: 'Van + 1 Mover', 
-                      desc: 'Great for 1-2 bed apartment', 
+                      name: 'Medium Van', 
+                      desc: 'Great for 1-2 bed apartments', 
                       rate: 95, 
                       cap: '550 cu ft',
                       img: '/van-medium.png'
                     },
                     { 
                       id: 'luton', 
-                      name: 'Van + 2 Movers', 
-                      desc: 'Best for larger 3+ bed house', 
+                      name: 'Luton Van', 
+                      desc: 'Best for larger homes and bulky items', 
                       rate: 135, 
                       cap: '800 cu ft',
                       img: '/van-large.png'
@@ -202,12 +221,12 @@ export default function MovingBooking({ onNavigateTo }) {
                       <div className="p-3 sm:p-3.5 flex flex-col flex-grow justify-between">
                         <div>
                           <div className="flex flex-row justify-between items-baseline mb-1">
-                            <h4 className="font-extrabold text-xs sm:text-sm text-[#0b1c30] truncate">{v.name}</h4>
-                            <span className="text-xs sm:text-sm font-black text-[#0058be] shrink-0 ml-2">${v.rate}/hr</span>
+                            <h4 className="font-bold text-[13px] sm:text-[14px] text-[#0b1c30] truncate">{v.name}</h4>
+                            <span className="text-[13px] sm:text-[14px] font-bold text-[#0058be] shrink-0 ml-2">${v.rate}/hr</span>
                           </div>
-                          <p className="text-[10px] sm:text-[11px] text-[#424754] mb-2 leading-tight min-h-[20px]">{v.desc}</p>
+                          <p className="text-[11px] sm:text-[12px] text-[#565e74] mb-2 leading-5 min-h-[20px]">{v.desc}</p>
                         </div>
-                        <span className="text-[9px] sm:text-[10px] bg-white border border-[#c2c6d6] px-2 py-0.5 rounded-md font-bold text-[#565e74] w-fit">
+                        <span className="text-[10px] bg-white border border-[#c2c6d6] px-2 py-0.5 rounded-md font-semibold text-[#565e74] w-fit">
                           Capacity: {v.cap}
                         </span>
                       </div>
@@ -217,7 +236,7 @@ export default function MovingBooking({ onNavigateTo }) {
 
                 {/* Mover Count Toggle */}
                 <div className="pt-4 border-t border-[#c2c6d6]">
-                  <h3 className="text-sm font-bold text-[#0b1c30] mb-2">Select Helper Crew Count</h3>
+                  <h3 className="text-[14px] font-bold text-[#0b1c30] mb-2">Select Helper Crew Count</h3>
                   <div className="grid grid-cols-3 gap-3">
                     {[
                       { count: 0, label: 'Driver Only', extra: '+$0/hr' },
@@ -234,7 +253,7 @@ export default function MovingBooking({ onNavigateTo }) {
                         }`}
                       >
                         <Users className="w-5 h-5 mx-auto mb-1" />
-                        <div className="text-xs">{m.label}</div>
+                        <div className="text-[12px] font-semibold">{m.label}</div>
                         <div className="text-[10px] opacity-75">{m.extra}</div>
                       </button>
                     ))}
@@ -243,7 +262,7 @@ export default function MovingBooking({ onNavigateTo }) {
 
                 <button 
                   onClick={() => setStep(2)}
-                  className="w-full bg-[#0058be] hover:bg-[#2170e4] text-white py-3.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md mt-6"
+                  className="w-full bg-[#0058be] hover:bg-[#2170e4] text-white py-3.5 rounded-xl font-semibold text-[12px] flex items-center justify-center gap-2 cursor-pointer shadow-md mt-6"
                 >
                   Continue to Locations & Inventory
                   <ChevronRight className="w-4 h-4" />
@@ -310,7 +329,7 @@ export default function MovingBooking({ onNavigateTo }) {
                           </button>
                           <span className="text-xs font-black text-[#0058be]">{inventory[item.key] || 0}</span>
                           <button 
-                            onClick={() => handleItemQuantity(item.key, 1)}
+                            onClick={() => updateInventory(item.key, 1)}
                             className="w-6 h-6 rounded bg-[#0058be] text-white text-xs font-bold flex items-center justify-center hover:bg-[#2170e4]"
                           >
                             +
@@ -343,12 +362,12 @@ export default function MovingBooking({ onNavigateTo }) {
             {step === 3 && (
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-xl font-extrabold text-[#0b1c30] mb-1">Select Move Date & Time Slot</h2>
-                  <p className="text-xs text-[#424754]">Same-day dispatch available in Central London within 45 minutes.</p>
+                  <h2 className="text-xl font-extrabold text-[#0b1c30] mb-1">Select Move Date, Time & Duration</h2>
+                  <p className="text-xs text-[#424754]">Choose when the crew should arrive and how many hours you want to book.</p>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
+                <div className="grid grid-cols-1 sm:grid-cols-[1.15fr_1.35fr] xl:grid-cols-[1.2fr_1.35fr_0.85fr] gap-4">
+                  <div className="sm:col-start-1 xl:col-start-auto">
                     <label className="text-xs font-bold text-[#0b1c30] block mb-1.5 flex items-center gap-1.5">
                       <Calendar className="w-4 h-4 text-[#0058be]" />
                       Moving Date
@@ -357,7 +376,7 @@ export default function MovingBooking({ onNavigateTo }) {
                       type="date" 
                       value={moveDate}
                       onChange={(e) => setMoveDate(e.target.value)}
-                      className="w-full p-3 text-xs bg-[#f8f9ff] border border-[#c2c6d6] rounded-xl focus:ring-2 focus:ring-[#0058be]"
+                      className="w-full h-11 px-3 text-xs bg-[#f8f9ff] border border-[#c2c6d6] rounded-xl focus:ring-2 focus:ring-[#0058be]"
                     />
                   </div>
 
@@ -366,16 +385,44 @@ export default function MovingBooking({ onNavigateTo }) {
                       <Clock className="w-4 h-4 text-[#0058be]" />
                       Time Slot
                     </label>
-                    <select 
-                      value={moveTime}
-                      onChange={(e) => setMoveTime(e.target.value)}
-                      className="w-full p-3 text-xs bg-[#f8f9ff] border border-[#c2c6d6] rounded-xl focus:ring-2 focus:ring-[#0058be]"
-                    >
-                      <option value="08:00 AM">08:00 AM - 10:00 AM (Early Morning)</option>
-                      <option value="11:00 AM">11:00 AM - 01:00 PM (Midday)</option>
-                      <option value="02:00 PM">02:00 PM - 04:00 PM (Afternoon)</option>
-                      <option value="05:00 PM">05:00 PM - 07:00 PM (Evening)</option>
-                    </select>
+                    <div className="relative">
+                      <select 
+                        value={moveTime}
+                        onChange={(e) => setMoveTime(e.target.value)}
+                        className="appearance-none w-full h-11 pl-3 pr-10 text-[12px] leading-none bg-[#f8f9ff] border border-[#c2c6d6] rounded-xl focus:ring-2 focus:ring-[#0058be] truncate"
+                      >
+                        <option value="08:00 AM">08:00 AM - 10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM - 01:00 PM</option>
+                        <option value="02:00 PM">02:00 PM - 04:00 PM</option>
+                        <option value="05:00 PM">05:00 PM - 07:00 PM</option>
+                      </select>
+                      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#565e74]" />
+                    </div>
+                    <p className="text-[10px] text-[#565e74] mt-1">
+                      Arrival window for the moving crew.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-bold text-[#0b1c30] block mb-1.5 flex items-center gap-1.5">
+                      <Clock className="w-4 h-4 text-[#0058be]" />
+                      Booking Duration
+                    </label>
+                    <div className="relative">
+                      <select
+                        value={durationHours}
+                        onChange={(e) => setDurationHours(Number(e.target.value))}
+                        className="appearance-none w-full h-11 pl-3 pr-10 text-[12px] leading-none bg-[#f8f9ff] border border-[#c2c6d6] rounded-xl focus:ring-2 focus:ring-[#0058be]"
+                      >
+                        {[1, 2, 3, 4, 5, 6, 7, 8].map((hours) => (
+                          <option key={hours} value={hours}>{hours} hour{hours > 1 ? 's' : ''}</option>
+                        ))}
+                      </select>
+                      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#565e74]" />
+                    </div>
+                    <p className="text-[10px] text-[#565e74] mt-1">
+                      Suggested for this quote: {suggestedHours} hour{suggestedHours > 1 ? 's' : ''}.
+                    </p>
                   </div>
                 </div>
 
@@ -401,34 +448,34 @@ export default function MovingBooking({ onNavigateTo }) {
             {step === 4 && (
               <div className="space-y-4 sm:space-y-6">
                 <div>
-                  <h2 className="text-lg sm:text-xl font-extrabold text-[#0b1c30] mb-1">Review Booking & Secure Payment</h2>
-                  <p className="text-xs text-[#424754]">Select your preferred payment method below. Encrypted via Stripe & PayPal APIs.</p>
+                  <h2 className="text-[21px] font-bold text-[#0b1c30] mb-1 tracking-normal">Review Booking & Secure Payment</h2>
+                  <p className="text-[13px] leading-5 text-[#565e74]">Select your preferred payment method below. Encrypted via Stripe & PayPal APIs.</p>
                 </div>
 
-                <div className="bg-[#f8f9ff] rounded-2xl p-3.5 sm:p-5 border border-[#c2c6d6] text-xs space-y-2.5 text-[#0b1c30]">
+                <div className="bg-[#f8f9ff] rounded-2xl p-3.5 sm:p-5 border border-[#c2c6d6] text-[12px] space-y-2.5 text-[#0b1c30]">
                   <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-1 sm:gap-4 border-b border-[#c2c6d6]/40 pb-2">
-                    <span className="shrink-0 text-[#424754] font-medium">Pickup Address:</span> 
-                    <strong className="text-[#0058be] sm:text-right font-bold leading-snug break-words">{pickup}</strong>
+                    <span className="shrink-0 text-[#565e74] font-medium">Pickup Address:</span> 
+                    <strong className="text-[#0058be] sm:text-right font-semibold leading-snug break-words">{pickup}</strong>
                   </div>
                   <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-1 sm:gap-4 border-b border-[#c2c6d6]/40 pb-2">
-                    <span className="shrink-0 text-[#424754] font-medium">Destination:</span> 
-                    <strong className="text-[#0058be] sm:text-right font-bold leading-snug break-words">{dropoff}</strong>
+                    <span className="shrink-0 text-[#565e74] font-medium">Destination:</span> 
+                    <strong className="text-[#0058be] sm:text-right font-semibold leading-snug break-words">{dropoff}</strong>
                   </div>
                   <div className="flex justify-between items-center gap-2 border-b border-[#c2c6d6]/40 pb-2">
-                    <span className="shrink-0 text-[#424754] font-medium">Allocated Vehicle:</span> 
+                    <span className="shrink-0 text-[#565e74] font-medium">Allocated Vehicle:</span> 
                     <strong className="capitalize text-right">{vehicle} Moving Van</strong>
                   </div>
                   <div className="flex justify-between items-center gap-2 border-b border-[#c2c6d6]/40 pb-2">
-                    <span className="shrink-0 text-[#424754] font-medium">Mover Crew:</span> 
+                    <span className="shrink-0 text-[#565e74] font-medium">Mover Crew:</span> 
                     <strong className="text-right">Driver + {movers} helper(s)</strong>
                   </div>
                   <div className="flex justify-between items-center gap-2 pb-1">
-                    <span className="shrink-0 text-[#424754] font-medium">Scheduled Slot:</span> 
-                    <strong className="text-right">{moveDate} at {moveTime}</strong>
+                    <span className="shrink-0 text-[#565e74] font-medium">Scheduled Slot:</span> 
+                    <strong className="text-right">{moveDate} at {moveTime} for {durationHours} hour(s)</strong>
                   </div>
-                  <div className="flex justify-between items-center border-t-2 border-[#c2c6d6] pt-3 text-sm font-extrabold">
+                  <div className="flex justify-between items-center border-t-2 border-[#c2c6d6] pt-3 text-[14px] font-bold">
                     <span>Total Locked Price:</span>
-                    <span className="text-[#0058be] text-lg font-black">${totalPrice}.00</span>
+                    <span className="text-[#0058be] text-[20px] font-bold">${totalPrice}.00</span>
                   </div>
                 </div>
 
@@ -441,7 +488,8 @@ export default function MovingBooking({ onNavigateTo }) {
                     vehicle,
                     movers,
                     moveDate,
-                    moveTime
+                    moveTime,
+                    durationHours
                   }}
                   onPaymentSuccess={(receipt) => {
                     setConfirmedReceipt(receipt);
@@ -454,13 +502,13 @@ export default function MovingBooking({ onNavigateTo }) {
           </div>
 
           {/* Right Column: Live Price Breakdown Box */}
-          <div className="lg:col-span-4 bg-white border border-slate-200/90 rounded-2xl p-6 h-fit shadow-md">
-            <h3 className="font-bold text-base text-[#0b1c30] mb-4 flex items-center gap-2">
+          <div className="lg:col-span-4 bg-white border border-slate-200/90 rounded-2xl p-6 h-fit shadow-md font-['Plus_Jakarta_Sans',Inter,ui-sans-serif,system-ui,sans-serif]">
+            <h3 className="font-bold text-[17px] text-[#0b1c30] mb-4 flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-500" />
               Live Quote Breakdown
             </h3>
 
-            <div className="space-y-3 text-xs border-b border-slate-100 pb-4 mb-4">
+            <div className="space-y-3 text-[12px] border-b border-slate-100 pb-4 mb-4">
               <div className="flex justify-between text-slate-600">
                 <span>Base Rate ({vehicle.toUpperCase()}):</span>
                 <span>${baseRate}/hr</span>
@@ -470,8 +518,12 @@ export default function MovingBooking({ onNavigateTo }) {
                 <span>+${moverAddon}/hr</span>
               </div>
               <div className="flex justify-between text-slate-600">
-                <span>Est. Duration:</span>
-                <span>{estimatedHours} hours</span>
+                <span>Booked Duration:</span>
+                <span>{durationHours} hour{durationHours > 1 ? 's' : ''}</span>
+              </div>
+              <div className="flex justify-between text-slate-500">
+                <span>Suggested Duration:</span>
+                <span>{suggestedHours} hour{suggestedHours > 1 ? 's' : ''}</span>
               </div>
               <div className="flex justify-between text-slate-600">
                 <span>Distance Fee (~{distanceKm} km):</span>
@@ -483,9 +535,9 @@ export default function MovingBooking({ onNavigateTo }) {
               </div>
             </div>
 
-            <div className="flex justify-between items-center text-sm font-bold text-[#0b1c30] mb-4">
+            <div className="flex justify-between items-center text-[14px] font-bold text-[#0b1c30] mb-4">
               <span>Estimated Total:</span>
-              <span className="text-xl text-[#0058be]">${totalPrice}</span>
+              <span className="text-[22px] text-[#0058be]">${totalPrice}</span>
             </div>
 
             <div className="bg-[#eff4ff] border border-[#dce9ff] p-3 rounded-xl text-[11px] text-[#424754] space-y-1">
