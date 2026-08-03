@@ -70,8 +70,8 @@ export default function ServicesPage({ onNavigateTo }) {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24">
-        <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end" data-scroll="fade-up">
+      <section className="mx-auto w-full max-w-[1180px] px-4 py-16 sm:px-6 md:py-24">
+        <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end" data-scroll="fade-up">
           <div>
             <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#0058be]">Our moving services</p>
             <h2 className="mt-2 font-['Playfair_Display'] text-3xl font-black sm:text-4xl">Pick the move that suits you.</h2>
@@ -79,7 +79,7 @@ export default function ServicesPage({ onNavigateTo }) {
           <p className="max-w-sm text-sm leading-6 text-slate-600">Every booking starts with a clear quote, secure payment and the option to select your preferred crew.</p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid w-full max-w-[330px] mx-auto gap-6 sm:max-w-[640px] sm:grid-cols-2 lg:max-w-none lg:grid-cols-3">
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
