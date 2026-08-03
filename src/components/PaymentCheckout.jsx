@@ -6,7 +6,7 @@ import {
 
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api').replace(/\/$/, '');
 const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY;
-const currency = (import.meta.env.VITE_PAYMENT_CURRENCY || import.meta.env.VITE_PAYPAL_CURRENCY || 'USD').toUpperCase();
+const currency = (import.meta.env.VITE_PAYMENT_CURRENCY || import.meta.env.VITE_PAYPAL_CURRENCY || 'GBP').toUpperCase();
 const pendingCheckoutKey = 'movevanpro_pending_stripe_checkout';
 
 async function apiRequest(path, options = {}) {
@@ -81,7 +81,7 @@ function PayPalButton({ amount, bookingDetails, disabled, onProcessing, onSucces
           if (result.status !== 'COMPLETED' || result.capture?.status !== 'COMPLETED') {
             throw new Error(`PayPal capture status: ${result.capture?.status || result.status}`);
           }
-          handlersRef.current.onSuccess(createReceipt({
+          await handlersRef.current.onSuccess(createReceipt({
             provider: 'PayPal',
             method: result.payerEmail ? `PayPal (${result.payerEmail})` : 'PayPal',
             transactionId: result.capture.id,
@@ -156,20 +156,25 @@ export default function PaymentCheckout({ totalAmount = 608, bookingDetails = {}
   const [errorMessage, setErrorMessage] = useState('');
   const [receipt, setReceipt] = useState(null);
 
-  const finishPayment = useCallback((paymentReceipt) => {
-    setReceipt(paymentReceipt);
-    setIsProcessing(false);
-    setProcessingStep('');
-    setErrorMessage('');
-    localStorage.removeItem(pendingCheckoutKey);
-    onPaymentSuccess?.(paymentReceipt);
-  }, [onPaymentSuccess]);
-
   const failPayment = useCallback((error) => {
     setIsProcessing(false);
     setProcessingStep('');
     setErrorMessage(typeof error === 'string' ? error : error.message || 'Payment failed. Please try again.');
   }, []);
+
+  const finishPayment = useCallback(async (paymentReceipt) => {
+    try {
+      await onPaymentSuccess?.(paymentReceipt);
+      setReceipt(paymentReceipt);
+      setIsProcessing(false);
+      setProcessingStep('');
+      setErrorMessage('');
+      localStorage.removeItem(pendingCheckoutKey);
+    } catch (error) {
+      failPayment(`Payment was completed, but the booking was not saved: ${error.message || 'Please contact support with your transaction ID.'}`);
+      throw error;
+    }
+  }, [failPayment, onPaymentSuccess]);
 
   const verifyStripeSession = useCallback(async (sessionId) => {
     try {
@@ -179,7 +184,7 @@ export default function PaymentCheckout({ totalAmount = 608, bookingDetails = {}
       if (session.status !== 'complete' || session.paymentStatus !== 'paid') {
         throw new Error(`Stripe payment status: ${session.paymentStatus || session.status}`);
       }
-      finishPayment(createReceipt({
+      await finishPayment(createReceipt({
         provider: 'Stripe Checkout',
         method: session.customerEmail ? `Card (${session.customerEmail})` : 'Credit / debit card',
         transactionId: session.paymentIntentId || session.id,

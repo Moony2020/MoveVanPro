@@ -1,11 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Truck, ShieldAlert, Map, BarChart3, Users, Settings, HelpCircle, 
   Search, Filter, Plus, Calendar, AlertTriangle, CheckCircle, Clock, 
   MapPin, Phone, RefreshCw, X, ChevronRight, Menu, DollarSign, PieChart,
-  LayoutDashboard, FileText, CreditCard, ShieldCheck, LifeBuoy, Sliders
+  LayoutDashboard, FileText, CreditCard, ShieldCheck, LifeBuoy, Sliders, PoundSterling
 } from 'lucide-react';
 
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+
+const emptyDashboardSummary = {
+  totals: {
+    totalRevenue: 0,
+    movingJobs: 0,
+    towTruckJobs: 0,
+    completedJobs: 0,
+    activeJobs: 0,
+    totalJobsToday: 0,
+    fleetConnected: false,
+  },
+  statusCounts: {
+    pending: 0,
+    confirmed: 0,
+    driverAssigned: 0,
+    onTheWay: 0,
+    completed: 0,
+  },
+  recentBookings: [],
+};
+
+function money(value, currency = 'GBP') {
+  return new Intl.NumberFormat('en-GB', {
+    style: 'currency',
+    currency,
+  }).format(Number(value || 0));
+}
 export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }) {
   const [filterStatus, setFilterStatus] = useState('ALL');
   const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -13,26 +41,18 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showSupportModal, setShowSupportModal] = useState(false);
+  const [dashboardSummary, setDashboardSummary] = useState(emptyDashboardSummary);
+  const [dashboardLoading, setDashboardLoading] = useState(true);
+  const [dashboardError, setDashboardError] = useState('');
 
   // Settings State
   const [autoAssignRadius, setAutoAssignRadius] = useState('10 miles');
   const [autoAlertPriority, setAutoAlertPriority] = useState(true);
-  const [currency, setCurrency] = useState('USD');
+  const [currency, setCurrency] = useState('GBP');
 
-  const [jobs, setJobs] = useState([
-    { id: '#MVN-1248', type: 'moving', customer: 'John Smith', date: 'May 20, 2024 - 10:00 AM', amount: '$320.00', status: 'Confirmed', driver: 'Van #08 (JD)', location: 'Canary Wharf Tower, London E14' },
-    { id: '#MVN-1247', type: 'towing', customer: 'Michael Brown', date: 'May 20, 2024 - 09:30 AM', amount: '$150.00', status: 'Driver Assigned', driver: 'Tow #12 (RT)', location: 'M25 Motorway J15, Heathrow' },
-    { id: '#MVN-1246', type: 'moving', customer: 'Sarah Johnson', date: 'May 20, 2024 - 09:00 AM', amount: '$420.00', status: 'On The Way', driver: 'Van #04 (MK)', location: '124 Kensington High St, W8' },
-    { id: '#MVN-1245', type: 'towing', customer: 'David Wilson', date: 'May 20, 2024 - 08:45 AM', amount: '$180.00', status: 'Arrived', driver: 'Tow #09 (DL)', location: 'A40 Westway Flyover, W12' },
-    { id: '#MVN-1244', type: 'moving', customer: 'Emily Davis', date: 'May 20, 2024 - 08:30 AM', amount: '$290.00', status: 'Loading', driver: 'Van #15 (SP)', location: 'Camden High St, NW1' }
-  ]);
+  const [jobs, setJobs] = useState([]);
 
-  const [vehicles, setVehicles] = useState([
-    { id: 'Van #04', driver: 'Mark K.', type: 'Heavy Cargo Van', status: 'Active (On Route)', job: 'Job #4921', fuel: '78%', lat: '51.5074', lng: '-0.1278' },
-    { id: 'Van #08', driver: 'James D.', type: 'Large Luton Box Van', status: 'Loading', job: 'Job #4920', fuel: '92%', lat: '51.5151', lng: '-0.1415' },
-    { id: 'Tow #12', driver: 'Robert T.', type: 'Flatbed Recovery Truck', status: 'Active (Assisting)', job: 'Job #4924', fuel: '64%', lat: '51.5033', lng: '-0.1195' },
-    { id: 'Van #15', driver: 'Sarah P.', type: 'Standard Cargo Van', status: 'Available', job: 'None', fuel: '100%', lat: '51.5081', lng: '-0.0759' }
-  ]);
+  const [vehicles, setVehicles] = useState([]);
 
   const filteredJobs = jobs.filter(j => {
     if (filterStatus === 'ALL') return true;
@@ -43,8 +63,42 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
 
   const handleAssignDriver = (jobId) => {
     const available = vehicles.find(v => v.status === 'Available');
-    setJobs(jobs.map(j => j.id === jobId ? { ...j, status: 'On The Way', driver: available ? `${available.id} (${available.driver})` : 'Tow #12' } : j));
+    setJobs(jobs.map(j => j.id === jobId ? { ...j, status: 'Driver Assigned', driver: available ? `${available.id} (${available.driver})` : 'Unassigned' } : j));
   };
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadDashboardSummary() {
+      try {
+        setDashboardLoading(true);
+        setDashboardError('');
+        const token = localStorage.getItem('movevanpro_auth_token') || '';
+        const response = await fetch(`${apiBaseUrl}/admin/bookings/summary`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(payload.error || 'Unable to load dashboard data');
+        if (cancelled) return;
+        setDashboardSummary(payload);
+        setJobs(payload.recentBookings || []);
+      } catch (error) {
+        if (cancelled) return;
+        setDashboardSummary(emptyDashboardSummary);
+        setJobs([]);
+        setDashboardError(error.message || 'Unable to load dashboard data');
+      } finally {
+        if (!cancelled) setDashboardLoading(false);
+      }
+    }
+
+    loadDashboardSummary();
+    return () => { cancelled = true; };
+  }, []);
+
+  const totals = dashboardSummary.totals || emptyDashboardSummary.totals;
+  const statusCounts = dashboardSummary.statusCounts || emptyDashboardSummary.statusCounts;
+  const primaryCurrency = jobs[0]?.currency || 'GBP';
 
   return (
     <div className="flex h-screen bg-[#f8f9ff] text-[#0b1c30] overflow-hidden font-sans">
@@ -270,7 +324,7 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
               </div>
               <div>
                 <p className="text-[10px] md:text-[11px] font-bold text-[#424754]">Active Jobs</p>
-                <p className="text-xs md:text-base font-extrabold text-[#0b1c30]">32 Moving / 18 Towing</p>
+                <p className="text-xs md:text-base font-extrabold text-[#0b1c30]">{totals.movingJobs} Moving / {totals.towTruckJobs} Towing</p>
               </div>
             </div>
 
@@ -279,8 +333,8 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
                 <BarChart3 className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-[10px] md:text-[11px] font-bold text-[#424754]">Fleet Utilization</p>
-                <p className="text-xs md:text-base font-extrabold text-[#825100]">78% Active</p>
+                <p className="text-[10px] md:text-[11px] font-bold text-[#424754]">Fleet Data</p>
+                <p className="text-xs md:text-base font-extrabold text-[#825100]">Not connected</p>
               </div>
             </div>
           </div>
@@ -289,17 +343,25 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
         {/* VIEW 1: EXECUTIVE ADMIN DASHBOARD (Matching Stitch Top-Left Screen) */}
         {activeTab === 'dashboard' && (
           <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
+            {dashboardError && (
+              <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+                {dashboardError}
+              </div>
+            )}
+
             {/* Top KPI Cards (Matching Stitch Screen 1) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
               <div className="bg-white p-5 rounded-2xl border border-[#c2c6d6] shadow-sm flex flex-col justify-between">
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-xs font-bold text-[#565e74]">Total Revenue</span>
                   <div className="w-8 h-8 rounded-xl bg-[#0058be]/10 text-[#0058be] flex items-center justify-center">
-                    <DollarSign className="w-4 h-4" />
+                    <PoundSterling className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-2xl font-black text-[#0b1c30]">$24,350.00</div>
-                <span className="text-[11px] font-bold text-emerald-600 mt-1">↑ +12.5% vs yesterday</span>
+                <div className="text-2xl font-black text-[#0b1c30]">{dashboardLoading ? '...' : money(totals.totalRevenue, primaryCurrency)}</div>
+                <span className="text-[11px] font-bold text-[#565e74] mt-1">
+                  {totals.totalRevenue > 0 ? 'Paid bookings saved today' : 'No paid bookings saved today'}
+                </span>
               </div>
 
               <div className="bg-white p-5 rounded-2xl border border-[#c2c6d6] shadow-sm flex flex-col justify-between">
@@ -309,8 +371,8 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
                     <Truck className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-2xl font-black text-[#0b1c30]">32</div>
-                <span className="text-[11px] font-bold text-emerald-600 mt-1">↑ +8.2% vs yesterday</span>
+                <div className="text-2xl font-black text-[#0b1c30]">{dashboardLoading ? '...' : totals.movingJobs}</div>
+                <span className="text-[11px] font-bold text-[#565e74] mt-1">Moving bookings today</span>
               </div>
 
               <div className="bg-white p-5 rounded-2xl border border-[#c2c6d6] shadow-sm flex flex-col justify-between">
@@ -320,30 +382,30 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
                     <AlertTriangle className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-2xl font-black text-[#0b1c30]">18</div>
-                <span className="text-[11px] font-bold text-emerald-600 mt-1">↑ +5.1% vs yesterday</span>
+                <div className="text-2xl font-black text-[#0b1c30]">{dashboardLoading ? '...' : totals.towTruckJobs}</div>
+                <span className="text-[11px] font-bold text-[#565e74] mt-1">Towing bookings today</span>
               </div>
 
               <div className="bg-white p-5 rounded-2xl border border-[#c2c6d6] shadow-sm flex flex-col justify-between">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs font-bold text-[#565e74]">Completed Jobs</span>
+                  <span className="text-xs font-bold text-[#565e74]">Paid Jobs</span>
                   <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
                     <CheckCircle className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-2xl font-black text-[#0b1c30]">40</div>
-                <span className="text-[11px] font-bold text-emerald-600 mt-1">↑ +10.3% vs yesterday</span>
+                <div className="text-2xl font-black text-[#0b1c30]">{dashboardLoading ? '...' : totals.completedJobs}</div>
+                <span className="text-[11px] font-bold text-[#565e74] mt-1">Confirmed/paid today</span>
               </div>
 
               <div className="bg-white p-5 rounded-2xl border border-[#c2c6d6] shadow-sm flex flex-col justify-between sm:col-span-2 lg:col-span-1">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs font-bold text-[#565e74]">Fleet Utilization</span>
+                  <span className="text-xs font-bold text-[#565e74]">Fleet Data</span>
                   <div className="w-8 h-8 rounded-xl bg-[#2170e4]/10 text-[#0058be] flex items-center justify-center">
                     <PieChart className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-2xl font-black text-[#0058be]">78%</div>
-                <span className="text-[11px] font-bold text-emerald-600 mt-1">↑ +8.5% vs yesterday</span>
+                <div className="text-2xl font-black text-[#0058be]">--</div>
+                <span className="text-[11px] font-bold text-[#565e74] mt-1">No live fleet feed connected</span>
               </div>
             </div>
 
@@ -353,14 +415,13 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
               <div className="lg:col-span-7 bg-white p-6 rounded-2xl border border-[#c2c6d6] shadow-sm flex flex-col justify-between">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="font-extrabold text-base text-[#0b1c30]">Job Status Overview</h3>
-                  <span className="text-xs text-[#565e74] font-bold">Total: 68 Jobs Today</span>
+                  <span className="text-xs text-[#565e74] font-bold">Total: {totals.totalJobsToday} Jobs Today</span>
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center justify-around gap-6 py-4">
-                  {/* Simulated Donut Chart Ring */}
-                  <div className="relative w-40 h-40 rounded-full border-[14px] border-[#0058be] border-t-[#2170e4] border-r-amber-500 border-b-emerald-500 flex items-center justify-center shrink-0 shadow-inner">
+                  <div className="relative w-40 h-40 rounded-full border-[14px] border-[#dce9ff] border-t-[#0058be] border-r-amber-500 border-b-emerald-500 flex items-center justify-center shrink-0 shadow-inner">
                     <div className="text-center">
-                      <span className="text-2xl font-black text-[#0b1c30] block">68</span>
+                      <span className="text-2xl font-black text-[#0b1c30] block">{totals.totalJobsToday}</span>
                       <span className="text-[10px] font-bold text-[#565e74] uppercase tracking-wider">Total</span>
                     </div>
                   </div>
@@ -371,62 +432,44 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
                       <span className="flex items-center gap-2 text-[#424754]">
                         <span className="w-2.5 h-2.5 rounded-full bg-amber-500" /> Pending:
                       </span>
-                      <strong className="text-[#0b1c30]">6</strong>
+                      <strong className="text-[#0b1c30]">{statusCounts.pending}</strong>
                     </div>
                     <div className="flex justify-between items-center gap-6">
                       <span className="flex items-center gap-2 text-[#424754]">
                         <span className="w-2.5 h-2.5 rounded-full bg-[#0058be]" /> Confirmed:
                       </span>
-                      <strong className="text-[#0b1c30]">10</strong>
+                      <strong className="text-[#0b1c30]">{statusCounts.confirmed}</strong>
                     </div>
                     <div className="flex justify-between items-center gap-6">
                       <span className="flex items-center gap-2 text-[#424754]">
                         <span className="w-2.5 h-2.5 rounded-full bg-[#2170e4]" /> Driver Assigned:
                       </span>
-                      <strong className="text-[#0b1c30]">8</strong>
+                      <strong className="text-[#0b1c30]">{statusCounts.driverAssigned}</strong>
                     </div>
                     <div className="flex justify-between items-center gap-6">
                       <span className="flex items-center gap-2 text-[#424754]">
                         <span className="w-2.5 h-2.5 rounded-full bg-blue-400" /> On The Way:
                       </span>
-                      <strong className="text-[#0b1c30]">12</strong>
+                      <strong className="text-[#0b1c30]">{statusCounts.onTheWay}</strong>
                     </div>
                     <div className="flex justify-between items-center gap-6">
                       <span className="flex items-center gap-2 text-[#424754]">
                         <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Completed:
                       </span>
-                      <strong className="text-[#0b1c30]">20</strong>
+                      <strong className="text-[#0b1c30]">{statusCounts.completed}</strong>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Fleet Availability Bars */}
               <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#c2c6d6] shadow-sm flex flex-col justify-between">
                 <h3 className="font-extrabold text-base text-[#0b1c30] mb-4">Fleet Availability</h3>
 
-                <div className="space-y-6">
-                  {/* Vans Progress Bar */}
-                  <div>
-                    <div className="flex justify-between items-center mb-1.5 text-xs font-bold">
-                      <span className="text-[#0b1c30]">Vans Available:</span>
-                      <span className="text-[#0058be]">12 / 20</span>
-                    </div>
-                    <div className="w-full bg-[#eff4ff] rounded-full h-3 overflow-hidden border border-[#c2c6d6]">
-                      <div className="bg-[#0058be] h-full rounded-full w-[60%]" />
-                    </div>
-                  </div>
-
-                  {/* Tow Trucks Progress Bar */}
-                  <div>
-                    <div className="flex justify-between items-center mb-1.5 text-xs font-bold">
-                      <span className="text-[#0b1c30]">Tow Trucks Available:</span>
-                      <span className="text-[#825100]">7 / 15</span>
-                    </div>
-                    <div className="w-full bg-[#fff7ed] rounded-full h-3 overflow-hidden border border-[#c2c6d6]">
-                      <div className="bg-amber-500 h-full rounded-full w-[46%]" />
-                    </div>
-                  </div>
+                <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-[#825100]">
+                  <strong className="block text-[#0b1c30] mb-1">No live fleet system connected yet.</strong>
+                  <span className="text-xs font-semibold">
+                    Fleet availability will appear here after a real fleet/driver database is connected.
+                  </span>
                 </div>
 
                 <button 
@@ -444,7 +487,7 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
                 <h3 className="font-extrabold text-base text-[#0b1c30]">Recent Bookings Overview</h3>
                 <button onClick={() => setActiveTab('dispatch')} className="text-xs font-bold text-[#0058be] hover:underline">
-                  View All Live Dispatches →
+                  View All Live Dispatches Ã¢â€ â€™
                 </button>
               </div>
 
@@ -461,6 +504,13 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#c2c6d6]/40 font-semibold">
+                    {jobs.length === 0 && (
+                      <tr>
+                        <td colSpan={6} className="py-8 px-2 text-center text-[#565e74]">
+                          No paid bookings have been saved yet. New Stripe/PayPal bookings will appear here automatically.
+                        </td>
+                      </tr>
+                    )}
                     {jobs.map((j) => (
                       <tr key={j.id} className="hover:bg-[#f8f9ff] whitespace-nowrap">
                         <td className="py-3 px-2 font-mono font-bold text-[#0058be]">{j.id}</td>
@@ -473,7 +523,7 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
                         </td>
                         <td className="py-3 px-2 text-[#0b1c30]">{j.customer}</td>
                         <td className="py-3 px-2 text-[#565e74]">{j.date}</td>
-                        <td className="py-3 px-2 text-[#0b1c30] font-bold">{j.amount}</td>
+                        <td className="py-3 px-2 text-[#0b1c30] font-bold">{money(j.amount, j.currency || primaryCurrency)}</td>
                         <td className="py-3 px-2">
                           <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-extrabold">
                             {j.status}
@@ -495,7 +545,7 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
             <div className="h-[320px] md:h-full w-full md:flex-1 relative bg-[#0b1c30] overflow-hidden select-none shrink-0">
               {/* Map Canvas Background (Central London, UK OpenStreetMap) */}
               <iframe 
-                title="Dispatcher Command Center London Live Map"
+                title="Admin Dashboard Live Map"
                 className="absolute inset-0 w-full h-full border-0 invert-[0.9] hue-rotate-[185deg] contrast-[1.2] brightness-[0.85] opacity-80"
                 src="https://www.openstreetmap.org/export/embed.html?bbox=-0.25%2C51.46%2C-0.01%2C51.56&amp;layer=mapnik"
               />
@@ -517,7 +567,7 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
                     <Truck className="w-5 h-5" />
                   </div>
                   <div className="mt-1 bg-white text-[#0b1c30] text-[11px] font-bold px-2 py-1 rounded shadow-md border border-[#c2c6d6] whitespace-nowrap">
-                    {v.id} • {v.driver}
+                    {v.id} Ã¢â‚¬Â¢ {v.driver}
                   </div>
                 </div>
               ))}
@@ -578,10 +628,12 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
                     <div className="flex justify-between items-center pt-2 border-t border-[#c2c6d6]/40 text-xs">
                       <span className="text-[#565e74]">{j.driver}</span>
                       <button 
-                        onClick={() => handleAssignDriver(j.id)}
-                        className="bg-[#0058be] hover:bg-[#2170e4] text-white text-[11px] font-bold px-2.5 py-1 rounded-lg"
+                        type="button"
+                        disabled
+                        title="Driver assignment requires a connected fleet database"
+                        className="bg-slate-200 text-slate-500 text-[11px] font-bold px-2.5 py-1 rounded-lg cursor-not-allowed"
                       >
-                        {j.status}
+                        {j.status} Â· assignment unavailable
                       </button>
                     </div>
                   </div>
@@ -599,7 +651,7 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
             <div className="flex justify-between items-center border-b border-[#c2c6d6] pb-3">
               <div className="flex items-center gap-2 text-[#0058be]">
                 <Settings className="w-5 h-5" />
-                <h3 className="font-extrabold text-base text-[#0b1c30]">Dispatcher Settings</h3>
+                <h3 className="font-extrabold text-base text-[#0b1c30]">Admin Settings</h3>
               </div>
               <button onClick={() => setShowSettingsModal(false)} className="text-[#727785] hover:text-black">
                 <X className="w-5 h-5" />
@@ -627,8 +679,8 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
                   onChange={(e) => setCurrency(e.target.value)}
                   className="w-full p-2.5 border border-[#c2c6d6] rounded-xl font-semibold text-[#0b1c30]"
                 >
-                  <option value="GBP">GBP (£) - London UK</option>
-                  <option value="USD">USD ($) - Enterprise Global</option>
+                  <option value="GBP">GBP (Ã‚Â£) - London UK</option>
+                  <option value="GBP">GBP (£) - United Kingdom</option>
                 </select>
               </div>
 
@@ -644,15 +696,15 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
 
               <div className="p-3 bg-[#eff4ff] rounded-xl border border-[#0058be]/20 text-[11px] text-[#0058be]">
                 <span className="font-bold block">Stripe & Telemetry API Status:</span>
-                <span className="text-[#424754]">Connected • Webhook Live (200 OK)</span>
+                <span className="text-[#424754]">Connected Ã¢â‚¬Â¢ Webhook Live (200 OK)</span>
               </div>
             </div>
 
             <button 
-              onClick={() => { alert('Dispatcher settings saved successfully!'); setShowSettingsModal(false); }}
+              onClick={() => setShowSettingsModal(false)}
               className="w-full bg-[#0058be] hover:bg-[#2170e4] text-white py-3 rounded-xl font-bold text-xs shadow-md cursor-pointer"
             >
-              Save Dispatcher Settings
+              Close
             </button>
           </div>
         </div>
@@ -665,7 +717,7 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
             <div className="flex justify-between items-center border-b border-[#c2c6d6] pb-3">
               <div className="flex items-center gap-2 text-[#0058be]">
                 <HelpCircle className="w-5 h-5" />
-                <h3 className="font-extrabold text-base text-[#0b1c30]">Dispatcher Support & Help</h3>
+                <h3 className="font-extrabold text-base text-[#0b1c30]">Admin Support & Help</h3>
               </div>
               <button onClick={() => setShowSupportModal(false)} className="text-[#727785] hover:text-black">
                 <X className="w-5 h-5" />

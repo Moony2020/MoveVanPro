@@ -9,7 +9,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex flex-col font-sans antialiased selection:bg-[#0058be] selection:text-white">
+    <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex flex-col font-sans antialiased selection:bg-[#0058be] selection:text-white cinematic-frame">
       <style>{`
         @media (max-width: 786px) {
           .hero-pills-mobile {
@@ -66,7 +66,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
  
           {/* 3D Hero Van Visual Background (High Opacity on Desktop, Low Opacity on Tablet/Mobile) */}
           <div 
-            className="absolute right-[-35px] max-[500px]:right-[-25px] md:right-[3%] lg:right-[2%] xl:right-[1.5%] top-1/2 sm:top-[calc(50%+10px)] md:top-1/2 md:max-[1024px]:top-[55%] -translate-y-1/2 w-[94%] max-[500px]:w-[96%] sm:w-[74%] md:w-[66%] lg:w-[52%] xl:w-[48%] max-w-6xl h-auto pointer-events-none z-0 flex justify-end opacity-72 sm:opacity-65 lg:opacity-75 xl:opacity-95 hero-van-mobile"
+            className="absolute right-[-35px] max-[500px]:right-[-25px] md:right-[3%] lg:right-[2%] xl:right-[1.5%] top-1/2 sm:top-[calc(50%+10px)] md:top-1/2 md:max-[1024px]:top-[55%] -translate-y-1/2 w-[94%] max-[500px]:w-[96%] sm:w-[74%] md:w-[66%] lg:w-[52%] xl:w-[48%] max-w-6xl h-auto pointer-events-none z-0 flex justify-end opacity-72 sm:opacity-65 lg:opacity-75 xl:opacity-95 hero-van-mobile hero-van-depth"
           >
             <img 
               src="/hero-image.png" 
@@ -104,7 +104,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               </h2>
 
               {/* Paragraph */}
-              <p data-scroll="fade-up" data-scroll-delay="3" className="text-base md:text-lg text-[#0b1c30]/95 leading-relaxed font-semibold max-w-xl mb-6 font-['Roboto'] [text-shadow:0_0_4px_#fff,0_0_8px_#fff,0_0_16px_#fff,0_0_24px_#fff]">
+              <p data-scroll="fade-up" data-scroll-delay="3" className="text-base md:text-lg text-[#0b1c30]/95 leading-relaxed font-normal max-w-xl mb-6 font-['Roboto'] [text-shadow:0_0_4px_#fff,0_0_8px_#fff,0_0_16px_#fff,0_0_24px_#fff]">
                 Experience white-glove logistics with our professional fleet. From seamless residential moves to urgent 24/7 recovery, we handle the heavy lifting with precision.
               </p>
 
@@ -113,7 +113,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
               <div className="flex flex-row items-center justify-start gap-2.5 mb-5 w-full max-w-[310px] sm:max-w-[320px] md:max-w-[380px] lg:max-w-[420px] mt-24 max-[500px]:mt-[134px] sm:mt-24 md:mt-14 md:max-[1024px]:mt-20 lg:mt-8 hero-buttons-mobile">
                 <button 
                   onClick={() => onSelectService('moving')}
-                  className="flex-1 bg-[#0058be] hover:bg-[#2170e4] text-white px-4 py-2.5 sm:px-4 sm:py-2.5 md:px-5 md:py-3 lg:px-6 lg:py-3.5 rounded-xl font-playfair font-bold text-[12px] sm:text-[13px] md:text-sm lg:text-sm transition-all duration-300 shadow-md shadow-[#0058be]/20 flex items-center justify-center gap-1.5 hover:scale-[1.02] cursor-pointer group tracking-tight"
+                  className="flex-1 bg-[#0058be] hover:bg-[#2170e4] text-white px-4 py-2.5 sm:px-4 sm:py-2.5 md:px-5 md:py-3 lg:px-6 lg:py-3.5 rounded-xl font-playfair font-bold text-[12px] sm:text-[13px] md:text-sm lg:text-sm transition-all duration-300 shadow-md shadow-[#0058be]/20 flex items-center justify-center gap-1.5 hover:scale-[1.02] cursor-pointer group tracking-tight cinematic-button"
                 >
                   <Truck className="w-3.5 h-3.5 lg:w-4.5 lg:h-4.5 group-hover:translate-x-1 transition-transform shrink-0" />
                   <span className="whitespace-nowrap font-bold">Book a Move</span>
@@ -122,7 +122,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                 <div className="relative flex-1 group">
                   <button 
                     onClick={() => onSelectService('towing')}
-                    className="w-full glass-card text-[#0b1c30] border border-slate-300/80 px-4 py-2.5 sm:px-4 sm:py-2.5 md:px-5 md:py-3 lg:px-6 lg:py-3.5 rounded-xl font-playfair font-bold text-[12px] sm:text-[13px] md:text-sm lg:text-sm hover:bg-white transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs tracking-tight"
+                    className="w-full glass-card text-[#0b1c30] border border-slate-300/80 px-4 py-2.5 sm:px-4 sm:py-2.5 md:px-5 md:py-3 lg:px-6 lg:py-3.5 rounded-xl font-playfair font-bold text-[12px] sm:text-[13px] md:text-sm lg:text-sm hover:bg-white transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs tracking-tight cinematic-button"
                   >
                     <AlertTriangle className="w-3.5 h-3.5 lg:w-4.5 lg:h-4.5 text-amber-700 group-hover:translate-x-1 transition-transform shrink-0" />
                     <span className="whitespace-nowrap font-bold">Emergency Towing</span>
@@ -236,7 +236,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
 
 
         {/* Service Cards Section */}
-        <section className="py-20 max-w-7xl mx-auto px-6">
+        <section className="py-20 w-full max-w-[1000px] mx-auto px-4 sm:px-6 md:px-4 xl:px-8">
           <div data-scroll="fade-up" className="text-center mb-12">
             <h2 className="text-3xl font-extrabold text-[#0b1c30] mb-3 font-playfair">Our Core London Services</h2>
             <p className="text-sm text-[#565e74] max-w-xl mx-auto">
@@ -244,9 +244,9 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-10">
+          <div className="core-service-grid grid w-full max-w-[390px] mx-auto gap-6 md:max-w-none md:grid-cols-2">
             {/* Moving Service Card */}
-            <div data-scroll="fade-up" data-scroll-delay="1" className="bg-white rounded-3xl border-2 border-[#c2c6d6]/80 overflow-hidden group hover:border-[#0058be] hover:shadow-2xl transition-all duration-300 flex flex-col relative">
+            <div data-scroll="fade-up" data-scroll-delay="1" className="bg-white rounded-3xl border-2 border-[#c2c6d6]/80 overflow-hidden group hover:border-[#0058be] hover:shadow-2xl transition-all duration-300 flex flex-col relative tilt-card">
               <div className="h-72 w-full relative overflow-hidden bg-[#eff4ff]">
                 <img 
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJNYdXeEr0han0h1NHMavpDAWCDpxsXEL-nvPfBqVUbnWpcLZVVdwj-SsBrjkldP6xfugvAzEOsLeDhICcOQlbN0rYeYatClZtezgk2rb79yKUBT71mlUJdR5x978aqXNUoaVdEalFdPKWsPWMR8GPIOW7Zr-NLlWWFpmX_KBEgMi5ivQW7DP5IzCn5yduZY1JejBPxqLhX7kwayBtWPftx1fZnkV1dw-Xjf6MrcuDL0npSQyC8_IxSP80S-wVms7KB8DgRExmK5DH" 
@@ -262,7 +262,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                 </div>
               </div>
 
-              <div className="p-8 flex flex-col flex-grow">
+              <div className="p-4 sm:p-5 lg:p-6 xl:p-8 flex flex-col flex-grow">
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h3 className="text-2xl font-bold text-[#0b1c30] mb-1 font-playfair">Professional Moving</h3>
@@ -273,7 +273,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                   </div>
                 </div>
 
-                <div className="bg-[#f8f9ff] rounded-2xl p-5 mb-8 border border-[#c2c6d6]/60 flex-grow space-y-3">
+                <div className="bg-[#f8f9ff] rounded-2xl p-4 xl:p-5 mb-6 xl:mb-8 border border-[#c2c6d6]/60 flex-grow space-y-3">
                   <div className="flex items-center gap-3 text-xs text-[#0b1c30] font-semibold">
                     <CheckCircle2 className="w-4 h-4 text-[#0058be] shrink-0" />
                     <span>Luton Box Vans, Heavy Vans + 1 or 2 Salaried Movers</span>
@@ -303,7 +303,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
             </div>
 
             {/* Towing / Recovery Service Card */}
-            <div data-scroll="fade-up" data-scroll-delay="2" className="bg-white rounded-3xl border-2 border-[#c2c6d6]/80 overflow-hidden group hover:border-[#825100] hover:shadow-2xl transition-all duration-300 flex flex-col relative">
+            <div data-scroll="fade-up" data-scroll-delay="2" className="bg-white rounded-3xl border-2 border-[#c2c6d6]/80 overflow-hidden group hover:border-[#825100] hover:shadow-2xl transition-all duration-300 flex flex-col relative tilt-card">
               <div className="h-72 w-full relative overflow-hidden bg-[#eff4ff]">
                 <img 
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuAp6IZfWJigGdzAE4NOsZ2QxCp-jGXzhTdAutKRzCNdezRpL9r8sXIxpVAJlO03v7EfoCcdFF4Whovr3q-K1g-pvMDDRY3D19eqJBWl1h6QgBH729xAUnp_LL2gG63cAexFdBP3uMMhX-SIuoppLXPKl38d7ysf3_lCiwG4xgJQXkO4P2h7o5qn8xFgeslyhkRM31tnv5UXOP-4xyyR14NCS9S9rvCsEtvqR5WjJfmBD9yQ2qomUXGrRPiBokzCHWUujWwMkgI2QRvl" 
@@ -319,7 +319,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                 </div>
               </div>
 
-              <div className="p-8 flex flex-col flex-grow">
+              <div className="p-4 sm:p-5 lg:p-6 xl:p-8 flex flex-col flex-grow">
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h3 className="text-2xl font-bold text-[#0b1c30] mb-1 font-playfair">Roadside Recovery</h3>
@@ -330,7 +330,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                   </div>
                 </div>
 
-                <div className="bg-[#f8f9ff] rounded-2xl p-5 mb-8 border border-[#c2c6d6]/60 flex-grow space-y-3">
+                <div className="bg-[#f8f9ff] rounded-2xl p-4 xl:p-5 mb-6 xl:mb-8 border border-[#c2c6d6]/60 flex-grow space-y-3">
                   <div className="flex items-center gap-3 text-xs text-[#0b1c30] font-semibold">
                     <CheckCircle2 className="w-4 h-4 text-[#825100] shrink-0" />
                     <span>14-Minute Average Priority Dispatch ETA across London & M25</span>
@@ -404,7 +404,7 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
                 London, UK • Central Operational Zone
               </div>
 
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0b1c30]/90 via-[#0b1c30]/40 to-transparent p-3 sm:p-4 pointer-events-none z-10">
+              <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 pointer-events-none z-10">
                 <div className="bg-white/95 backdrop-blur-md p-3 sm:p-4 rounded-2xl border border-[#c2c6d6] shadow-md w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2.5 sm:gap-4 pointer-events-auto">
                   <div>
                     <span className="text-xs font-bold text-[#0b1c30] block">Greater London Live Fleet</span>

@@ -30,13 +30,13 @@ export default function TowingRequest({ onNavigateTo }) {
           <div className="w-16 h-16 bg-[#ffddb8] text-[#825100] rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
             <AlertTriangle className="w-8 h-8" />
           </div>
-          <h2 className="text-2xl font-bold text-[#0b1c30] mb-2">Priority Tow Truck Dispatched!</h2>
+          <h2 className="text-2xl font-bold text-[#0b1c30] mb-2">Recovery Request Received</h2>
           <p className="text-sm text-[#424754] mb-6">
-            Unit <strong className="text-[#825100]">Tow #12 (Robert T.)</strong> has been assigned to your location and is en route.
+            Your towing details are ready for review. A dispatcher must confirm vehicle availability before a tow truck is assigned.
           </p>
 
           <div className="bg-[#eff4ff] rounded-xl p-4 text-left border border-[#c2c6d6]/60 space-y-2 text-xs text-[#0b1c30] mb-6">
-            <div className="flex justify-between"><span>Estimated Arrival:</span> <strong className="text-[#825100] text-sm font-extrabold">14 Minutes</strong></div>
+            <div className="flex justify-between"><span>Dispatch status:</span> <strong className="text-[#825100] text-sm font-extrabold">Awaiting dispatcher confirmation</strong></div>
             <div className="flex justify-between"><span>Incident Type:</span> <strong className="capitalize">{incidentType}</strong></div>
             <div className="flex justify-between"><span>Vehicle Type:</span> <strong className="capitalize">{vehicleType}</strong></div>
             <div className="flex justify-between"><span>Roll Condition:</span> <strong>{canRoll ? 'Wheels Turn' : 'Stuck / Locked'}</strong></div>
@@ -45,10 +45,10 @@ export default function TowingRequest({ onNavigateTo }) {
 
           <div className="flex gap-3">
             <button 
-              onClick={() => onNavigateTo('dispatch')}
+              onClick={() => onNavigateTo('landing')}
               className="flex-1 bg-[#825100] hover:bg-[#a36700] text-white py-3 rounded-xl font-bold text-xs shadow-md transition-colors cursor-pointer"
             >
-              Open Dispatcher Live Map
+              Return to Home
             </button>
             <button 
               onClick={() => setDispatchRequested(false)}
@@ -73,7 +73,7 @@ export default function TowingRequest({ onNavigateTo }) {
             <h1 className="text-2xl font-extrabold text-[#0b1c30] mb-2">Roadside Recovery Needed?</h1>
             <div className="inline-flex items-center gap-2 bg-[#0b1c30] text-[#ffb95f] px-3 py-2 rounded-lg text-xs font-bold shadow-sm">
               <Zap className="w-4 h-4" />
-              Nearest Tow Unit En Route in <span className="underline">14 Mins</span>
+              Dispatcher confirmation required before a vehicle is assigned
             </div>
           </div>
 
@@ -206,7 +206,7 @@ export default function TowingRequest({ onNavigateTo }) {
               className="w-full bg-[#ffb95f] hover:bg-[#f59e0b] text-[#2a1700] py-4 rounded-xl font-extrabold text-sm shadow-lg flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95"
             >
               <Zap className="w-5 h-5 fill-current animate-pulse" />
-              Request Emergency Towing Dispatch
+              Review Emergency Towing Details
             </button>
           </div>
         </section>

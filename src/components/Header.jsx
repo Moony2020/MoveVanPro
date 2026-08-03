@@ -1,11 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Truck, AlertTriangle, ShieldCheck, Phone, Users, BarChart3, 
-  Menu, X, ChevronRight, Home, LayoutDashboard, User, LogOut 
+  Menu, X, ChevronRight, Home, LayoutDashboard, User, LogOut
 } from 'lucide-react';
 
-export default function Header({ currentView, setCurrentView, currentUser, onOpenLogin, onLogout }) {
+export default function Header({ currentView, setCurrentView, currentUser, onOpenLogin, onLogout, onChangePassword }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isDispatcher = currentUser?.role === 'dispatcher';
+  const isDriver = currentUser?.role === 'driver';
+  // Use the familiar two-initial avatar pattern: "John Smith" -> "JS".
+  // There is deliberately no account-name text in the header, so it stays compact.
+  const accountInitials = (() => {
+    const words = String(currentUser?.name || currentUser?.email?.split('@')[0] || '')
+      .trim()
+      .split(/\s+/)
+      .map((word) => word.replace(/[^a-z0-9]/gi, ''))
+      .filter(Boolean);
+
+    if (!words.length) return isDispatcher ? 'AD' : 'CU';
+    const first = words[0].charAt(0);
+    const last = words.length > 1 ? words[words.length - 1].charAt(0) : words[0].charAt(1);
+    return `${first}${last || ''}`.toUpperCase();
+  })();
 
   // Lock background body scroll when mobile drawer is open
   useEffect(() => {
@@ -19,19 +35,33 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
     };
   }, [mobileMenuOpen]);
 
-  const navItems = [
+  const customerNavItems = [
     { id: 'landing', label: '1. Customer Service Landing', shortLabel: 'Home', icon: Home },
+    { id: 'services', label: 'Services provided by MoveVan Pro', shortLabel: 'Services', icon: ShieldCheck },
     { id: 'moving', label: '2. Moving Quote Wizard', shortLabel: 'Book Move', icon: Truck },
-    { id: 'towing', label: '3. Emergency Towing Dispatch', shortLabel: 'Towing', icon: AlertTriangle, color: 'text-amber-400' },
-    { id: 'dispatch', label: '4. Dispatcher Command Center', shortLabel: 'Dispatcher', icon: LayoutDashboard, color: 'text-emerald-400', staffOnly: true },
-    { id: 'fleet', label: '5. Fleet & Drivers Telemetry', shortLabel: 'Fleet', icon: Users, staffOnly: true }
+    { id: 'towing', label: '3. Emergency Towing Dispatch', shortLabel: 'Towing', icon: AlertTriangle, color: 'text-amber-400' }
   ];
-  const isDispatcher = currentUser?.role === 'dispatcher';
+  const navItems = isDispatcher ? [
+    { id: 'dispatch', label: 'Admin Dashboard', shortLabel: 'Dashboard', icon: LayoutDashboard, color: 'text-emerald-500' },
+    { id: 'moving', label: 'Create a booking for a customer', shortLabel: 'Book for customer', icon: Truck },
+    { id: 'fleet', label: 'Fleet management', shortLabel: 'Fleet', icon: Users },
+    { id: 'landing', label: 'Open customer website', shortLabel: 'Customer website', icon: Home },
+  ] : isDriver ? [
+    { id: 'driver', label: 'Driver portal', shortLabel: 'Driver Portal', icon: Truck, color: 'text-emerald-500' },
+    { id: 'landing', label: 'Open customer website', shortLabel: 'Customer website', icon: Home },
+  ] : customerNavItems;
+
+  const openLogin = (initialTab = 'customer') => {
+    setMobileMenuOpen(false);
+    document.body.style.overflow = 'unset';
+    document.documentElement.style.overflow = 'unset';
+    onOpenLogin?.(initialTab);
+  };
 
   const handleNavigate = (item) => {
-    if (item.staffOnly && !isDispatcher) {
-      onOpenLogin?.('staff');
-      setMobileMenuOpen(false);
+    // The customer website and the back-office are intentionally different URLs.
+    if (isDispatcher && item.id === 'landing') {
+      window.location.assign('/');
       return;
     }
     setCurrentView(item.id);
@@ -43,7 +73,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
       <div className="w-full max-w-[1440px] mx-auto px-2 sm:px-3 md:px-5 h-16 md:h-18 flex justify-between items-center gap-1.5 lg:gap-2.5">
         {/* Premium Corporate Brand Logo */}
         <div 
-          onClick={() => { setCurrentView('landing'); setMobileMenuOpen(false); }}
+          onClick={() => { setCurrentView(isDispatcher ? 'dispatch' : isDriver ? 'driver' : 'landing'); setMobileMenuOpen(false); }}
           className="flex items-center gap-2 md:gap-2.5 cursor-pointer group shrink-0"
         >
           <div className="w-8 h-8 md:w-8.5 md:h-8.5 rounded-lg bg-[#0058be] text-white flex items-center justify-center shadow-sm shadow-[#0058be]/20 border border-white/20 group-hover:scale-105 transition-all shrink-0">
@@ -85,7 +115,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
         </nav>
 
         {/* Desktop CTA Actions */}
-        <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 shrink-0">
+        <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 shrink min-w-0">
           <a 
             href="tel:08009176683" 
             className="flex items-center gap-1 xl:gap-1.5 text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif text-slate-800 hover:text-slate-900 bg-slate-100/90 hover:bg-slate-200/80 px-2.5 py-1.5 xl:px-3 xl:py-2 rounded-xl border border-slate-200 transition-colors whitespace-nowrap shrink-0 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
@@ -96,25 +126,21 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
 
           {/* User Account / Log In Button */}
           {currentUser ? (
-            <div className="flex items-center gap-1.5 bg-slate-100 border border-slate-200 px-2.5 py-2 rounded-xl text-xs xl:text-sm font-['Playfair_Display'] font-serif shrink-0">
-              <div className="w-5 h-5 rounded-full bg-[#0058be] text-white flex items-center justify-center text-[10px] font-bold shrink-0">
-                {currentUser.name.charAt(0).toUpperCase()}
-              </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-slate-900 text-xs max-w-[80px] xl:max-w-[100px] truncate">{currentUser.name}</span>
-                <span className="text-[8px] text-emerald-600 capitalize">{currentUser.role}</span>
-              </div>
+            <div className="flex items-center gap-1 bg-slate-100 border border-slate-200 px-1.5 py-1.5 rounded-xl shrink-0">
+              <button type="button" onClick={onChangePassword} title="Change password" aria-label="Change password" className="w-7 h-7 rounded-lg bg-[#0058be] text-white flex items-center justify-center text-[9px] font-extrabold cursor-pointer">
+                {accountInitials}
+              </button>
               <button 
                 onClick={onLogout}
                 title="Log Out"
-                className="ml-1 text-slate-500 hover:text-red-500 p-0.5 transition-colors cursor-pointer shrink-0 outline-none focus:outline-none focus:ring-0"
+                className="text-slate-500 hover:text-red-500 p-0.5 transition-colors cursor-pointer shrink-0 outline-none focus:outline-none focus:ring-0"
               >
                 <LogOut className="w-3.5 h-3.5" />
               </button>
             </div>
           ) : (
             <button 
-              onClick={onOpenLogin}
+              onClick={() => openLogin('customer')}
               title="Log In"
               aria-label="Log In"
               className="flex items-center justify-center text-slate-800 bg-slate-100 hover:bg-slate-200/80 p-2 xl:p-2.5 rounded-xl border border-slate-200 transition-all shrink-0 cursor-pointer outline-none focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
@@ -124,11 +150,12 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
           )}
 
           <button 
-            onClick={() => setCurrentView('moving')}
-            className="bg-[#0058be] hover:bg-[#00469b] text-white px-3 py-1.5 xl:px-4 xl:py-2.5 rounded-xl text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif shadow-xs transition-all cursor-pointer flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
+            onClick={() => setCurrentView(isDriver ? 'driver' : 'moving')}
+            className="bg-[#0058be] hover:bg-[#00469b] text-white px-3 py-2 xl:px-4 rounded-xl text-xs xl:text-sm font-bold font-['Playfair_Display'] font-serif shadow-xs transition-all cursor-pointer flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shrink-0 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none select-none"
           >
             <Truck className="w-3.5 h-3.5 xl:w-4 xl:h-4 shrink-0" />
-            <span className="whitespace-nowrap">Get Instant Quote</span>
+            <span className="whitespace-nowrap hidden xl:inline">{isDispatcher ? 'Book for Customer' : isDriver ? 'Driver Portal' : 'Get Instant Quote'}</span>
+            <span className="whitespace-nowrap xl:hidden">{isDispatcher ? 'Book' : isDriver ? 'Portal' : 'Quote'}</span>
           </button>
         </div>
 
@@ -143,17 +170,17 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
           </a>
 
           {currentUser ? (
-            <button 
-              onClick={onLogout}
-              className="bg-slate-100 hover:bg-slate-200/80 text-slate-800 text-xs font-bold px-2.5 py-2 rounded-xl border border-slate-200 flex items-center gap-1 shrink-0 cursor-pointer"
-              title="Log Out"
-            >
-              <span className="text-[11px] text-emerald-600 font-bold max-w-[60px] truncate">{currentUser.name}</span>
+            <div className="bg-slate-100 text-slate-800 text-xs font-bold px-1.5 py-1.5 rounded-xl border border-slate-200 flex items-center gap-1 shrink-0">
+              <button type="button" onClick={onChangePassword} title="Change password" className="cursor-pointer">
+                <span className="w-6 h-6 rounded-lg bg-[#0058be] text-white flex items-center justify-center text-[8px] font-extrabold">{accountInitials}</span>
+              </button>
+              <button type="button" onClick={onLogout} title="Log Out" className="cursor-pointer">
               <LogOut className="w-4 h-4 text-red-500 shrink-0" />
-            </button>
+              </button>
+            </div>
           ) : (
             <button 
-              onClick={onOpenLogin}
+              onClick={() => openLogin('customer')}
               className="bg-slate-100 hover:bg-slate-200/80 text-slate-800 p-2.5 rounded-xl border border-slate-200 flex items-center justify-center cursor-pointer shrink-0"
               title="Log In"
               aria-label="Log In"
@@ -212,11 +239,11 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
 
             <div className="mt-5 pt-4 border-t border-slate-200 space-y-2">
               <button 
-                onClick={() => { setCurrentView('moving'); setMobileMenuOpen(false); }}
+                onClick={() => { setCurrentView(isDriver ? 'driver' : 'moving'); setMobileMenuOpen(false); }}
                 className="w-full py-2.5 bg-[#0058be] hover:bg-[#00469b] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-xs whitespace-nowrap cursor-pointer"
               >
                 <Truck className="w-4 h-4" />
-                <span>Get Instant Quote</span>
+                <span>{isDispatcher ? 'Book for Customer' : isDriver ? 'Driver Portal' : 'Get Instant Quote'}</span>
               </button>
 
               <a 

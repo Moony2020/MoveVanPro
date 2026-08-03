@@ -1,11 +1,29 @@
 import React, { useState } from 'react';
 import { 
-  Truck, Users, MapPin, Calendar, Clock, Package, Check, 
+  Truck, Users, UserRound, MapPin, Calendar, Clock, Package, Check, 
   ChevronDown, ChevronRight, ArrowLeft, ShieldCheck, CreditCard, Lock, Sparkles 
 } from 'lucide-react';
 import PaymentCheckout from './PaymentCheckout';
 
 const pendingCheckoutKey = 'movevanpro_pending_stripe_checkout';
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+
+async function savePaidBooking({ receipt, bookingDetails, totalAmount }) {
+  const response = await fetch(`${apiBaseUrl}/bookings`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      serviceType: 'moving',
+      amount: Number(receipt?.amount || totalAmount),
+      currency: receipt?.currency || 'GBP',
+      receipt,
+      bookingDetails,
+    }),
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(payload.error || 'Unable to save booking');
+  return payload.booking;
+}
 
 function getPendingStripeCheckout() {
   if (typeof window === 'undefined') return null;
@@ -19,13 +37,15 @@ function getPendingStripeCheckout() {
   }
 }
 
-export default function MovingBooking({ onNavigateTo }) {
+export default function MovingBooking({ onNavigateTo, bookingForCustomer = false }) {
   const pendingStripeCheckout = getPendingStripeCheckout();
   const returningFromStripe = typeof window !== 'undefined'
     && new URLSearchParams(window.location.search).has('stripe_checkout');
   const [step, setStep] = useState(returningFromStripe ? 4 : 1);
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const [confirmedReceipt, setConfirmedReceipt] = useState(null);
+  const [confirmedBooking, setConfirmedBooking] = useState(null);
+  const [bookingSaveError, setBookingSaveError] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -66,21 +86,21 @@ export default function MovingBooking({ onNavigateTo }) {
 
   // Pricing Engine Logic
   const vehicleRates = {
-    small: 65,
-    medium: 85,
-    luton: 115,
-    truck: 145
+    small: 45,
+    medium: 55,
+    luton: 65,
+    truck: 85,
   };
 
   const baseRate = vehicleRates[vehicle] || 115;
-  const moverAddon = movers * 35;
+  const moverAddon = movers * 25;
   const itemTotalCount = Object.values(inventory).reduce((a, b) => a + b, 0);
-  const inventoryFee = Math.ceil(itemTotalCount / 5) * 15;
-  const distanceFee = Math.round(distanceKm * 2.2);
+  const inventoryFee = Math.ceil(itemTotalCount / 5) * 10;
+  const distanceFee = Math.round(distanceKm * 1.8);
 
   const suggestedHours = Math.max(2, Math.ceil((itemTotalCount * 0.1) + (distanceKm / 30)));
   const subtotal = (baseRate + moverAddon) * durationHours + distanceFee + inventoryFee;
-  const tax = Math.round(subtotal * 0.08);
+  const tax = Math.round(subtotal * 0.20);
   const totalPrice = subtotal + tax;
 
   if (bookingConfirmed) {
@@ -92,7 +112,7 @@ export default function MovingBooking({ onNavigateTo }) {
           </div>
           <h2 className="text-2xl font-black text-[#0b1c30] mb-2">Booking & Payment Confirmed!</h2>
           <p className="text-xs text-[#424754] mb-6">
-            Your dispatch job <strong className="text-[#0058be]">#MVP-{Math.floor(1000 + Math.random() * 9000)}</strong> has been scheduled and authorized via encrypted gateway.
+            Your dispatch job <strong className="text-[#0058be]">#{confirmedBooking?.id || 'PENDING'}</strong> has been scheduled and authorized via encrypted gateway.
           </p>
 
           <div className="bg-[#0b1c30] text-white rounded-2xl p-5 text-left space-y-2.5 text-xs mb-6 shadow-inner border border-gray-800">
@@ -106,9 +126,15 @@ export default function MovingBooking({ onNavigateTo }) {
             <div className="flex justify-between"><span>Vehicle Allocated:</span> <strong className="capitalize">{vehicle} Van</strong></div>
             <div className="flex justify-between"><span>Crew:</span> <strong>Driver + {movers} Mover(s)</strong></div>
             <div className="flex justify-between border-t border-gray-800 pt-2 text-sm font-black">
-              <span>Total Paid:</span> <span className="text-emerald-400">${totalPrice}.00</span>
+              <span>Total Paid:</span> <span className="text-emerald-400">£{totalPrice}.00</span>
             </div>
           </div>
+
+          {bookingSaveError && (
+            <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-left text-xs font-semibold text-amber-800">
+              Payment succeeded, but the booking could not be saved to the dashboard yet: {bookingSaveError}
+            </div>
+          )}
 
           <div className="flex gap-3">
             <button 
@@ -118,7 +144,7 @@ export default function MovingBooking({ onNavigateTo }) {
               Back to Home
             </button>
             <button 
-              onClick={() => { setBookingConfirmed(false); setConfirmedReceipt(null); setStep(1); }}
+              onClick={() => { setBookingConfirmed(false); setConfirmedReceipt(null); setConfirmedBooking(null); setBookingSaveError(''); setStep(1); }}
               className="px-4 py-3.5 border border-[#c2c6d6] rounded-xl font-bold text-xs text-[#0b1c30] hover:bg-[#eff4ff]"
             >
               Book Another
@@ -163,8 +189,12 @@ export default function MovingBooking({ onNavigateTo }) {
             {step === 1 && (
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-[21px] font-bold text-[#0b1c30] mb-1 tracking-normal">Book a Moving Service</h2>
-                  <p className="text-[13px] leading-5 text-[#565e74]">Choose your service option and vehicle size.</p>
+                  <h2 className="text-[21px] font-bold text-[#0b1c30] mb-1 tracking-normal">
+                    {bookingForCustomer ? 'Create a Booking for a Customer' : 'Book a Moving Service'}
+                  </h2>
+                  <p className="text-[13px] leading-5 text-[#565e74]">
+                    {bookingForCustomer ? 'Enter the customer’s selected service, locations, items, and schedule.' : 'Choose your service option and vehicle size.'}
+                  </p>
                 </div>
 
                 <div className="grid grid-cols-1 min-[501px]:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
@@ -173,7 +203,7 @@ export default function MovingBooking({ onNavigateTo }) {
                       id: 'small', 
                       name: 'Small Van', 
                       desc: 'Best for studio and small moves', 
-                      rate: 65, 
+                      rate: 45,
                       cap: '350 cu ft',
                       img: '/van-small.png'
                     },
@@ -181,7 +211,7 @@ export default function MovingBooking({ onNavigateTo }) {
                       id: 'medium', 
                       name: 'Medium Van', 
                       desc: 'Great for 1-2 bed apartments', 
-                      rate: 95, 
+                      rate: 55,
                       cap: '550 cu ft',
                       img: '/van-medium.png'
                     },
@@ -189,7 +219,7 @@ export default function MovingBooking({ onNavigateTo }) {
                       id: 'luton', 
                       name: 'Luton Van', 
                       desc: 'Best for larger homes and bulky items', 
-                      rate: 135, 
+                      rate: 65,
                       cap: '800 cu ft',
                       img: '/van-large.png'
                     }
@@ -222,7 +252,7 @@ export default function MovingBooking({ onNavigateTo }) {
                         <div>
                           <div className="flex flex-row justify-between items-baseline mb-1">
                             <h4 className="font-bold text-[13px] sm:text-[14px] text-[#0b1c30] truncate">{v.name}</h4>
-                            <span className="text-[13px] sm:text-[14px] font-bold text-[#0058be] shrink-0 ml-2">${v.rate}/hr</span>
+                            <span className="text-[13px] sm:text-[14px] font-bold text-[#0058be] shrink-0 ml-2">£{v.rate}/hr</span>
                           </div>
                           <p className="text-[11px] sm:text-[12px] text-[#565e74] mb-2 leading-5 min-h-[20px]">{v.desc}</p>
                         </div>
@@ -239,9 +269,9 @@ export default function MovingBooking({ onNavigateTo }) {
                   <h3 className="text-[14px] font-bold text-[#0b1c30] mb-2">Select Helper Crew Count</h3>
                   <div className="grid grid-cols-3 gap-3">
                     {[
-                      { count: 0, label: 'Driver Only', extra: '+$0/hr' },
-                      { count: 1, label: 'Driver + 1 Mover', extra: '+$35/hr' },
-                      { count: 2, label: 'Driver + 2 Movers', extra: '+$65/hr' }
+                      { count: 0, label: 'Driver Only', extra: '+£0/hr' },
+                      { count: 1, label: 'Driver + 1 Mover', extra: '+£25/hr' },
+                      { count: 2, label: 'Driver + 2 Movers', extra: '+£50/hr' }
                     ].map((m) => (
                       <button
                         key={m.count}
@@ -252,7 +282,17 @@ export default function MovingBooking({ onNavigateTo }) {
                             : 'border-[#c2c6d6] hover:bg-[#f8f9ff] text-[#424754]'
                         }`}
                       >
-                        <Users className="w-5 h-5 mx-auto mb-1" />
+                        {m.count === 0 ? (
+                          <UserRound className="w-5 h-5 mx-auto mb-1" aria-hidden="true" />
+                        ) : m.count === 1 ? (
+                          <Users className="w-5 h-5 mx-auto mb-1" aria-hidden="true" />
+                        ) : (
+                          <span className="relative flex h-5 w-8 mx-auto mb-1" aria-label="Three people">
+                            <UserRound className="absolute left-0 top-0 w-3.5 h-3.5" aria-hidden="true" />
+                            <UserRound className="absolute left-2.5 top-0 w-3.5 h-3.5" aria-hidden="true" />
+                            <UserRound className="absolute right-0 top-0 w-3.5 h-3.5" aria-hidden="true" />
+                          </span>
+                        )}
                         <div className="text-[12px] font-semibold">{m.label}</div>
                         <div className="text-[10px] opacity-75">{m.extra}</div>
                       </button>
@@ -475,7 +515,7 @@ export default function MovingBooking({ onNavigateTo }) {
                   </div>
                   <div className="flex justify-between items-center border-t-2 border-[#c2c6d6] pt-3 text-[14px] font-bold">
                     <span>Total Locked Price:</span>
-                    <span className="text-[#0058be] text-[20px] font-bold">${totalPrice}.00</span>
+                    <span className="text-[#0058be] text-[20px] font-bold">£{totalPrice}.00</span>
                   </div>
                 </div>
 
@@ -489,10 +529,26 @@ export default function MovingBooking({ onNavigateTo }) {
                     movers,
                     moveDate,
                     moveTime,
-                    durationHours
+                    durationHours,
+                    distanceKm,
+                    inventory,
                   }}
-                  onPaymentSuccess={(receipt) => {
+                  onPaymentSuccess={async (receipt) => {
+                    const bookingDetails = {
+                      pickup,
+                      dropoff,
+                      vehicle,
+                      movers,
+                      moveDate,
+                      moveTime,
+                      durationHours,
+                      distanceKm,
+                      inventory,
+                    };
                     setConfirmedReceipt(receipt);
+                    setBookingSaveError('');
+                    const savedBooking = await savePaidBooking({ receipt, bookingDetails, totalAmount: totalPrice });
+                    setConfirmedBooking(savedBooking);
                     setBookingConfirmed(true);
                   }}
                   onCancel={() => setStep(3)}
@@ -511,11 +567,11 @@ export default function MovingBooking({ onNavigateTo }) {
             <div className="space-y-3 text-[12px] border-b border-slate-100 pb-4 mb-4">
               <div className="flex justify-between text-slate-600">
                 <span>Base Rate ({vehicle.toUpperCase()}):</span>
-                <span>${baseRate}/hr</span>
+                <span>£{baseRate}/hr</span>
               </div>
               <div className="flex justify-between text-slate-600">
                 <span>Helper Crew ({movers} Mover):</span>
-                <span>+${moverAddon}/hr</span>
+                <span>+£{moverAddon}/hr</span>
               </div>
               <div className="flex justify-between text-slate-600">
                 <span>Booked Duration:</span>
@@ -527,17 +583,17 @@ export default function MovingBooking({ onNavigateTo }) {
               </div>
               <div className="flex justify-between text-slate-600">
                 <span>Distance Fee (~{distanceKm} km):</span>
-                <span>${distanceFee}</span>
+                <span>£{distanceFee}</span>
               </div>
               <div className="flex justify-between text-slate-600">
                 <span>Inventory Fee ({itemTotalCount} items):</span>
-                <span>${inventoryFee}</span>
+                <span>£{inventoryFee}</span>
               </div>
             </div>
 
             <div className="flex justify-between items-center text-[14px] font-bold text-[#0b1c30] mb-4">
               <span>Estimated Total:</span>
-              <span className="text-[22px] text-[#0058be]">${totalPrice}</span>
+              <span className="text-[22px] text-[#0058be]">£{totalPrice}</span>
             </div>
 
             <div className="bg-[#eff4ff] border border-[#dce9ff] p-3 rounded-xl text-[11px] text-[#424754] space-y-1">
@@ -545,7 +601,7 @@ export default function MovingBooking({ onNavigateTo }) {
                 <ShieldCheck className="w-4 h-4 text-[#0058be]" />
                 MoveVan Pro Guarantee
               </div>
-              <p>No hidden fees. Full cargo insurance included up to $100,000.</p>
+              <p>No hidden fees. Full cargo insurance included up to £100,000.</p>
             </div>
           </div>
         </div>

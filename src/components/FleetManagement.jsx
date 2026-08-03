@@ -5,20 +5,8 @@ export default function FleetManagement({ onNavigateTo }) {
   const [activeTab, setActiveTab] = useState('vehicles'); // 'vehicles' | 'drivers'
   const [showAddModal, setShowAddModal] = useState(false);
 
-  const [vehicles, setVehicles] = useState([
-    { id: 'Van #04', type: 'Heavy Cargo Van', driver: 'Mark K.', status: 'On Route', fuel: '78%', odo: '42,100 mi', plate: 'MV-9021', service: 'Good' },
-    { id: 'Van #08', type: '3.5t Luton Box Van', driver: 'James D.', status: 'Loading', fuel: '92%', odo: '18,450 mi', plate: 'MV-3301', service: 'Good' },
-    { id: 'Tow #12', type: 'Flatbed Recovery Truck', driver: 'Robert T.', status: 'Assisting', fuel: '64%', odo: '65,220 mi', plate: 'TW-8812', service: 'Due in 500 mi' },
-    { id: 'Van #15', type: 'Standard Cargo Van', driver: 'Sarah P.', status: 'Available', fuel: '100%', odo: '12,900 mi', plate: 'MV-1500', service: 'Good' },
-    { id: 'Tow #09', type: 'Heavy Duty Wheel-Lift', driver: 'David L.', status: 'Maintenance', fuel: '40%', odo: '89,100 mi', plate: 'TW-0909', service: 'In Service Bay' }
-  ]);
-
-  const drivers = [
-    { name: 'Mark K.', rating: '4.95 ★', shift: '08:00 - 17:00', jobs: 342, license: 'Class C Heavy' },
-    { name: 'James D.', rating: '4.91 ★', shift: '07:30 - 16:30', jobs: 289, license: 'Class C Heavy' },
-    { name: 'Robert T.', rating: '4.98 ★', shift: '24/7 On-Call Tow', jobs: 512, license: 'Class A Tow Master' },
-    { name: 'Sarah P.', rating: '4.88 ★', shift: '09:00 - 18:00', jobs: 194, license: 'Class C' }
-  ];
+  const [vehicles, setVehicles] = useState([]);
+  const drivers = [];
 
   return (
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] font-sans pb-12">
@@ -29,19 +17,19 @@ export default function FleetManagement({ onNavigateTo }) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-white border border-[#c2c6d6] p-4 rounded-xl shadow-sm">
             <span className="text-xs text-[#424754] font-medium block">Total Vehicles</span>
-            <span className="text-2xl font-bold text-[#0b1c30]">16 Units</span>
+            <span className="text-2xl font-bold text-[#0b1c30]">{vehicles.length} Units</span>
           </div>
           <div className="bg-white border border-[#c2c6d6] p-4 rounded-xl shadow-sm">
             <span className="text-xs text-[#424754] font-medium block">Active in Operation</span>
-            <span className="text-2xl font-bold text-[#0058be]">12 Units</span>
+            <span className="text-2xl font-bold text-[#0058be]">--</span>
           </div>
           <div className="bg-white border border-[#c2c6d6] p-4 rounded-xl shadow-sm">
             <span className="text-xs text-[#424754] font-medium block">In Service Bay</span>
-            <span className="text-2xl font-bold text-[#825100]">2 Units</span>
+            <span className="text-2xl font-bold text-[#825100]">--</span>
           </div>
           <div className="bg-white border border-[#c2c6d6] p-4 rounded-xl shadow-sm">
             <span className="text-xs text-[#424754] font-medium block">Available Idle</span>
-            <span className="text-2xl font-bold text-[#0b1c30]">2 Units</span>
+            <span className="text-2xl font-bold text-[#0b1c30]">--</span>
           </div>
         </div>
 
@@ -77,6 +65,9 @@ export default function FleetManagement({ onNavigateTo }) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#eff4ff]">
+                {vehicles.length === 0 && (
+                  <tr><td colSpan="7" className="p-8 text-center text-[#565e74]">No fleet records are connected yet. Vehicle availability and telemetry will appear here after a fleet database is connected.</td></tr>
+                )}
                 {vehicles.map((v) => (
                   <tr key={v.id} className="hover:bg-[#f8f9ff] transition-colors whitespace-nowrap">
                     <td className="p-4 font-bold text-[#0b1c30]">
@@ -119,6 +110,9 @@ export default function FleetManagement({ onNavigateTo }) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#eff4ff]">
+                {drivers.length === 0 && (
+                  <tr><td colSpan="5" className="p-8 text-center text-[#565e74]">No driver roster is connected yet.</td></tr>
+                )}
                 {drivers.map((d) => (
                   <tr key={d.name} className="hover:bg-[#f8f9ff] whitespace-nowrap">
                     <td className="p-4 font-bold text-[#0b1c30]">{d.name}</td>
