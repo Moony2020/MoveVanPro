@@ -101,7 +101,7 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
   const primaryCurrency = jobs[0]?.currency || 'GBP';
 
   return (
-    <div className="flex h-screen bg-[#f8f9ff] text-[#0b1c30] overflow-hidden font-sans">
+    <div className="flex h-screen bg-[#f8f9ff] text-[#0b1c30] overflow-hidden font-['Plus_Jakarta_Sans',Inter,ui-sans-serif,system-ui,sans-serif]">
       {/* Mobile Sidebar Overlay Drawer */}
       {sidebarOpen && (
         <div 
@@ -112,16 +112,7 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
             onClick={(e) => e.stopPropagation()}
             className="w-[260px] bg-[#eff4ff] h-full flex flex-col py-6 px-4 gap-2 shadow-2xl animate-in slide-in-from-left duration-200"
           >
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0058be] to-[#2170e4] text-white flex items-center justify-center font-bold text-sm shadow-sm">
-                  MV
-                </div>
-                <div>
-                  <h1 className="font-extrabold text-base text-[#0b1c30]">MoveVan Pro</h1>
-                  <p className="text-[10px] text-[#424754]">Enterprise Admin</p>
-                </div>
-              </div>
+            <div className="flex justify-end items-center mb-2">
               <button onClick={() => setSidebarOpen(false)} className="p-1 rounded text-[#424754] hover:bg-[#c2c6d6]/40">
                 <X className="w-5 h-5" />
               </button>
@@ -205,17 +196,6 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
 
       {/* Desktop Sidebar Navigation */}
       <aside className="hidden lg:flex w-[240px] bg-[#eff4ff] border-r border-[#c2c6d6] flex flex-col py-6 px-3 gap-2 shrink-0 z-20">
-        {/* Brand Header */}
-        <div className="px-3 flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0058be] to-[#2170e4] text-white flex items-center justify-center font-extrabold text-base shadow-sm">
-            MV
-          </div>
-          <div>
-            <h1 className="font-extrabold text-base text-[#0b1c30] leading-tight">MoveVan Pro</h1>
-            <p className="text-[10px] font-bold text-[#565e74]">Enterprise Admin</p>
-          </div>
-        </div>
-
         {/* Emergency Dispatch CTA */}
         <div className="px-1 mb-4">
           <button 
@@ -300,41 +280,41 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
       {/* Main Content Workspace */}
       <main className="flex-1 flex flex-col h-screen overflow-hidden bg-[#f8f9ff]">
         {/* Top Header Bar */}
-        <header className="h-[68px] border-b border-[#c2c6d6] bg-[#f8f9ff] flex items-center justify-between px-4 md:px-6 shrink-0 z-10">
-          <div className="flex items-center gap-3">
+        <header className="min-h-[68px] border-b border-[#c2c6d6] bg-[#f8f9ff] flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 px-4 md:px-6 py-3 lg:py-0 shrink-0 z-10">
+          <div className="flex w-full lg:w-auto items-center justify-between lg:justify-start gap-3 min-w-0">
             <button 
               onClick={() => setSidebarOpen(true)}
               className="lg:hidden p-1.5 rounded-lg text-[#0b1c30] hover:bg-[#e5eeff] border border-[#c2c6d6]"
             >
               <Menu className="w-5 h-5" />
             </button>
-            <h2 className="font-extrabold text-lg md:text-xl text-[#0b1c30]">
+            <h2 className="font-bold tracking-[-0.025em] text-base sm:text-lg md:text-xl text-[#0b1c30] whitespace-nowrap">
               {activeTab === 'dashboard' ? 'Executive Dashboard' : 'Live Dispatch Control'}
             </h2>
-            <span className="hidden sm:inline-block bg-[#2170e4]/10 text-[#0058be] text-xs px-2.5 py-1 rounded-full font-bold border border-[#0058be]/20">
+            <span className="hidden sm:inline-flex items-center bg-[#2170e4]/10 text-[#0058be] text-[10px] lg:text-xs px-2.5 py-1 rounded-full font-semibold border border-[#0058be]/20 whitespace-nowrap tracking-[-0.01em]">
               London Greater Area
             </span>
           </div>
 
           {/* Quick Metrics */}
-          <div className="hidden sm:flex items-center gap-4 md:gap-6">
-            <div className="flex items-center gap-3 border-r border-[#c2c6d6] pr-4 md:pr-6">
+          <div className="hidden sm:grid grid-cols-2 lg:flex w-full lg:w-auto items-stretch lg:items-center gap-2 lg:gap-4 xl:gap-6">
+            <div className="flex items-center gap-2.5 rounded-xl border border-[#dce3ef] bg-white px-3 py-2 lg:rounded-none lg:border-0 lg:border-r lg:border-[#c2c6d6] lg:bg-transparent lg:px-0 lg:py-0 lg:pr-4 xl:pr-6 min-w-0">
               <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#2170e4]/15 flex items-center justify-center text-[#0058be]">
                 <Truck className="w-4 h-4" />
               </div>
-              <div>
-                <p className="text-[10px] md:text-[11px] font-bold text-[#424754]">Active Jobs</p>
-                <p className="text-xs md:text-base font-extrabold text-[#0b1c30]">{totals.movingJobs} Moving / {totals.towTruckJobs} Towing</p>
+              <div className="min-w-0">
+                <p className="text-[10px] md:text-[11px] font-medium text-[#565e74]">Active Jobs</p>
+                <p className="text-xs lg:text-sm xl:text-base font-bold tracking-[-0.02em] text-[#0b1c30] whitespace-nowrap">{totals.movingJobs} Moving / {totals.towTruckJobs} Towing</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5 rounded-xl border border-[#f0dfbd] bg-[#fffaf0] px-3 py-2 lg:rounded-none lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 min-w-0">
               <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#ffddb8] flex items-center justify-center text-[#825100]">
                 <BarChart3 className="w-4 h-4" />
               </div>
-              <div>
-                <p className="text-[10px] md:text-[11px] font-bold text-[#424754]">Fleet Data</p>
-                <p className="text-xs md:text-base font-extrabold text-[#825100]">Not connected</p>
+              <div className="min-w-0">
+                <p className="text-[10px] md:text-[11px] font-medium text-[#565e74]">Fleet Data</p>
+                <p className="text-xs lg:text-sm xl:text-base font-bold tracking-[-0.02em] text-[#825100] whitespace-nowrap">Not connected</p>
               </div>
             </div>
           </div>
@@ -486,8 +466,9 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
             <div className="bg-white p-4 sm:p-6 rounded-2xl border border-[#c2c6d6] shadow-sm">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
                 <h3 className="font-extrabold text-base text-[#0b1c30]">Recent Bookings Overview</h3>
-                <button onClick={() => setActiveTab('dispatch')} className="text-xs font-bold text-[#0058be] hover:underline">
-                  View All Live Dispatches Ã¢â€ â€™
+                <button onClick={() => setActiveTab('dispatch')} className="inline-flex items-center gap-1 text-xs font-bold text-[#0058be] hover:underline">
+                  View All Live Dispatches
+                  <ChevronRight className="w-3.5 h-3.5" />
                 </button>
               </div>
 
@@ -542,16 +523,21 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
         {activeTab === 'dispatch' && (
           <div className="flex flex-col md:flex-row flex-1 overflow-y-auto md:overflow-hidden">
             {/* Live Simulated OpenStreetMap Interface */}
-            <div className="h-[320px] md:h-full w-full md:flex-1 relative bg-[#0b1c30] overflow-hidden select-none shrink-0">
+            <div className="h-[320px] md:h-full w-full md:flex-1 relative bg-[#eef2f7] overflow-hidden select-none shrink-0">
               {/* Map Canvas Background (Central London, UK OpenStreetMap) */}
               <iframe 
                 title="Admin Dashboard Live Map"
-                className="absolute inset-0 w-full h-full border-0 invert-[0.9] hue-rotate-[185deg] contrast-[1.2] brightness-[0.85] opacity-80"
+                className="absolute inset-x-0 -bottom-7 w-full h-[calc(100%+28px)] border-0 contrast-[1.08] saturate-[1.25] brightness-[1.02] pointer-events-auto"
                 src="https://www.openstreetmap.org/export/embed.html?bbox=-0.25%2C51.46%2C-0.01%2C51.56&amp;layer=mapnik"
               />
-
-              {/* Grid Lines Overlay */}
-              <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+              <a
+                href="https://www.openstreetmap.org/#map=12/51.51/-0.13"
+                target="_blank"
+                rel="noreferrer"
+                className="absolute top-3 left-3 z-20 rounded-full border border-slate-200 bg-white/95 px-2.5 py-1 text-[9px] font-bold text-slate-600 shadow-sm hover:text-[#0058be]"
+              >
+                Open map &middot; &copy; OSM
+              </a>
 
               {/* Active Fleet Pins on Map */}
               {vehicles.map((v, idx) => (
@@ -567,7 +553,7 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
                     <Truck className="w-5 h-5" />
                   </div>
                   <div className="mt-1 bg-white text-[#0b1c30] text-[11px] font-bold px-2 py-1 rounded shadow-md border border-[#c2c6d6] whitespace-nowrap">
-                    {v.id} Ã¢â‚¬Â¢ {v.driver}
+                    {v.id} <span aria-hidden="true">&middot;</span> {v.driver}
                   </div>
                 </div>
               ))}
@@ -633,7 +619,7 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
                         title="Driver assignment requires a connected fleet database"
                         className="bg-slate-200 text-slate-500 text-[11px] font-bold px-2.5 py-1 rounded-lg cursor-not-allowed"
                       >
-                        {j.status} Â· assignment unavailable
+                        {j.status} <span aria-hidden="true">&middot;</span> assignment unavailable
                       </button>
                     </div>
                   </div>
@@ -679,8 +665,7 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
                   onChange={(e) => setCurrency(e.target.value)}
                   className="w-full p-2.5 border border-[#c2c6d6] rounded-xl font-semibold text-[#0b1c30]"
                 >
-                  <option value="GBP">GBP (Ã‚Â£) - London UK</option>
-                  <option value="GBP">GBP (£) - United Kingdom</option>
+                  <option value="GBP">GBP (&pound;) - United Kingdom</option>
                 </select>
               </div>
 
@@ -696,7 +681,7 @@ export default function DispatcherDashboard({ onTriggerEmergency, onNavigateTo }
 
               <div className="p-3 bg-[#eff4ff] rounded-xl border border-[#0058be]/20 text-[11px] text-[#0058be]">
                 <span className="font-bold block">Stripe & Telemetry API Status:</span>
-                <span className="text-[#424754]">Connected Ã¢â‚¬Â¢ Webhook Live (200 OK)</span>
+                <span className="text-[#424754]">Connected <span aria-hidden="true">&middot;</span> Webhook Live (200 OK)</span>
               </div>
             </div>
 

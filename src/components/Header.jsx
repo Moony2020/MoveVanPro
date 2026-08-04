@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Truck, AlertTriangle, ShieldCheck, Phone, Users, BarChart3, 
-  Menu, X, ChevronRight, Home, LayoutDashboard, User, LogOut
+  Menu, X, ChevronRight, Home, LayoutDashboard, User
 } from 'lucide-react';
 
-export default function Header({ currentView, setCurrentView, currentUser, onOpenLogin, onLogout, onChangePassword }) {
+export default function Header({ currentView, setCurrentView, currentUser, onOpenLogin, onChangePassword }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isDispatcher = currentUser?.role === 'dispatcher';
   const isDriver = currentUser?.role === 'driver';
@@ -45,10 +45,10 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
     { id: 'dispatch', label: 'Admin Dashboard', shortLabel: 'Dashboard', icon: LayoutDashboard, color: 'text-emerald-500' },
     { id: 'moving', label: 'Create a booking for a customer', shortLabel: 'Book for customer', icon: Truck },
     { id: 'fleet', label: 'Fleet management', shortLabel: 'Fleet', icon: Users },
-    { id: 'landing', label: 'Open customer website', shortLabel: 'Customer website', icon: Home },
+    { id: 'landing', label: 'Open the public MoveVan Pro website', shortLabel: 'View Website', icon: Home },
   ] : isDriver ? [
     { id: 'driver', label: 'Driver portal', shortLabel: 'Driver Portal', icon: Truck, color: 'text-emerald-500' },
-    { id: 'landing', label: 'Open customer website', shortLabel: 'Customer website', icon: Home },
+    { id: 'landing', label: 'Open the public MoveVan Pro website', shortLabel: 'View Website', icon: Home },
   ] : customerNavItems;
 
   const openLogin = (initialTab = 'customer') => {
@@ -60,8 +60,8 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
 
   const handleNavigate = (item) => {
     // The customer website and the back-office are intentionally different URLs.
-    if (isDispatcher && item.id === 'landing') {
-      window.location.assign('/');
+    if ((isDispatcher || isDriver) && item.id === 'landing') {
+      window.location.assign('/?view=website');
       return;
     }
     setCurrentView(item.id);
@@ -87,7 +87,7 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse hidden sm:inline-block" />
             </div>
             <span className="text-[8.5px] md:text-[8.5px] font-extrabold text-slate-500 tracking-widest uppercase mt-0.5 whitespace-nowrap">
-              London Logistics
+              {isDispatcher ? 'Admin Portal' : isDriver ? 'Driver Portal' : 'London Logistics'}
             </span>
           </div>
         </div>
@@ -126,18 +126,15 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
 
           {/* User Account / Log In Button */}
           {currentUser ? (
-            <div className="flex items-center gap-1 bg-slate-100 border border-slate-200 px-1.5 py-1.5 rounded-xl shrink-0">
-              <button type="button" onClick={onChangePassword} title="Change password" aria-label="Change password" className="w-7 h-7 rounded-lg bg-[#0058be] text-white flex items-center justify-center text-[9px] font-extrabold cursor-pointer">
-                {accountInitials}
-              </button>
-              <button 
-                onClick={onLogout}
-                title="Log Out"
-                className="text-slate-500 hover:text-red-500 p-0.5 transition-colors cursor-pointer shrink-0 outline-none focus:outline-none focus:ring-0"
-              >
-                <LogOut className="w-3.5 h-3.5" />
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={onChangePassword}
+              title="Account settings"
+              aria-label="Open account settings"
+              className="w-9 h-9 rounded-full bg-[#0058be] text-white border-2 border-white shadow-sm ring-1 ring-slate-200 flex items-center justify-center text-[10px] font-extrabold cursor-pointer shrink-0 transition-transform hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0058be]"
+            >
+              {accountInitials}
+            </button>
           ) : (
             <button 
               onClick={() => openLogin('customer')}
@@ -163,25 +160,26 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
         <div className="flex lg:hidden items-center gap-1.5 sm:gap-2 shrink-0">
           <a 
             href="tel:08009176683" 
-            className="flex items-center gap-1.5 text-xs font-bold font-['Playfair_Display'] font-serif text-slate-800 bg-slate-100 hover:bg-slate-200/80 px-2.5 sm:px-3 py-2 rounded-xl border border-slate-200 whitespace-nowrap shrink-0"
+            className="flex items-center justify-center gap-1.5 text-xs font-bold font-['Playfair_Display'] font-serif text-slate-800 bg-slate-100 hover:bg-slate-200/80 px-2.5 sm:px-3 py-2 rounded-xl border border-slate-200 whitespace-nowrap shrink-0 max-[500px]:w-7 max-[500px]:h-7 max-[500px]:p-0 max-[500px]:rounded-lg"
           >
             <Phone className="w-4 h-4 text-[#0058be] shrink-0" />
             <span className="hidden sm:inline whitespace-nowrap">0800 917 6683</span>
           </a>
 
           {currentUser ? (
-            <div className="bg-slate-100 text-slate-800 text-xs font-bold px-1.5 py-1.5 rounded-xl border border-slate-200 flex items-center gap-1 shrink-0">
-              <button type="button" onClick={onChangePassword} title="Change password" className="cursor-pointer">
-                <span className="w-6 h-6 rounded-lg bg-[#0058be] text-white flex items-center justify-center text-[8px] font-extrabold">{accountInitials}</span>
-              </button>
-              <button type="button" onClick={onLogout} title="Log Out" className="cursor-pointer">
-              <LogOut className="w-4 h-4 text-red-500 shrink-0" />
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={onChangePassword}
+              title="Account settings"
+              aria-label="Open account settings"
+              className="w-8 h-8 rounded-full bg-[#0058be] text-white border-2 border-white shadow-sm ring-1 ring-slate-200 flex items-center justify-center text-[9px] font-extrabold cursor-pointer shrink-0 max-[500px]:w-7 max-[500px]:h-7 max-[500px]:text-[8px]"
+            >
+              {accountInitials}
+            </button>
           ) : (
             <button 
               onClick={() => openLogin('customer')}
-              className="bg-slate-100 hover:bg-slate-200/80 text-slate-800 p-2.5 rounded-xl border border-slate-200 flex items-center justify-center cursor-pointer shrink-0"
+              className="w-8 h-8 bg-slate-100 hover:bg-slate-200/80 text-slate-800 p-0 rounded-lg border border-slate-200 flex items-center justify-center cursor-pointer shrink-0 max-[500px]:w-7 max-[500px]:h-7"
               title="Log In"
               aria-label="Log In"
             >
@@ -195,10 +193,10 @@ export default function Header({ currentView, setCurrentView, currentUser, onOpe
               e.stopPropagation();
               setMobileMenuOpen((prev) => !prev);
             }}
-            className="p-2 rounded-xl text-slate-800 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 border border-slate-200 transition-colors shrink-0 cursor-pointer outline-none focus:outline-none focus:ring-0 relative z-50"
+            className="w-8 h-8 p-0 rounded-lg text-slate-800 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 border border-slate-200 transition-colors shrink-0 cursor-pointer outline-none focus:outline-none focus:ring-0 relative z-50 flex items-center justify-center max-[500px]:w-7 max-[500px]:h-7"
             aria-label="Toggle Navigation Menu"
           >
-            {mobileMenuOpen ? <X className="w-5 h-5 text-slate-900" /> : <Menu className="w-5 h-5 text-slate-900" />}
+            {mobileMenuOpen ? <X className="w-5 h-5 max-[500px]:w-4 max-[500px]:h-4 text-slate-900" /> : <Menu className="w-5 h-5 max-[500px]:w-4 max-[500px]:h-4 text-slate-900" />}
           </button>
         </div>
       </div>

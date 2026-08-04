@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  ArrowRight, CheckCircle2, Eye, EyeOff, KeyRound, LayoutDashboard, Lock,
+  ArrowRight, CheckCircle2, Eye, EyeOff, KeyRound, LayoutDashboard, Lock, LogOut,
   Mail, ShieldCheck, Truck, User, X,
 } from 'lucide-react';
 
@@ -26,7 +26,7 @@ async function authRequest(path, body, token = '') {
   return payload;
 }
 
-export default function LoginModal({ isOpen, onClose, onLoginSuccess, initialTab = 'customer', initialMode = 'sign-in', adminMode = false }) {
+export default function LoginModal({ isOpen, onClose, onLoginSuccess, onLogout, initialTab = 'customer', initialMode = 'sign-in', adminMode = false }) {
   const [activeTab, setActiveTab] = useState(initialTab);
   const [isRegistering, setIsRegistering] = useState(false);
   const [emailOrPhone, setEmailOrPhone] = useState('');
@@ -246,21 +246,23 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess, initialTab
             <X className="w-5 h-5" />
           </button>
 
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-[#0058be] flex items-center justify-center text-white shadow-md">
+          <div className="flex items-center gap-3 mb-2 pr-10">
+            <div className="w-10 h-10 rounded-full bg-[#0058be] flex items-center justify-center text-white shadow-md shrink-0">
               <User className="w-5 h-5" />
             </div>
             <div>
               <h2 className="text-[22px] font-bold tracking-normal text-slate-900">
-                MoveVan<span className="text-[#0058be]">Pro</span> {adminMode ? 'Admin' : 'Portal'}
+                {changePasswordMode ? 'Account settings' : <>MoveVan<span className="text-[#0058be]">Pro</span> {adminMode ? 'Admin' : 'Portal'}</>}
               </h2>
               <p className="text-[12px] leading-5 text-slate-500">
-                {adminMode ? 'Admin account security.' : 'Customer = person requesting a move. Driver = a MoveVan Pro driver. Admin sign-in is separate.'}
+                {changePasswordMode
+                  ? (adminMode ? 'Manage your administrator account security.' : 'Manage your MoveVan Pro account security.')
+                  : (adminMode ? 'Admin account security.' : 'Customer = person requesting a move. Driver = a MoveVan Pro driver. Admin sign-in is separate.')}
               </p>
             </div>
           </div>
 
-          {!adminMode && <div className="flex bg-slate-200/80 p-1 rounded-xl mt-4 border border-slate-300/70 text-xs font-bold">
+          {!adminMode && !changePasswordMode && <div className="flex bg-slate-200/80 p-1 rounded-xl mt-4 border border-slate-300/70 text-xs font-bold">
             <button
               type="button"
               onClick={() => switchTab('customer')}
@@ -312,29 +314,46 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess, initialTab
               </div>
               <div>
                 <label className="text-xs font-bold text-[#0b1c30] block mb-1">Current password</label>
-                <input
-                  type={passwordVisible ? 'text' : 'password'}
-                  required
-                  value={currentPassword}
-                  onChange={(event) => setCurrentPassword(event.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#f8f9ff] border border-[#c2c6d6] rounded-xl text-xs text-[#0b1c30] focus:ring-2 focus:ring-[#0058be] focus:outline-none"
-                />
+                <div className="relative">
+                  <input
+                    type={passwordVisible ? 'text' : 'password'}
+                    required
+                    value={currentPassword}
+                    onChange={(event) => setCurrentPassword(event.target.value)}
+                    className="w-full pl-3 pr-11 py-2.5 bg-[#f8f9ff] border border-[#c2c6d6] rounded-xl text-xs text-[#0b1c30] focus:ring-2 focus:ring-[#0058be] focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setPasswordVisible((visible) => !visible)}
+                    aria-label={passwordVisible ? 'Hide passwords' : 'Show passwords'}
+                    className="absolute inset-y-0 right-0 w-10 flex items-center justify-center text-slate-500 hover:text-[#0058be] cursor-pointer"
+                  >
+                    {passwordVisible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
               <div>
                 <label className="text-xs font-bold text-[#0b1c30] block mb-1">New password</label>
-                <input
-                  type={passwordVisible ? 'text' : 'password'}
-                  minLength={8}
-                  required
-                  placeholder="At least 8 characters"
-                  value={newPassword}
-                  onChange={(event) => setNewPassword(event.target.value)}
-                  className="w-full px-3 py-2.5 bg-[#f8f9ff] border border-[#c2c6d6] rounded-xl text-xs text-[#0b1c30] focus:ring-2 focus:ring-[#0058be] focus:outline-none"
-                />
+                <div className="relative">
+                  <input
+                    type={passwordVisible ? 'text' : 'password'}
+                    minLength={8}
+                    required
+                    placeholder="At least 8 characters"
+                    value={newPassword}
+                    onChange={(event) => setNewPassword(event.target.value)}
+                    className="w-full pl-3 pr-11 py-2.5 bg-[#f8f9ff] border border-[#c2c6d6] rounded-xl text-xs text-[#0b1c30] focus:ring-2 focus:ring-[#0058be] focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setPasswordVisible((visible) => !visible)}
+                    aria-label={passwordVisible ? 'Hide passwords' : 'Show passwords'}
+                    className="absolute inset-y-0 right-0 w-10 flex items-center justify-center text-slate-500 hover:text-[#0058be] cursor-pointer"
+                  >
+                    {passwordVisible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
-              <button type="button" onClick={() => setPasswordVisible((visible) => !visible)} className="text-[11px] font-bold text-[#0058be] hover:underline">
-                {passwordVisible ? 'Hide passwords' : 'Show passwords'}
-              </button>
               <button
                 type="submit"
                 disabled={loading}
@@ -344,6 +363,16 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess, initialTab
                 <KeyRound className="w-4 h-4" />
               </button>
               <button type="button" onClick={closeModal} className="w-full text-[11px] font-bold text-[#0058be] hover:underline">Close</button>
+              {onLogout && (
+                <button
+                  type="button"
+                  onClick={onLogout}
+                  className="w-full py-2.5 rounded-xl border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 text-xs font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign out
+                </button>
+              )}
             </form>
           ) : passwordResetStep && activeTab !== 'track' ? (
             <form onSubmit={handlePasswordReset} className="space-y-3">
@@ -482,7 +511,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess, initialTab
                 disabled={loading}
                 className="w-full bg-[#0058be] hover:bg-[#2170e4] text-white py-3 rounded-xl font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer mt-2"
               >
-                {loading ? 'Please wait...' : isRegistering ? 'Create Customer Account' : 'Sign In to My Account'}
+                {loading ? 'Please wait...' : isRegistering ? 'Create Customer Account' : 'Sign In'}
                 <ArrowRight className="w-4 h-4" />
               </button>
 

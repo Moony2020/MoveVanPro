@@ -18,6 +18,7 @@ const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/
 
 export default function App() {
   const isAdminPath = window.location.pathname.toLowerCase().startsWith('/admin');
+  const isPublicWebsiteView = !isAdminPath && new URLSearchParams(window.location.search).get('view') === 'website';
   const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'dispatch' | 'moving' | 'towing' | 'fleet' | 'prd'
   const [showExportModal, setShowExportModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -27,6 +28,11 @@ export default function App() {
   const [emergencyAlert, setEmergencyAlert] = useState(false);
 
   useEffect(() => {
+    if (isPublicWebsiteView) {
+      setCurrentUser(null);
+      setCurrentView('landing');
+      return undefined;
+    }
     const token = localStorage.getItem('movevanpro_auth_token');
     if (!token) return undefined;
     let cancelled = false;
@@ -53,7 +59,7 @@ export default function App() {
       });
 
     return () => { cancelled = true; };
-  }, [isAdminPath]);
+  }, [isAdminPath, isPublicWebsiteView]);
 
   // Global scroll animation observer — watches all [data-scroll] elements across every page
   useEffect(() => {
@@ -124,6 +130,13 @@ export default function App() {
     setLoginInitialMode('sign-in');
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('movevanpro_auth_token');
+    setCurrentUser(null);
+    closeLogin();
+    if (!isAdminPath) setCurrentView('landing');
+  };
+
   if (isAdminPath && currentUser?.role !== 'dispatcher') {
     return (
       <AdminLogin
@@ -149,10 +162,6 @@ export default function App() {
           setLoginInitialTab(currentUser?.role === 'dispatcher' ? 'staff' : 'customer');
           setLoginInitialMode('change-password');
           setShowLoginModal(true);
-        }}
-        onLogout={() => {
-          localStorage.removeItem('movevanpro_auth_token');
-          setCurrentUser(null);
         }}
       />
 
@@ -243,6 +252,7 @@ export default function App() {
         isOpen={showLoginModal} 
         onClose={closeLogin}
         onLoginSuccess={handleLoginSuccess} 
+        onLogout={handleLogout}
         initialTab={loginInitialTab}
         initialMode={loginInitialMode}
         adminMode={currentUser?.role === 'dispatcher'}

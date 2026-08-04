@@ -14,7 +14,7 @@ export default function DriverPortal({ onNavigateTo }) {
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#eff4ff] text-[#0058be]"><CarFront className="w-7 h-7" /></div>
           <h2 className="text-lg font-extrabold text-[#0b1c30]">No jobs assigned yet</h2>
           <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[#565e74]">When an administrator assigns a confirmed booking to you, it will appear here with the customer and route details.</p>
-          <button type="button" onClick={() => onNavigateTo('landing')} className="mt-5 inline-flex items-center gap-2 rounded-xl border border-[#c2c6d6] px-4 py-2.5 text-xs font-bold text-[#0b1c30] hover:bg-slate-50"><MapPin className="w-4 h-4 text-[#0058be]" />Open customer website</button>
+          <button type="button" onClick={() => window.location.assign('/?view=website')} className="mt-5 inline-flex items-center gap-2 rounded-xl border border-[#c2c6d6] px-4 py-2.5 text-xs font-bold text-[#0b1c30] hover:bg-slate-50"><MapPin className="w-4 h-4 text-[#0058be]" />View Website</button>
         </div>
       </section>
     </main>

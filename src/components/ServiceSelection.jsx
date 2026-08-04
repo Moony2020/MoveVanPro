@@ -11,9 +11,9 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
   return (
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex flex-col font-sans antialiased selection:bg-[#0058be] selection:text-white cinematic-frame">
       <style>{`
-        @media (max-width: 786px) {
+        @media (min-width: 641px) and (max-width: 768px) {
           .hero-pills-mobile {
-            bottom: 175px !important;
+            bottom: 165px !important;
           }
         }
         @media (max-width: 640px) {
@@ -246,12 +246,12 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
 
           <div className="core-service-grid grid w-full max-w-[390px] mx-auto gap-6 md:max-w-none md:grid-cols-2">
             {/* Moving Service Card */}
-            <div data-scroll="fade-up" data-scroll-delay="1" className="bg-white rounded-3xl border-2 border-[#c2c6d6]/80 overflow-hidden group hover:border-[#0058be] hover:shadow-2xl transition-all duration-300 flex flex-col relative tilt-card">
+            <div data-scroll="fade-up" data-scroll-delay="1" className="bg-white rounded-3xl border-2 border-[#c2c6d6]/80 overflow-hidden group hover:border-[#0058be] transition-colors duration-300 flex flex-col relative">
               <div className="h-72 w-full relative overflow-hidden bg-[#eff4ff]">
                 <img 
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJNYdXeEr0han0h1NHMavpDAWCDpxsXEL-nvPfBqVUbnWpcLZVVdwj-SsBrjkldP6xfugvAzEOsLeDhICcOQlbN0rYeYatClZtezgk2rb79yKUBT71mlUJdR5x978aqXNUoaVdEalFdPKWsPWMR8GPIOW7Zr-NLlWWFpmX_KBEgMi5ivQW7DP5IzCn5yduZY1JejBPxqLhX7kwayBtWPftx1fZnkV1dw-Xjf6MrcuDL0npSQyC8_IxSP80S-wVms7KB8DgRExmK5DH" 
                   alt="A clean, modern blue and white moving van with uniformed professional movers loading furniture"
-                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700"
+                  className="object-cover w-full h-full"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0b1c30]/80 via-transparent to-transparent" />
                 
@@ -303,12 +303,12 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
             </div>
 
             {/* Towing / Recovery Service Card */}
-            <div data-scroll="fade-up" data-scroll-delay="2" className="bg-white rounded-3xl border-2 border-[#c2c6d6]/80 overflow-hidden group hover:border-[#825100] hover:shadow-2xl transition-all duration-300 flex flex-col relative tilt-card">
+            <div data-scroll="fade-up" data-scroll-delay="2" className="bg-white rounded-3xl border-2 border-[#c2c6d6]/80 overflow-hidden group hover:border-[#825100] transition-colors duration-300 flex flex-col relative">
               <div className="h-72 w-full relative overflow-hidden bg-[#eff4ff]">
                 <img 
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuAp6IZfWJigGdzAE4NOsZ2QxCp-jGXzhTdAutKRzCNdezRpL9r8sXIxpVAJlO03v7EfoCcdFF4Whovr3q-K1g-pvMDDRY3D19eqJBWl1h6QgBH729xAUnp_LL2gG63cAexFdBP3uMMhX-SIuoppLXPKl38d7ysf3_lCiwG4xgJQXkO4P2h7o5qn8xFgeslyhkRM31tnv5UXOP-4xyyR14NCS9S9rvCsEtvqR5WjJfmBD9yQ2qomUXGrRPiBokzCHWUujWwMkgI2QRvl" 
                   alt="A modern heavy-duty flatbed tow truck with flashing amber caution lights attending to roadside recovery"
-                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700"
+                  className="object-cover w-full h-full"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0b1c30]/80 via-transparent to-transparent" />
 
@@ -396,9 +396,17 @@ export default function ServiceSelection({ onSelectService, onNavigateTo }) {
             <div data-scroll="fade-right" className="w-full relative h-[320px] sm:h-[360px] lg:h-[350px] rounded-3xl overflow-hidden border-2 border-[#c2c6d6] shadow-xl group bg-[#eef2f7]">
               <iframe 
                 title="Central London Fleet Coverage Map"
-                className="w-full h-full border-0 contrast-[1.08] saturate-[1.25] brightness-[1.02]"
+                className="absolute inset-x-0 -bottom-7 w-full h-[calc(100%+28px)] border-0 contrast-[1.08] saturate-[1.25] brightness-[1.02] pointer-events-auto"
                 src="https://www.openstreetmap.org/export/embed.html?bbox=-0.35%2C51.35%2C0.05%2C51.65&amp;layer=mapnik"
               />
+              <a
+                href="https://www.openstreetmap.org/#map=10/51.50/-0.15"
+                target="_blank"
+                rel="noreferrer"
+                className="absolute top-3 right-12 sm:top-4 sm:right-14 z-20 rounded-full border border-slate-200 bg-white/95 px-2.5 py-1 text-[9px] font-bold text-slate-600 shadow-sm hover:text-[#0058be]"
+              >
+                Open map &middot; &copy; OSM
+              </a>
               <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-extrabold text-[#0058be] shadow-md flex items-center gap-2 border border-[#adc6ff] pointer-events-none z-10">
                 <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0058be]" />
                 London, UK • Central Operational Zone

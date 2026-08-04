@@ -253,12 +253,12 @@
 .cinematic-button:hover::after { transform: translateX(130%); }
 
 .hero-van-depth {
-  transform-style: preserve-3d;
-  animation: float-hero 7s ease-in-out infinite;
+  transform-style: flat;
+  animation: none;
   filter: drop-shadow(0 32px 42px rgba(0, 38, 94, 0.22));
 }
 
-.hero-van-depth img { transform: translateZ(28px); }
+.hero-van-depth img { transform: none; }
 
 .hero-paragraph {
   font-family: 'Roboto', sans-serif !important;
@@ -280,9 +280,9 @@
   }
 }
 
-@media (max-width: 786px) {
+@media (min-width: 641px) and (max-width: 768px) {
   .hero-pills-mobile {
-    bottom: 175px !important;
+    bottom: 165px !important;
   }
 }
 
