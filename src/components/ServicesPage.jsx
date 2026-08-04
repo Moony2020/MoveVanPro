@@ -34,15 +34,15 @@ const services = [
 export default function ServicesPage({ onNavigateTo }) {
   return (
     <main className="min-h-screen overflow-hidden bg-[#f8f9ff] font-sans text-[#0b1c30]">
-      <section className="relative isolate overflow-hidden border-b border-slate-200 bg-white px-4 py-14 sm:px-6 md:py-20">
+      <section className="relative isolate overflow-hidden border-b border-slate-200 bg-white px-4 py-14 sm:px-6 md:pt-16 md:pb-12">
         <div className="absolute -left-32 -top-28 h-80 w-80 rounded-full bg-[#dce9ff]/80 blur-3xl" />
         <div className="absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-amber-100/60 blur-3xl" />
-        <div className="relative mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.05fr_.95fr]">
+        <div className="relative mx-auto grid max-w-7xl items-center gap-8 lg:grid-cols-[.92fr_1.08fr] lg:gap-6">
           <div data-scroll="fade-up">
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#adc6ff] bg-[#eff4ff] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0058be] font-['Roboto']">
               <ShieldCheck className="h-4 w-4" /> MoveVan Pro services
             </div>
-            <h1 className="max-w-2xl font-['Playfair_Display'] text-4xl font-black leading-[1.04] text-[#0b1c30] sm:text-5xl md:text-6xl">
+            <h1 className="max-w-2xl font-['Playfair_Display'] text-4xl font-black leading-[1.04] text-[#0b1c30] sm:text-5xl xl:text-6xl">
               The right service for every journey.
             </h1>
             <p className="mt-6 max-w-xl text-base font-normal leading-7 text-slate-600 sm:text-lg">
@@ -52,7 +52,7 @@ export default function ServicesPage({ onNavigateTo }) {
               Get a moving quote <ArrowRight className="h-4 w-4" />
             </button>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2" data-scroll="scale-in">
+          <div className="services-summary-grid grid gap-3 sm:grid-cols-2" data-scroll="scale-in">
             <div className="rounded-3xl border border-[#dce9ff] bg-[#eff4ff] p-6 shadow-lg shadow-blue-900/5 transition-[border-color,box-shadow] duration-300 hover:border-[#0058be] hover:shadow-[0_0_24px_rgba(0,88,190,0.18)]">
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#0058be] text-white shadow-md"><Truck className="h-6 w-6" /></div>
               <p className="mt-8 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0058be] font-['Roboto']">Moving services</p>
@@ -121,9 +121,9 @@ export default function ServicesPage({ onNavigateTo }) {
         </div>
       </section>
 
-      <section className="px-4 py-16 sm:px-6 md:py-20">
-        <div data-scroll="scale-in" className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-6 rounded-3xl bg-[#0058be] px-7 py-10 text-center text-white shadow-xl md:flex-row md:px-10 md:text-left">
-          <div><p className="text-xs font-extrabold uppercase tracking-[0.14em] text-blue-100">Ready when you are</p><h2 className="mt-2 font-['Playfair_Display'] text-3xl font-black">Tell us where you are moving.</h2></div>
+      <section className="services-cta-section px-4 py-16 sm:px-6 md:py-20">
+        <div data-scroll="scale-in" className="services-cta-card mx-auto flex max-w-5xl flex-col items-center justify-between gap-6 rounded-3xl bg-[#0058be] px-7 py-10 text-center text-white shadow-xl md:flex-row md:px-10 md:text-left">
+          <div><p className="text-xs font-extrabold uppercase tracking-[0.14em] text-blue-100">Ready when you are</p><h2 className="services-cta-title mt-2 font-['Playfair_Display'] text-3xl font-black">Tell us where you are moving.</h2></div>
           <button onClick={() => onNavigateTo('moving')} className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-extrabold text-[#0058be] shadow-lg">Start your quote <ArrowRight className="h-4 w-4" /></button>
         </div>
       </section>

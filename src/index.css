@@ -265,6 +265,21 @@
   text-shadow: 0 0 4px #fff, 0 0 8px #fff, 0 0 16px #fff, 0 0 24px #fff !important;
 }
 
+@media (max-width: 1024px) {
+  .services-summary-grid {
+    width: min(100%, 580px);
+    max-width: 580px;
+    margin-inline: auto;
+  }
+}
+
+@media (min-width: 501px) and (max-width: 640px) {
+  .services-summary-grid {
+    width: min(100%, 470px);
+    max-width: 470px;
+  }
+}
+
 @media (max-width: 786px) {
   .hero-pills-mobile {
     bottom: 175px !important;
@@ -293,6 +308,20 @@
 }
 
 @media (max-width: 500px) {
+  .services-cta-title {
+    font-size: 20px !important;
+    line-height: 1.15 !important;
+  }
+
+  .services-cta-section {
+    padding: 32px 12px !important;
+  }
+
+  .services-cta-card {
+    gap: 16px !important;
+    padding: 24px 16px !important;
+  }
+
   .hero-section-mobile {
     min-height: 350px !important;
   }

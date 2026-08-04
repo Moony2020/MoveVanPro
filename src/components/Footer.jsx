@@ -6,7 +6,7 @@ export default function Footer({ onNavigateTo }) {
     <footer className="bg-[#0b1c30] text-white pt-14 pb-6">
       <div className="max-w-7xl mx-auto px-6">
         {/* Top Row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+        <div className="grid grid-cols-1 min-[501px]:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
@@ -66,7 +66,7 @@ export default function Footer({ onNavigateTo }) {
 
         {/* Divider */}
         <div className="border-t border-[#1d2d44] pt-6">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-[11px] text-[#6b7a9e]">
+          <div className="flex flex-col min-[501px]:flex-row justify-between items-center gap-3 text-[11px] text-[#6b7a9e]">
             <span>© 2026 MoveVan Pro London. All rights reserved.</span>
             <span className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
